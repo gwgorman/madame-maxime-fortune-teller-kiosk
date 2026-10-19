@@ -32,6 +32,13 @@ at transporter-console commit
 [`04b325b`](https://github.com/gwgorman/raspberry-pi-transporter-console/commit/04b325b).
 It will move here when the fortune-teller runtime is ready to consume it.
 
+Related systems:
+
+- [MAX.sys](https://github.com/gwgorman/max-sys) will provide the reusable,
+  host-bounded personality/event engine.
+- [Gorman Office Console](https://github.com/gwgorman/gorman-office-console) is
+  the private everyday telemetry display and is not part of party rotation.
+
 ## Intended guest experience
 
 1. A distance sensor notices an approaching guest.
