@@ -8,6 +8,7 @@ import math
 import os
 import sys
 import time
+from pathlib import Path
 
 from session import EventJournal, SessionController, SessionState, default_journal_path
 
@@ -38,6 +39,17 @@ class SilentKiosk:
         self.scale = 1.0
         self.offset = (0, 0)
         self.fonts = {}
+        self.portrait = self.load_portrait()
+        self.portrait_scaled = None
+        self.portrait_scaled_size = None
+
+    def load_portrait(self):
+        """Load Greg's approved Madame Maxime artwork without modifying it."""
+        path = Path(__file__).resolve().parent / "assets" / "madame-maxime-at-the-crystal-ball.png"
+        try:
+            return self.pg.image.load(str(path)).convert()
+        except (FileNotFoundError, self.pg.error):
+            return None
 
     def font(self, size: int, bold: bool = False):
         key = (size, bold)
@@ -106,17 +118,28 @@ class SilentKiosk:
         self.draw_text("MADAME MAXIME", 72, PALE_GOLD, (960, 102), True)
         self.draw_text("FORTUNES • REVELATIONS • EXCELLENT ADVICE", 24, MUTED, (960, 164), True)
 
-        crystal_center = self.transform(960, 465)
-        radius = int(236 * self.scale)
-        glow = 0.5 + 0.5 * math.sin(now * 0.9)
-        self.pg.draw.circle(self.screen, (39, 22, 62), crystal_center, radius + int(28 * self.scale))
-        self.pg.draw.circle(self.screen, (62, int(80 + glow * 45), 121), crystal_center, radius)
-        self.pg.draw.circle(self.screen, TEAL, crystal_center, radius, width=max(3, int(7 * self.scale)))
-        for ring in range(5):
-            rr = int((75 + ring * 31 + 7 * math.sin(now + ring)) * self.scale)
-            self.pg.draw.circle(self.screen, (83, 191, 181), crystal_center, rr, width=max(1, int(2 * self.scale)))
-        self.pg.draw.ellipse(self.screen, (73, 42, 24), self.rect(710, 685, 500, 76))
-        self.pg.draw.rect(self.screen, GOLD, self.rect(760, 720, 400, 88), border_radius=int(16 * self.scale))
+        # The supplied portrait is the stage, rather than a decorative prop.
+        # Letterboxing preserves the complete, approved artwork unchanged.
+        stage = self.rect(650, 190, 620, 625)
+        self.pg.draw.rect(self.screen, (9, 5, 10), stage.inflate(24, 24), border_radius=int(22 * self.scale))
+        if self.portrait:
+            source_w, source_h = self.portrait.get_size()
+            fit = min(stage.width / source_w, stage.height / source_h)
+            image_size = (max(1, int(source_w * fit)), max(1, int(source_h * fit)))
+            if image_size != self.portrait_scaled_size:
+                self.portrait_scaled = self.pg.transform.smoothscale(self.portrait, image_size)
+                self.portrait_scaled_size = image_size
+            image_rect = self.portrait_scaled.get_rect(center=stage.center)
+            self.screen.blit(self.portrait_scaled, image_rect)
+
+        else:
+            crystal_center = stage.center
+            radius = int(190 * self.scale)
+            self.pg.draw.circle(self.screen, (39, 22, 62), crystal_center, radius)
+            self.pg.draw.circle(self.screen, TEAL, crystal_center, radius, width=max(3, int(7 * self.scale)))
+            self.draw_text("PORTRAIT SIGNAL LOST", 28, CREAM, (960, 500), True)
+        self.pg.draw.rect(self.screen, GOLD, stage, width=max(3, int(7 * self.scale)), border_radius=int(16 * self.scale))
+        self.pg.draw.rect(self.screen, PALE_GOLD, stage.inflate(-18, -18), width=max(1, int(2 * self.scale)), border_radius=int(10 * self.scale))
 
     def state_copy(self):
         state = self.controller.state
@@ -136,15 +159,15 @@ class SilentKiosk:
 
     def draw_content(self, now):
         title, subtitle = self.state_copy()
-        self.draw_text(title, 42, CREAM, (960, 400), True, 650)
+        self.draw_text(title, 36, CREAM, (415, 325), True, 390)
         if self.controller.state is SessionState.REVEAL and self.controller.fortune:
             card, prediction, observation, instruction = self.controller.fortune
-            self.draw_text(card, 34, PALE_GOLD, (960, 462), True, 650)
-            self.draw_text(prediction, 24, CREAM, (960, 532), False, 620)
-            self.draw_text(observation, 21, PALE_GOLD, (960, 620), False, 620)
-            self.draw_text(instruction, 22, TEAL, (960, 694), True, 620)
+            self.draw_text(card, 30, PALE_GOLD, (1500, 320), True, 400)
+            self.draw_text(prediction, 22, CREAM, (1500, 430), False, 390)
+            self.draw_text(observation, 20, PALE_GOLD, (1500, 565), False, 390)
+            self.draw_text(instruction, 21, TEAL, (1500, 690), True, 390)
         else:
-            self.draw_text(subtitle, 25, CREAM, (960, 538), False, 620)
+            self.draw_text(subtitle, 23, CREAM, (415, 475), False, 390)
 
         buttons = []
         state = self.controller.state
@@ -201,7 +224,9 @@ class SilentKiosk:
             self.draw_frame(now)
             self.draw_content(now)
             self.pg.display.flip()
-            self.clock.tick(30)
+            # Twelve frames per second is ample for lamps and touch feedback,
+            # while leaving the Pi comfortable for future sensors and DMX.
+            self.clock.tick(12)
 
 
 def main() -> int:
