@@ -92,9 +92,22 @@ physically connected and tested. See [Hardware bring-up](docs/HARDWARE_BRINGUP.m
 
 ## Development
 
-The first development milestone is a hardware-independent shell with simulated
-approach, lighting, camera, and speech adapters. Pi-specific installation
-commands will be added after that skeleton exists.
+The first hardware-independent shell is now available. It provides the silent
+touchscreen flow, deterministic state machine, simulated approach event,
+sample fortune reveal, timeouts, automatic reset, and anonymous atomic event
+journal. It deliberately does not initialize an audio mixer or play sound.
+
+Install Pygame and launch it in a development window:
+
+```bash
+sudo apt install python3-pygame
+python3 madame_maxime.py --windowed
+```
+
+Omit `--windowed` for the full-screen kiosk presentation. Press `Esc` or `Q`
+to exit. The default journal is
+`~/.local/state/madame-maxime/journal.json`; override it with
+`MADAME_MAXIME_JOURNAL` during tests.
 
 ## License
 
