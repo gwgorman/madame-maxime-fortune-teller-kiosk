@@ -92,6 +92,8 @@ blackout.
 
 ## Pending physical verification
 
+- Exact manufacturer/model of the two-unit special-order camera shipment; do
+  not assume the earlier Arducam B0354 candidate until the label is inspected
 - Camera modes, frame rates, field of view, and low-light behavior
 - Microphone-array USB identity, channel topology, beamforming, and echo
   cancellation

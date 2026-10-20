@@ -43,6 +43,24 @@ Keeps Madame Maxime's prompts, state, and voice assets separate from the
 preserved MAX.sys personality. It returns bounded messages to the UI, which
 retains control of playback and interruption.
 
+Speech capture and synthesis remain separate adapters rather than a hosted
+agent owning the conversation. See [Speech Recognition and Voice Pipeline](AUDIO_PIPELINE.md).
+
+### Fortune service
+
+Builds a complete local fortune from questionnaire choices, optional transient
+speech-derived topic data, reviewed fragment tags, and a session seed. A local
+result exists before optional online enrichment begins. Enrichment is bounded,
+schema-validated, and never lies on the only path to a reveal.
+
+### Perception service
+
+Owns distance, camera, and microphone workers outside the rendering loop. It
+publishes expiring observations rather than exposing devices directly to the
+session controller. Camera frames, raw audio, and transcripts are transient by
+default; the controller receives only the minimal event or structured result it
+needs.
+
 ### Event journal
 
 Persists anonymous operational data atomically: session counts, timing,
@@ -56,3 +74,6 @@ components should be extracted deliberately rather than importing the entire
 legacy application. The fortune-teller selector may launch or navigate to the
 legacy experience, but Transporter never participates in automatic party-page
 rotation.
+
+The canonical interaction, latency budget, privacy boundary, and recovery
+behavior are specified in [Guest Experience and Fortune Design](EXPERIENCE_DESIGN.md).

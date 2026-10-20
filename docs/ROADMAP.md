@@ -8,23 +8,42 @@
 - Anonymous atomic event journal
 - Watchdog and clean restart behavior
 - Deliberate route to the legacy Transporter and back
+- Portrait-led silent simulator and full state-machine rehearsal
+
+## Phase 1A: hardware-independent reading
+
+- [x] Four-card questionnaire with touch-only operation
+- [x] Local tagged-fragment fortune engine
+- [x] Fortune fingerprint and recent-repetition avoidance
+- [x] Consultation and reveal animation with optional real lighting cues
+- [x] Explicit cancel, abandoned-session, and timeout paths
+- [x] Anonymous timing and fallback counters from the first test
+- [x] Initial authored phrase corpus and 350-reading simulation
+- [x] Return-visit flow using a simulated returning visitor and prior outcome
+- [ ] Expand and editorially review the production phrase corpus
+- [ ] Add opt-in visitor signatures after camera bring-up
 
 ## Phase 2: hardware adapters
 
-- Import the verified direct-FTDI lighting driver
+- [x] Import the verified direct-FTDI lighting driver
 - Discover and characterize the VL53L1X sensor
 - Discover camera modes and low-light performance
 - Discover reSpeaker channel layout and echo-cancellation behavior
 - Confirm final audio device and mixer persistence
+- Benchmark local voice activity detection and an optional offline transcription
+  fallback with recorded synthetic/noisy test input
+- Benchmark OpenAI transcription and ElevenLabs streaming TTS end to end
+- Pre-render and approve all predictable dialogue into a versioned manifest
 
 ## Phase 3: conversation and performance
 
 - Cached approach and greeting audio
 - Streaming speech recognition and reply audio
-- Touch/typed fallback for noisy conditions
+- Touch fallback for noisy conditions; no guest typing required
 - Barge-in and foreground-audio priority
 - Bounded fortune format and repetition avoidance
 - Optional, visible camera-based costume observation
+- Opt-in same-event return recognition, explicit purge, and return-sigil fallback
 
 ## Phase 4: theatrical integration
 

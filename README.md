@@ -26,11 +26,10 @@ Verified on October 19, 2026:
 - OLA and the ordinary Linux serial path do not produce usable output with
   this installation and must not own the adapter.
 
-The proven DMX implementation currently lives in
-[`dmx_lighting.py`](https://github.com/gwgorman/raspberry-pi-transporter-console/blob/main/dmx_lighting.py)
+The field-verified direct-FTDI implementation is now included as
+[`dmx_lighting.py`](dmx_lighting.py). Its original verification record remains
 at transporter-console commit
 [`04b325b`](https://github.com/gwgorman/raspberry-pi-transporter-console/commit/04b325b).
-It will move here when the fortune-teller runtime is ready to consume it.
 
 Related systems:
 
@@ -60,7 +59,9 @@ timeouts, and unattended recovery.
 
 - Raspberry Pi 5
 - Existing 1920x1080 capacitive touchscreen
-- Arducam B0354 USB camera with Sony IMX291 sensor and 2.8-12 mm lens
+- Two-unit special-order USB camera purchase; exact delivered model and modes
+  remain to be recorded during bring-up (the earlier prototype candidate was
+  the Arducam B0354)
 - Seeed reSpeaker XVF3800 USB four-microphone array with case
 - Pololu VL53L1X time-of-flight distance sensor carrier, product 3415
 - NEEWER R12L 12-inch ring light
@@ -87,15 +88,20 @@ physically connected and tested. See [Hardware bring-up](docs/HARDWARE_BRINGUP.m
 ## Documentation
 
 - [Architecture](docs/ARCHITECTURE.md)
+- [Guest experience and fortune design](docs/EXPERIENCE_DESIGN.md)
+- [Fortune content, return visits, and API Max](docs/FORTUNE_CONTENT.md)
+- [Speech recognition and voice pipeline](docs/AUDIO_PIPELINE.md)
 - [Hardware bring-up and verified DMX procedure](docs/HARDWARE_BRINGUP.md)
 - [Implementation roadmap](docs/ROADMAP.md)
 
 ## Development
 
-The first hardware-independent shell is now available. It provides the silent
-touchscreen flow, deterministic state machine, simulated approach event,
-sample fortune reveal, timeouts, automatic reset, and anonymous atomic event
-journal. It deliberately does not initialize an audio mixer or play sound.
+The first hardware-independent reading is now available. It provides the silent
+touchscreen flow, deterministic state machine, simulated approach and return
+events, four-card questionnaire, optional question topic, tagged local fortune
+construction, rolling repetition avoidance, sequel reading, timeouts, automatic
+reset, anonymous atomic event journal, and optional failure-isolated DMX scenes.
+It deliberately does not initialize an audio mixer or play sound.
 
 Install Pygame and launch it in a development window:
 
@@ -108,6 +114,11 @@ Omit `--windowed` for the full-screen kiosk presentation. Press `Esc` or `Q`
 to exit. The default journal is
 `~/.local/state/madame-maxime/journal.json`; override it with
 `MADAME_MAXIME_JOURNAL` during tests.
+
+On the production Pi, add `--dmx` to use the verified ENTTEC adapter and PARs.
+The touchscreen remains operational if the adapter or driver is unavailable.
+The current milestone is intentionally silent: it does not initialize Pygame's
+audio mixer and contains no speech or sound playback path.
 
 ## License
 
