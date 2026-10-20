@@ -4,9 +4,12 @@
 from __future__ import annotations
 
 import argparse
+import json
 import math
 import os
+import subprocess
 import sys
+import tempfile
 import time
 from pathlib import Path
 
@@ -24,6 +27,42 @@ INK = (13, 8, 19)
 TEAL = (44, 174, 165)
 CREAM = (246, 229, 188)
 MUTED = (169, 137, 110)
+OFFICE_CONFIG_PATH = Path.home() / ".config" / "startrek-console.json"
+OFFICE_SERVICE = "app-startrek@autostart.service"
+
+
+def prepare_office_preferences(config_path: Path = OFFICE_CONFIG_PATH) -> None:
+    """Select a deterministic Office Mode landing page without losing settings."""
+    try:
+        preferences = json.loads(config_path.read_text(encoding="utf-8"))
+        if not isinstance(preferences, dict):
+            preferences = {}
+    except (FileNotFoundError, OSError, ValueError, TypeError):
+        preferences = {}
+    preferences.update({
+        "display_mode": "SHIP STATUS",
+        "status_page": "NETWORK",
+        "venue_override": "OFFICE",
+    })
+    config_path.parent.mkdir(parents=True, exist_ok=True)
+    fd, temporary = tempfile.mkstemp(prefix="startrek-console-", suffix=".json", dir=config_path.parent)
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as handle:
+            json.dump(preferences, handle, indent=2, sort_keys=True)
+            handle.write("\n")
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temporary, config_path)
+    finally:
+        try:
+            os.unlink(temporary)
+        except FileNotFoundError:
+            pass
+
+
+def launch_office_console(config_path: Path = OFFICE_CONFIG_PATH, runner=subprocess.run) -> None:
+    prepare_office_preferences(config_path)
+    runner(["systemctl", "--user", "start", OFFICE_SERVICE], check=True)
 
 
 class SilentKiosk:
@@ -38,6 +77,8 @@ class SilentKiosk:
         self.notice = "SILENT DEVELOPMENT MODE — AUDIO DISABLED"
         self.notice_until = float("inf")
         self.running = True
+        self.operator_menu_open = False
+        self.next_action = None
         self.scale = 1.0
         self.offset = (0, 0)
         self.fonts = {}
@@ -179,6 +220,9 @@ class SilentKiosk:
         return "YOUR FORTUNE", "The mechanism has reached a conclusion."
 
     def draw_content(self, now):
+        if self.operator_menu_open:
+            self.draw_operator_menu()
+            return
         title, subtitle = self.state_copy()
         self.draw_text(title, 36, CREAM, (415, 325), True, 390)
         if self.controller.state is SessionState.REVEAL and self.controller.fortune:
@@ -224,6 +268,23 @@ class SilentKiosk:
 
         self.draw_text(self.notice, 18, PALE_GOLD, (960, 1019), True)
 
+    def draw_operator_menu(self):
+        veil = self.pg.Surface(self.screen.get_size(), self.pg.SRCALPHA)
+        veil.fill((7, 3, 10, 210))
+        self.screen.blit(veil, (0, 0))
+        panel = self.rect(420, 225, 1080, 630)
+        self.pg.draw.rect(self.screen, DEEP_RED, panel, border_radius=int(30 * self.scale))
+        self.pg.draw.rect(self.screen, GOLD, panel, width=max(3, int(6 * self.scale)), border_radius=int(30 * self.scale))
+        self.draw_text("OPERATOR CONTROL", 54, PALE_GOLD, (960, 330), True)
+        self.draw_text(
+            "Return to the unattended Office telemetry console? Madame Maxime will close and both PAR fixtures will black out.",
+            25, CREAM, (960, 475), False, 820,
+        )
+        self.buttons = [
+            self.button("office_console", "RETURN TO OFFICE CONSOLE", (560, 610, 800, 112), GOLD, INK),
+            self.button("operator_cancel", "CANCEL — KEEP FORTUNE TELLER", (660, 755, 600, 76), (49, 83, 83), CREAM),
+        ]
+
     def handle_click(self, position):
         for key, rect in self.buttons:
             if not rect.collidepoint(position):
@@ -249,8 +310,12 @@ class SilentKiosk:
             elif key == "cancel":
                 self.controller.cancel(now)
             elif key == "operator":
-                self.notice = "OPERATOR PANEL RESERVED — NO EXTERNAL SYSTEMS LAUNCHED"
-                self.notice_until = now + 4.0
+                self.operator_menu_open = True
+            elif key == "operator_cancel":
+                self.operator_menu_open = False
+            elif key == "office_console":
+                self.next_action = "office"
+                self.running = False
             break
 
     def run(self):
@@ -298,6 +363,12 @@ def main() -> int:
         kiosk.lighting.stop()
         pygame.font.quit()
         pygame.display.quit()
+    if kiosk.next_action == "office":
+        try:
+            launch_office_console()
+        except (OSError, subprocess.CalledProcessError) as exc:
+            print(f"Unable to launch Office console: {exc}", file=sys.stderr)
+            return 3
     return 0
 
 

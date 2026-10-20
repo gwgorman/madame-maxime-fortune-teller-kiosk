@@ -7,7 +7,7 @@
 - Large start/listen/cancel controls
 - Anonymous atomic event journal
 - Watchdog and clean restart behavior
-- Deliberate route to the legacy Transporter and back
+- [x] Protected operator handoff to the legacy Office/Transporter console
 - Portrait-led silent simulator and full state-machine rehearsal
 
 ## Phase 1A: hardware-independent reading

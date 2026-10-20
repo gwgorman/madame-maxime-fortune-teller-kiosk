@@ -120,6 +120,12 @@ The touchscreen remains operational if the adapter or driver is unavailable.
 The current milestone is intentionally silent: it does not initialize Pygame's
 audio mixer and contains no speech or sound playback path.
 
+The `OPERATOR` control opens a protected confirmation panel. `RETURN TO OFFICE
+CONSOLE` blackouts and releases the PAR fixtures, closes Madame Maxime, selects
+the Office venue with the Network status landing page, and starts the existing
+service-managed Gorman Office/Transporter console. `CANCEL` returns to the
+current fortune-teller session without changing either application.
+
 ## License
 
 MIT. See [LICENSE](LICENSE).
