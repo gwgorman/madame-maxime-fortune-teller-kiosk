@@ -57,6 +57,8 @@ class SessionControllerTests(unittest.TestCase):
         self.assertEqual(self.controller.state, SessionState.REVEAL)
         self.assertEqual(self.controller.fortune.visit_number, 2)
         self.assertNotEqual(self.controller.fortune.fingerprint, first.fingerprint)
+        self.assertNotEqual(self.controller.fortune.prediction, first.prediction)
+        self.assertEqual(self.controller.fortune.title, "THE MOON RETURNS")
         self.assertTrue(self.controller.fortune.return_callback)
 
     def test_questionnaire_timeout_recovers(self):

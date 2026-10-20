@@ -116,6 +116,11 @@ class FortuneEngine:
             trait = self.rng.choice(TRAITS[choices["nature"]])
             omen = self.rng.choice(OMENS[choices["omen"]])
             prediction = self.rng.choice(PREDICTIONS[topic])
+            # A sequel must contain an actually new prophecy.  The full
+            # fingerprint could differ while accidentally reusing this most
+            # prominent sentence, making the guest think nothing changed.
+            if previous and prediction == previous.prediction:
+                continue
             warning = self.rng.choice(WARNINGS[choices["honesty"]])
             instruction = self.rng.choice(INSTRUCTIONS)
             callback = ""
@@ -131,7 +136,8 @@ class FortuneEngine:
             fingerprint = hashlib.sha256(digest_source.encode()).hexdigest()[:16]
             if fingerprint not in recent:
                 return Fortune(
-                    title=f"THE {choices['omen']} AND THE {NATURE_SIGILS[choices['nature']]}",
+                    title=(f"THE {choices['omen']} RETURNS" if previous else
+                           f"THE {choices['omen']} AND THE {NATURE_SIGILS[choices['nature']]}"),
                     opening=opening, prediction=prediction,
                     observation=f"{observation} {warning}", instruction=instruction,
                     fingerprint=fingerprint, choices=dict(choices), topic=topic,

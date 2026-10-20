@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import math
+import threading
 import time
 
 
@@ -31,6 +32,10 @@ class LightingController:
         self.par_scene = None
         self.current = list(SCENES["idle"])
         self.last_update = time.monotonic()
+        self.state_name = "idle"
+        self._state_lock = threading.Lock()
+        self._stop = threading.Event()
+        self._animation_thread = None
 
     def start(self) -> None:
         if not self.enabled:
@@ -44,6 +49,11 @@ class LightingController:
             self.output.start()
             self.available = True
             self._write(self.current)
+            self._stop.clear()
+            self._animation_thread = threading.Thread(
+                target=self._animate, name="fortune-lighting", daemon=True
+            )
+            self._animation_thread.start()
         except Exception as exc:
             self.error = str(exc)
             self.available = False
@@ -57,6 +67,19 @@ class LightingController:
     def update(self, state_name: str, now: float) -> None:
         if not self.available:
             return
+        with self._state_lock:
+            self.state_name = state_name
+
+    def _animate(self) -> None:
+        """Interpolate lighting independently of the deliberately slow UI."""
+        while not self._stop.is_set() and self.available:
+            now = time.monotonic()
+            with self._state_lock:
+                state_name = self.state_name
+            self._animate_step(state_name, now)
+            self._stop.wait(1.0 / 30.0)
+
+    def _animate_step(self, state_name: str, now: float) -> None:
         target = list(SCENES.get(state_name, SCENES["idle"]))
         if state_name == "thinking":
             target[0] += 15 * (0.5 + 0.5 * math.sin(now * 3.2))
@@ -72,6 +95,9 @@ class LightingController:
             self.available = False
 
     def stop(self) -> None:
+        self._stop.set()
+        if self._animation_thread:
+            self._animation_thread.join(timeout=1.0)
         if self.output:
             try:
                 self.output.stop(blackout=True)
