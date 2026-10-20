@@ -1,5 +1,6 @@
 import unittest
 
+from dmx_lighting import ParScene, Universe
 from lighting import LightingController, SCENES
 
 
@@ -16,6 +17,14 @@ class LightingControllerTests(unittest.TestCase):
         for values in SCENES.values():
             self.assertEqual(len(values), 4)
             self.assertTrue(all(0 <= value <= 255 for value in values))
+
+    def test_fixture_group_update_reaches_one_snapshot_together(self):
+        universe = Universe()
+        scene = ParScene(50, 120, 30, 200)
+        universe.set_pars((1, 30), scene)
+        frame = universe.snapshot()
+        self.assertEqual(frame[1:7], bytes(scene.channels()))
+        self.assertEqual(frame[30:36], bytes(scene.channels()))
 
 
 if __name__ == "__main__":

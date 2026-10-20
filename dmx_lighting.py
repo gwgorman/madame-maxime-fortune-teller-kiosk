@@ -66,6 +66,16 @@ class Universe:
         with self._lock:
             self._frame[address : address + 6] = bytes(scene.channels())
 
+    def set_pars(self, addresses: tuple[int, ...], scene: ParScene) -> None:
+        """Update a fixture group in one indivisible universe change."""
+        for address in addresses:
+            if address < 1 or address + 5 > UNIVERSE_SIZE:
+                raise ValueError(f"PAR address {address} is outside the DMX universe")
+        channels = bytes(scene.channels())
+        with self._lock:
+            for address in addresses:
+                self._frame[address : address + 6] = channels
+
     def blackout(self) -> None:
         with self._lock:
             self._frame[1:] = bytes(UNIVERSE_SIZE)
@@ -214,8 +224,10 @@ class OpenDmxOutput:
                 time.sleep(0.000012)
                 self._write_frame(self.universe.snapshot())
                 elapsed = time.monotonic() - started
-                if elapsed < 0.025:
-                    self._stop.wait(0.025 - elapsed)
+                # Leave comfortable USB scheduling margin after the full
+                # 513-byte frame. Roughly 29 Hz remains visually seamless.
+                if elapsed < 0.035:
+                    self._stop.wait(0.035 - elapsed)
         except Exception as exc:
             self.error = str(exc)
             self._stop.set()

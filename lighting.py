@@ -52,8 +52,7 @@ class LightingController:
         if not self.available:
             return
         scene = self.par_scene(*(round(value) for value in values))
-        self.universe.set_par(1, scene)
-        self.universe.set_par(30, scene)
+        self.universe.set_pars((1, 30), scene)
 
     def update(self, state_name: str, now: float) -> None:
         if not self.available:
