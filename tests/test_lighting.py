@@ -1,6 +1,6 @@
 import unittest
 
-from dmx_lighting import ParScene, Universe
+from dmx_lighting import ParScene, TRANSMIT_CHANNELS, Universe
 from lighting import LightingController, SCENES
 
 
@@ -25,6 +25,7 @@ class LightingControllerTests(unittest.TestCase):
         frame = universe.snapshot()
         self.assertEqual(frame[1:7], bytes(scene.channels()))
         self.assertEqual(frame[30:36], bytes(scene.channels()))
+        self.assertEqual(len(frame), TRANSMIT_CHANNELS + 1)
 
 
 if __name__ == "__main__":
