@@ -1,0 +1,193 @@
+{
+  "schema": 1,
+  "fixture": {
+    "manufacturer": "Unbranded",
+    "model": null,
+    "amazon_asin": "B0DPMP5K2N",
+    "description": "16-channel indoor RGB animation laser with an internal mirror producing output in two directions",
+    "supported_dmx_modes": [16],
+    "optical_paths": 2,
+    "mirror_note_source": "Owner-provided fixture description; not stated in the scanned DMX pages",
+    "manual_specifications": {
+      "power": "AC 100-240 V, 50/60 Hz",
+      "scanner": "Galvo, 15 kpps, +/-25 degrees",
+      "colors": "RGB",
+      "wavelengths_nm": {"red": 660, "green": 532, "blue": 450},
+      "working_environment": "Indoor"
+    },
+    "source_pdf": "../../docs/manuals/Unbranded-B0DPMP5K2N-DMX-channel-tables-scan.pdf",
+    "source_sha256": "5ba8b7539e8cf556227452cfa4ab85eb674b0694c0533786aa110cd322f01b46"
+  },
+  "safety_defaults": {
+    "channel_values": {
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "11": 0,
+      "12": 0,
+      "13": 0,
+      "14": 0,
+      "15": 0,
+      "16": 0
+    },
+    "notes": [
+      "CH1 values 0-9 are the documented laser-off range.",
+      "The internal mirror creates two output directions; contain and verify both paths before enabling CH1.",
+      "Keep output disabled until address, interlock, key switch, scan-fail behavior, and physical beam termination are verified.",
+      "Never direct either output path toward people, reflective surfaces, windows, roads, or aircraft."
+    ]
+  },
+  "mode": {
+    "name": "16ch",
+    "channels": {
+      "1": {
+        "function": "Main switch / dimmer",
+        "ranges": [
+          {"min": 0, "max": 9, "meaning": "Laser off"},
+          {"min": 10, "max": 255, "meaning": "Laser on; dimming"}
+        ]
+      },
+      "2": {
+        "function": "Color",
+        "ranges": [
+          {"min": 0, "max": 69, "meaning": "Fixed colors: white, red, blue, pink, cyan, yellow, green"},
+          {"min": 70, "max": 79, "meaning": "Overall color change; flow rate controlled by CH3"},
+          {"min": 80, "max": 89, "meaning": "Pattern initial color; flow rate controlled by CH3"},
+          {"min": 90, "max": 92, "meaning": "Seven rainbow colors; flow rate controlled by CH3"},
+          {"min": 93, "max": 110, "meaning": "2-segment color selection; four numerical steps controlled by CH3"},
+          {"min": 111, "max": 131, "meaning": "3-segment color selection; four numerical steps controlled by CH3"},
+          {"min": 132, "max": 149, "meaning": "4-segment color selection; four numerical steps controlled by CH3"},
+          {"min": 150, "max": 182, "meaning": "8-segment color selection; four numerical steps controlled by CH3"},
+          {"min": 183, "max": 218, "meaning": "16-segment color selection; four numerical steps controlled by CH3"},
+          {"min": 219, "max": 253, "meaning": "32-segment color selection; four numerical steps controlled by CH3"},
+          {"min": 254, "max": 255, "meaning": "Color gradient; flow rate controlled by CH3"}
+        ]
+      },
+      "3": {
+        "function": "Color flow speed",
+        "ranges": [
+          {"min": 0, "max": 9, "meaning": "Color does not run"},
+          {"min": 10, "max": 127, "meaning": "Positive color flow, slow to fast"},
+          {"min": 128, "max": 255, "meaning": "Reverse color flow, slow to fast"}
+        ]
+      },
+      "4": {
+        "function": "Graphics group selection",
+        "ranges": [
+          {"min": 0, "max": 24, "meaning": "Built-in static graphics group 1: basic geometric patterns"},
+          {"min": 25, "max": 49, "meaning": "Built-in static graphics group 2: basic geometric patterns"},
+          {"min": 50, "max": 74, "meaning": "Built-in static graphics group 3: edge-highlight patterns"},
+          {"min": 75, "max": 99, "meaning": "Built-in static graphics group 4: punched graphics"},
+          {"min": 100, "max": 124, "meaning": "Built-in static graphics group 5: Christmas graphics"},
+          {"min": 125, "max": 149, "meaning": "ILDA animation category 1"},
+          {"min": 150, "max": 174, "meaning": "ILDA animation category 2"},
+          {"min": 175, "max": 199, "meaning": "ILDA animation category 3; reserved"},
+          {"min": 200, "max": 224, "meaning": "ILDA animation category 4; reserved"},
+          {"min": 225, "max": 255, "meaning": "ILDA animation category 5; reserved"}
+        ]
+      },
+      "5": {
+        "function": "Graphics selection",
+        "ranges": [{"min": 0, "max": 255, "meaning": "Pattern selection; grouping controlled by CH4"}]
+      },
+      "6": {
+        "function": "Built-in dynamic effects",
+        "ranges": [
+          {"min": 0, "max": 1, "meaning": "No function"},
+          {"min": 2, "max": 206, "meaning": "Built-in dynamic effects; one effect per two values; color CH2; speed CH7"},
+          {"min": 207, "max": 216, "meaning": "Line-effect random playback; color CH2; speed CH7"},
+          {"min": 217, "max": 226, "meaning": "Animation-effect random playback; color CH2; speed CH7"},
+          {"min": 227, "max": 236, "meaning": "Christmas-effect random playback; color CH2; speed CH7"},
+          {"min": 237, "max": 246, "meaning": "Outdoor-effect random playback; color CH2; speed CH7"},
+          {"min": 247, "max": 253, "meaning": "All effects random playback; color CH2; speed CH7"},
+          {"min": 254, "max": 255, "meaning": "Sound control; color CH2; speed CH7"}
+        ]
+      },
+      "7": {
+        "function": "Built-in dynamic-effect speed",
+        "ranges": [
+          {"min": 0, "max": 1, "meaning": "System default speed"},
+          {"min": 2, "max": 255, "meaning": "Manual speed, slow to fast"}
+        ]
+      },
+      "8": {
+        "function": "Pattern size",
+        "ranges": [{"min": 0, "max": 255, "meaning": "Manual pattern-size selection"}]
+      },
+      "9": {
+        "function": "Automatic pattern scaling",
+        "ranges": [
+          {"min": 0, "max": 15, "meaning": "Pattern size selection"},
+          {"min": 16, "max": 55, "meaning": "Scaling speed, small to large"},
+          {"min": 56, "max": 95, "meaning": "Scaling speed, large to small"},
+          {"min": 96, "max": 135, "meaning": "Size zoom speed selection"},
+          {"min": 136, "max": 175, "meaning": "Two-point irregular loop scaling"},
+          {"min": 176, "max": 215, "meaning": "Three-point irregular loop scaling"},
+          {"min": 216, "max": 255, "meaning": "Four-point irregular loop scaling"}
+        ]
+      },
+      "10": {
+        "function": "Pattern rotation around center",
+        "ranges": [
+          {"min": 0, "max": 127, "meaning": "Rotation angle"},
+          {"min": 128, "max": 191, "meaning": "Positive rotation speed"},
+          {"min": 192, "max": 255, "meaning": "Counter-rotation speed"}
+        ]
+      },
+      "11": {
+        "function": "Pattern rotation around X-axis",
+        "ranges": [
+          {"min": 0, "max": 127, "meaning": "Horizontal flip position"},
+          {"min": 128, "max": 255, "meaning": "Horizontal flip speed"}
+        ]
+      },
+      "12": {
+        "function": "Pattern rotation around Y-axis",
+        "ranges": [
+          {"min": 0, "max": 127, "meaning": "Vertical flip position"},
+          {"min": 128, "max": 255, "meaning": "Vertical flip speed"}
+        ]
+      },
+      "13": {
+        "function": "Horizontal movement",
+        "ranges": [
+          {"min": 0, "max": 127, "meaning": "Horizontal position"},
+          {"min": 128, "max": 255, "meaning": "Horizontal circular movement, fast to slow"}
+        ]
+      },
+      "14": {
+        "function": "Vertical movement",
+        "ranges": [
+          {"min": 0, "max": 127, "meaning": "Vertical position"},
+          {"min": 128, "max": 255, "meaning": "Vertical circular movement, fast to slow"}
+        ]
+      },
+      "15": {
+        "function": "X-direction wave",
+        "ranges": [
+          {"min": 0, "max": 1, "meaning": "No wave"},
+          {"min": 2, "max": 255, "meaning": "Wave amplitude and speed; amplitude small to large and speed slow to fast; one speed step per 32 values, eight steps total"}
+        ]
+      },
+      "16": {
+        "function": "Pattern gradual drawing",
+        "ranges": [
+          {"min": 0, "max": 1, "meaning": "No gradual drawing"},
+          {"min": 2, "max": 63, "meaning": "Manual graduated drawing 1"},
+          {"min": 64, "max": 127, "meaning": "Manual graduated drawing 2"},
+          {"min": 128, "max": 153, "meaning": "Auto gradient, increase"},
+          {"min": 154, "max": 179, "meaning": "Auto gradient, decrease"},
+          {"min": 180, "max": 205, "meaning": "Auto gradient, increase then decrease, reverse"},
+          {"min": 206, "max": 255, "meaning": "Auto gradient, increase then decrease, isotropic"}
+        ]
+      }
+    }
+  }
+}

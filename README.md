@@ -93,6 +93,7 @@ physically connected and tested. See [Hardware bring-up](docs/HARDWARE_BRINGUP.m
 - [Speech recognition and voice pipeline](docs/AUDIO_PIPELINE.md)
 - [Hardware bring-up and verified DMX procedure](docs/HARDWARE_BRINGUP.md)
 - [Wonsung 5W-APP laser profile](hardware/wonsung-5w-app/README.md)
+- [Unbranded ASIN B0DPMP5K2N laser profile](hardware/unbranded-b0dpmp5k2n/README.md)
 - [Implementation roadmap](docs/ROADMAP.md)
 
 ## Development

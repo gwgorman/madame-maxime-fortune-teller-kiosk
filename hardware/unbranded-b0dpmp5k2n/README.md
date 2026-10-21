@@ -1,0 +1,48 @@
+# Unbranded dual-direction laser - ASIN B0DPMP5K2N
+
+This folder records Greg's unbranded 16-channel indoor RGB animation laser,
+identified by Amazon ASIN `B0DPMP5K2N`. Greg reports that an internal mirror
+duplicates the optical output in two directions. No live output has been tested
+or integrated into the kiosk.
+
+## Preserved source
+
+The unchanged two-page scan is stored at
+[`docs/manuals/Unbranded-B0DPMP5K2N-DMX-channel-tables-scan.pdf`](../../docs/manuals/Unbranded-B0DPMP5K2N-DMX-channel-tables-scan.pdf).
+
+SHA-256:
+`5ba8b7539e8cf556227452cfa4ab85eb674b0694c0533786aa110cd322f01b46`
+
+[`dmx-profile.json`](dmx-profile.json) is the machine-readable transcription of
+all 16 channels and every documented value range.
+
+## Distinguishing characteristics
+
+- One 16-channel DMX mode only
+- Indoor RGB unit with 15 kpps galvo scanner and documented +/-25-degree scan
+- Red 660 nm, green 532 nm, blue 450 nm
+- CH1 is both laser enable and dimmer; 0-9 is the documented off range
+- Static and ILDA groups, dynamic/random effects, segmented colors, scaling,
+  rotation, flip, position, wave, and gradual-drawing controls
+- No separately documented DMX strobe channel
+- Internal mirror creates two simultaneous output directions
+
+## Future bring-up constraints
+
+1. Treat this as two beam paths. Mount and terminate both paths on matte,
+   non-reflective surfaces inaccessible to guests before enabling CH1.
+2. Record the exact rear-panel label, serial markings, configured DMX address,
+   key-switch/interlock behavior, and response to DMX loss.
+3. Start with all channels zero and verify CH1 0-9 produces no optical output.
+4. Select a small, static pattern and centered positions before cautiously
+   raising CH1 above 9.
+5. Verify that movement, scale, rotation, flip, wave, and drawing controls cannot
+   move either mirrored output beyond its physical termination area.
+6. Keep sound-active and random-effect ranges disabled in production unless a
+   separately bounded scene has been physically validated.
+7. Use a dedicated failure-isolated laser adapter with heartbeat blackout. The
+   Office-console handoff and every kiosk shutdown must force CH1 to zero before
+   releasing DMX.
+
+This fixture must remain a separate profile from the Wonsung 5W-APP. Similar
+RGB/pattern concepts do not imply compatible channel numbers or ranges.
