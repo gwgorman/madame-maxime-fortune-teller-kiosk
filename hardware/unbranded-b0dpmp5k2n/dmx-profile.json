@@ -11,6 +11,9 @@
       "aperture_side": "front",
       "arrangement": "side-by-side",
       "effective_envelope": "approximately double-wide relative to one output",
+      "transform_relationship": "one output is mirror-inverted relative to the other",
+      "visible_effect": "shapes have opposite handedness and commanded movement appears mirrored between the two halves",
+      "inversion_axis": "to be confirmed during physical DMX mapping",
       "owner_verified": true
     },
     "mirror_note_source": "Owner-provided physical observation; not stated in the scanned DMX pages",
@@ -46,6 +49,7 @@
     "notes": [
       "CH1 values 0-9 are the documented laser-off range.",
       "The internal mirror creates two side-by-side beams from the front face, making the combined output envelope approximately double-wide; contain and verify the entire envelope before enabling CH1.",
+      "The two halves are not identical copies: one is mirror-inverted, so shape handedness and apparent motion differ across the combined envelope.",
       "Keep output disabled until address, interlock, key switch, scan-fail behavior, and physical beam termination are verified.",
       "Never direct either output path toward people, reflective surfaces, windows, roads, or aircraft."
     ]

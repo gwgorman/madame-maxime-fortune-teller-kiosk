@@ -3,8 +3,9 @@
 This folder records Greg's unbranded 16-channel indoor RGB animation laser,
 identified by Amazon ASIN `B0DPMP5K2N`. Greg has physically confirmed that its
 internal mirror produces two side-by-side beams from the front face, making the
-effective output envelope approximately double-wide. No live output has been
-tested or integrated into the kiosk.
+effective output envelope approximately double-wide. One side is the mirrored
+inverse of the other, which is especially visible in asymmetric shapes and
+movement. No live output has been tested or integrated into the kiosk.
 
 ## Preserved source
 
@@ -27,6 +28,8 @@ all 16 channels and every documented value range.
   rotation, flip, position, wave, and gradual-drawing controls
 - No separately documented DMX strobe channel
 - Internal mirror creates two simultaneous, side-by-side front outputs
+- One output is mirror-inverted relative to the other; shapes have opposite
+  handedness and movement appears mirrored across the pair
 
 ## Future bring-up constraints
 
@@ -41,9 +44,12 @@ all 16 channels and every documented value range.
 5. Verify that movement, scale, rotation, flip, wave, and drawing controls cannot
    move either side of the combined double-wide output beyond its physical
    termination area.
-6. Keep sound-active and random-effect ranges disabled in production unless a
+6. Map the actual inversion axis and observe every motion mode across both
+   halves. A motion that appears safe on one side may travel toward the edge on
+   the mirrored side.
+7. Keep sound-active and random-effect ranges disabled in production unless a
    separately bounded scene has been physically validated.
-7. Use a dedicated failure-isolated laser adapter with heartbeat blackout. The
+8. Use a dedicated failure-isolated laser adapter with heartbeat blackout. The
    Office-console handoff and every kiosk shutdown must force CH1 to zero before
    releasing DMX.
 
