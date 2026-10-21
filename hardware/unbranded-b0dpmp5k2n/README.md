@@ -1,9 +1,10 @@
 # Unbranded dual-direction laser - ASIN B0DPMP5K2N
 
 This folder records Greg's unbranded 16-channel indoor RGB animation laser,
-identified by Amazon ASIN `B0DPMP5K2N`. Greg reports that an internal mirror
-duplicates the optical output in two directions. No live output has been tested
-or integrated into the kiosk.
+identified by Amazon ASIN `B0DPMP5K2N`. Greg has physically confirmed that its
+internal mirror produces two side-by-side beams from the front face, making the
+effective output envelope approximately double-wide. No live output has been
+tested or integrated into the kiosk.
 
 ## Preserved source
 
@@ -25,19 +26,21 @@ all 16 channels and every documented value range.
 - Static and ILDA groups, dynamic/random effects, segmented colors, scaling,
   rotation, flip, position, wave, and gradual-drawing controls
 - No separately documented DMX strobe channel
-- Internal mirror creates two simultaneous output directions
+- Internal mirror creates two simultaneous, side-by-side front outputs
 
 ## Future bring-up constraints
 
-1. Treat this as two beam paths. Mount and terminate both paths on matte,
-   non-reflective surfaces inaccessible to guests before enabling CH1.
+1. Treat this as one double-wide envelope containing two side-by-side beam
+   paths. Mount and terminate the entire envelope on a matte, non-reflective
+   surface inaccessible to guests before enabling CH1.
 2. Record the exact rear-panel label, serial markings, configured DMX address,
    key-switch/interlock behavior, and response to DMX loss.
 3. Start with all channels zero and verify CH1 0-9 produces no optical output.
 4. Select a small, static pattern and centered positions before cautiously
    raising CH1 above 9.
 5. Verify that movement, scale, rotation, flip, wave, and drawing controls cannot
-   move either mirrored output beyond its physical termination area.
+   move either side of the combined double-wide output beyond its physical
+   termination area.
 6. Keep sound-active and random-effect ranges disabled in production unless a
    separately bounded scene has been physically validated.
 7. Use a dedicated failure-isolated laser adapter with heartbeat blackout. The

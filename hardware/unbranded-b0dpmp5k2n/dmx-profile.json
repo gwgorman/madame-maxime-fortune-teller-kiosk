@@ -4,10 +4,16 @@
     "manufacturer": "Unbranded",
     "model": null,
     "amazon_asin": "B0DPMP5K2N",
-    "description": "16-channel indoor RGB animation laser with an internal mirror producing output in two directions",
+    "description": "16-channel indoor RGB animation laser with an internal mirror producing two side-by-side, front-facing outputs",
     "supported_dmx_modes": [16],
     "optical_paths": 2,
-    "mirror_note_source": "Owner-provided fixture description; not stated in the scanned DMX pages",
+    "output_geometry": {
+      "aperture_side": "front",
+      "arrangement": "side-by-side",
+      "effective_envelope": "approximately double-wide relative to one output",
+      "owner_verified": true
+    },
+    "mirror_note_source": "Owner-provided physical observation; not stated in the scanned DMX pages",
     "manual_specifications": {
       "power": "AC 100-240 V, 50/60 Hz",
       "scanner": "Galvo, 15 kpps, +/-25 degrees",
@@ -39,7 +45,7 @@
     },
     "notes": [
       "CH1 values 0-9 are the documented laser-off range.",
-      "The internal mirror creates two output directions; contain and verify both paths before enabling CH1.",
+      "The internal mirror creates two side-by-side beams from the front face, making the combined output envelope approximately double-wide; contain and verify the entire envelope before enabling CH1.",
       "Keep output disabled until address, interlock, key switch, scan-fail behavior, and physical beam termination are verified.",
       "Never direct either output path toward people, reflective surfaces, windows, roads, or aircraft."
     ]
