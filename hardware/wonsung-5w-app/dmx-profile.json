@@ -1,0 +1,241 @@
+{
+  "schema": 1,
+  "fixture": {
+    "manufacturer": "Wonsung",
+    "model": "5W-APP",
+    "description": "5 W app-enabled RGB animation laser",
+    "manual_system_info": {
+      "version": "Thred3.13",
+      "hardware": "C100mV1.8",
+      "app_name": "YM01V1.56G",
+      "firmware": "2024052501"
+    },
+    "supported_dmx_modes": [16, 36],
+    "source_pdf": "../../docs/manuals/Wonsung-5W-APP-DMX-channel-tables-scan.pdf",
+    "source_sha256": "c9ac340eec89925de62f794b0a92b032fca7b8c9e1d3c015b44b8dc393677270"
+  },
+  "safety_defaults": {
+    "dimmer": 0,
+    "strobe": 0,
+    "notes": [
+      "Keep output disabled until DMX mode, address, interlock, key switch, scan-fail behavior, and physical beam termination are verified.",
+      "Never direct beams toward people, reflective surfaces, windows, roads, or aircraft.",
+      "The 16-channel mode has no documented DMX strobe channel; the 36-channel mode uses channels 11 and 28."
+    ]
+  },
+  "functions": {
+    "dimmer": {
+      "label": "RGB Dimmer",
+      "ranges": [{"min": 0, "max": 255, "meaning": "RGB dimmer 0% to 100%"}]
+    },
+    "mode_trigger": {
+      "label": "Auto / Sound Active Trigger",
+      "ranges": [
+        {"min": 0, "max": 26, "meaning": "Default automatic speed"},
+        {"min": 27, "max": 127, "meaning": "Automatic speed selection"},
+        {"min": 128, "max": 255, "meaning": "Sound-active sensitivity"}
+      ]
+    },
+    "pattern_group": {
+      "label": "Pattern / Effect Group",
+      "ranges": [
+        {"min": 0, "max": 15, "meaning": "Geometric patterns (0-255)"},
+        {"min": 16, "max": 31, "meaning": "Geometric patterns (0-255)"},
+        {"min": 32, "max": 47, "meaning": "Geometric patterns (0-200)"},
+        {"min": 48, "max": 63, "meaning": "Geometric dot-type patterns (0-205)"},
+        {"min": 64, "max": 127, "meaning": "Downloaded ILD programs (0-170)"},
+        {"min": 128, "max": 143, "meaning": "Animated programs (0-255)"},
+        {"min": 144, "max": 159, "meaning": "Animated programs (0-72)"},
+        {"min": 160, "max": 175, "meaning": "Animated abstract-line programs (0-30)"},
+        {"min": 176, "max": 191, "meaning": "Animated circle programs (0-16)"},
+        {"min": 192, "max": 207, "meaning": "Animated dot-of-line programs (0-40)"},
+        {"min": 208, "max": 255, "meaning": "Animated programs (0-255)"}
+      ]
+    },
+    "pattern_selection": {
+      "label": "Pattern / Effect Selection",
+      "contextual_ranges": [
+        {"context": "static pattern group", "min": 0, "max": 255, "meaning": "Manual says: 5 digits is for one static pattern"},
+        {"context": "animated effect group", "min": 0, "max": 1, "meaning": "Play all animated programs"},
+        {"context": "animated effect group", "min": 2, "max": 255, "meaning": "Manual says: 2 digits is for one animated program"}
+      ]
+    },
+    "color_selection": {
+      "label": "Color Selection",
+      "ranges": [
+        {"min": 0, "max": 0, "meaning": "Built-in color 1; static patterns are white"},
+        {"min": 1, "max": 3, "meaning": "Built-in color 2"},
+        {"min": 4, "max": 7, "meaning": "White"},
+        {"min": 8, "max": 11, "meaning": "Red"},
+        {"min": 12, "max": 15, "meaning": "Yellow"},
+        {"min": 16, "max": 19, "meaning": "Green"},
+        {"min": 20, "max": 23, "meaning": "Cyan"},
+        {"min": 24, "max": 27, "meaning": "Blue"},
+        {"min": 28, "max": 31, "meaning": "Pink"},
+        {"min": 32, "max": 35, "meaning": "Seven-color change effect"},
+        {"min": 36, "max": 39, "meaning": "RGB three-color change effect"},
+        {"min": 40, "max": 43, "meaning": "Built-in color change effect"},
+        {"min": 44, "max": 239, "meaning": "Multi-color flow effect; manual says 4 digits is for one color"},
+        {"min": 240, "max": 255, "meaning": "Color drawing effect"}
+      ]
+    },
+    "color_speed": {
+      "label": "Color Speed",
+      "ranges": [
+        {"min": 0, "max": 3, "meaning": "Color speed closed"},
+        {"min": 4, "max": 127, "meaning": "Slow to fast, positive direction"},
+        {"min": 128, "max": 255, "meaning": "Slow to fast, opposite direction"}
+      ]
+    },
+    "scan_speed": {
+      "label": "Line / Dot Scanning Speed",
+      "ranges": [
+        {"min": 0, "max": 63, "meaning": "Line scanning speed, effect 1"},
+        {"min": 64, "max": 127, "meaning": "Line scanning speed, effect 2"},
+        {"min": 128, "max": 255, "meaning": "Dot scanning speed"}
+      ]
+    },
+    "pattern_size": {
+      "label": "Pattern Size XY",
+      "ranges": [{"min": 0, "max": 255, "meaning": "Adjust XY size"}]
+    },
+    "x_position": {
+      "label": "X Position",
+      "ranges": [{"min": 0, "max": 255, "meaning": "Adjust X position; 128 is center"}]
+    },
+    "y_position": {
+      "label": "Y Position",
+      "ranges": [{"min": 0, "max": 255, "meaning": "Adjust Y position; 128 is center"}]
+    },
+    "strobe": {
+      "label": "Strobe",
+      "ranges": [
+        {"min": 0, "max": 0, "meaning": "No strobe"},
+        {"min": 1, "max": 255, "meaning": "Auto strobe, slow to fast"}
+      ]
+    },
+    "z_rotation": {
+      "label": "Z Rotation",
+      "ranges": [
+        {"min": 0, "max": 0, "meaning": "Default, no rotation"},
+        {"min": 1, "max": 127, "meaning": "Rotation angle selection"},
+        {"min": 128, "max": 191, "meaning": "Clockwise rotation speed"},
+        {"min": 192, "max": 255, "meaning": "Counterclockwise rotation speed"}
+      ]
+    },
+    "x_rollover": {
+      "label": "X Rolling-over",
+      "ranges": [
+        {"min": 0, "max": 0, "meaning": "Default, no rolling-over"},
+        {"min": 1, "max": 127, "meaning": "Horizontal rolling-over angle"},
+        {"min": 128, "max": 191, "meaning": "Clockwise horizontal rolling-over speed"},
+        {"min": 192, "max": 255, "meaning": "Counterclockwise horizontal rolling-over speed"}
+      ]
+    },
+    "y_rollover": {
+      "label": "Y Rolling-over",
+      "ranges": [
+        {"min": 0, "max": 0, "meaning": "Default, no rolling-over"},
+        {"min": 1, "max": 127, "meaning": "Vertical rolling-over angle"},
+        {"min": 128, "max": 191, "meaning": "Clockwise vertical rolling-over speed"},
+        {"min": 192, "max": 255, "meaning": "Counterclockwise vertical rolling-over speed"}
+      ]
+    },
+    "x_move": {
+      "label": "X Move",
+      "ranges": [
+        {"min": 0, "max": 0, "meaning": "Default, no movement"},
+        {"min": 1, "max": 127, "meaning": "Horizontal position"},
+        {"min": 128, "max": 159, "meaning": "Move 1 from left to right automatically"},
+        {"min": 160, "max": 191, "meaning": "Move 2 from right to left automatically"},
+        {"min": 192, "max": 223, "meaning": "Move 3 from right to left automatically"},
+        {"min": 224, "max": 255, "meaning": "Move 4 from right and left circularly"}
+      ]
+    },
+    "y_move": {
+      "label": "Y Move",
+      "ranges": [
+        {"min": 0, "max": 0, "meaning": "Default, no movement"},
+        {"min": 1, "max": 127, "meaning": "Vertical position"},
+        {"min": 128, "max": 159, "meaning": "Move 1 from up to down automatically"},
+        {"min": 160, "max": 191, "meaning": "Move 2 from down to up automatically"},
+        {"min": 192, "max": 223, "meaning": "Move 3 from up to down automatically"},
+        {"min": 224, "max": 255, "meaning": "Move 4 from up and down circularly"}
+      ]
+    },
+    "zoom": {
+      "label": "Zoom",
+      "ranges": [
+        {"min": 0, "max": 0, "meaning": "Default, no zoom"},
+        {"min": 1, "max": 127, "meaning": "Pattern size selection"},
+        {"min": 128, "max": 159, "meaning": "Zoom -"},
+        {"min": 160, "max": 191, "meaning": "Zoom +"},
+        {"min": 192, "max": 223, "meaning": "Zoom (+/-) circularly"},
+        {"min": 224, "max": 255, "meaning": "Zoom (+/-) circularly"}
+      ]
+    },
+    "drawing": {
+      "label": "Drawing",
+      "ranges": [
+        {"min": 0, "max": 0, "meaning": "Default, no drawing"},
+        {"min": 1, "max": 127, "meaning": "Drawing 1 speed, 0 to 100%"},
+        {"min": 128, "max": 255, "meaning": "Drawing 2 speed, 100% to 0"}
+      ]
+    },
+    "xy_wave": {
+      "label": "X / Y Wave",
+      "ranges": [
+        {"min": 0, "max": 15, "meaning": "X small Wave 1 speed"},
+        {"min": 16, "max": 31, "meaning": "X medium Wave 1 speed"},
+        {"min": 32, "max": 47, "meaning": "X big Wave 1 speed"},
+        {"min": 48, "max": 63, "meaning": "X biggest Wave 1 speed"},
+        {"min": 64, "max": 79, "meaning": "X small Wave 2 speed"},
+        {"min": 80, "max": 95, "meaning": "X medium Wave 2 speed"},
+        {"min": 96, "max": 111, "meaning": "X big Wave 2 speed"},
+        {"min": 112, "max": 127, "meaning": "X biggest Wave 2 speed"},
+        {"min": 128, "max": 143, "meaning": "Y small Wave 1 speed"},
+        {"min": 144, "max": 159, "meaning": "Y medium Wave 1 speed"},
+        {"min": 160, "max": 175, "meaning": "Y big Wave 1 speed"},
+        {"min": 176, "max": 191, "meaning": "Y biggest Wave 1 speed"},
+        {"min": 192, "max": 207, "meaning": "Y small Wave 2 speed"},
+        {"min": 208, "max": 223, "meaning": "Y medium Wave 2 speed"},
+        {"min": 224, "max": 239, "meaning": "Y big Wave 2 speed"},
+        {"min": 240, "max": 255, "meaning": "Y biggest Wave 2 speed"}
+      ]
+    }
+  },
+  "modes": {
+    "16ch": {
+      "description": "Single-pattern mode",
+      "channels": {
+        "1": "dimmer", "2": "mode_trigger", "3": "pattern_group",
+        "4": "pattern_selection", "5": "color_selection", "6": "color_speed",
+        "7": "scan_speed", "8": "pattern_size", "9": "z_rotation",
+        "10": "x_rollover", "11": "y_rollover", "12": "x_move",
+        "13": "y_move", "14": "zoom", "15": "drawing", "16": "xy_wave"
+      }
+    },
+    "36ch": {
+      "description": "Dual-pattern mode; channels 3-19 control pattern 1 and channels 20-36 control pattern 2",
+      "notes": [
+        "When channel 21 is 0, pattern 2 is hidden and only pattern 1 appears.",
+        "The manual also states: Hidden pattern 1 when CH21 is not 0 and CH4 is 0. This wording requires fixture verification."
+      ],
+      "channels": {
+        "1": "dimmer", "2": "mode_trigger",
+        "3": "pattern_group", "4": "pattern_selection", "5": "pattern_size",
+        "6": "x_position", "7": "y_position", "8": "color_selection",
+        "9": "color_speed", "10": "scan_speed", "11": "strobe",
+        "12": "z_rotation", "13": "x_rollover", "14": "y_rollover",
+        "15": "x_move", "16": "y_move", "17": "zoom", "18": "drawing",
+        "19": "xy_wave",
+        "20": "pattern_group", "21": "pattern_selection", "22": "pattern_size",
+        "23": "x_position", "24": "y_position", "25": "color_selection",
+        "26": "color_speed", "27": "scan_speed", "28": "strobe",
+        "29": "z_rotation", "30": "x_rollover", "31": "y_rollover",
+        "32": "x_move", "33": "y_move", "34": "zoom", "35": "drawing",
+        "36": "xy_wave"
+      }
+    }
+  }
+}
