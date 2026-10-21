@@ -94,6 +94,7 @@ physically connected and tested. See [Hardware bring-up](docs/HARDWARE_BRINGUP.m
 - [Hardware bring-up and verified DMX procedure](docs/HARDWARE_BRINGUP.md)
 - [Wonsung 5W-APP laser profile](hardware/wonsung-5w-app/README.md)
 - [Unbranded ASIN B0DPMP5K2N laser profile](hardware/unbranded-b0dpmp5k2n/README.md)
+- [JERRAY ASIN B0CKX7WRRR wireless DMX transport](hardware/jerray-b0ckx7wrrr/README.md)
 - [Implementation roadmap](docs/ROADMAP.md)
 
 ## Development
