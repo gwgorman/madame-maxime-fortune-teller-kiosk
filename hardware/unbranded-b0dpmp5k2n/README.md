@@ -88,6 +88,57 @@ Observed patterns in static graphics group 3:
 
 The diamond, polygons, and half-heart variants may be useful scenic elements.
 
+Observed patterns in static graphics group 4:
+
+| CH5 | Observed shape |
+|---:|---|
+| 0 | Two-dot horizontal line |
+| 16 | Four-dot horizontal line |
+| 32 | Six-dot horizontal line |
+| 48 | Eight-dot horizontal line |
+| 64 | Ten-dot horizontal line |
+| 80 | Twelve-dot horizontal line |
+| 96 | Four groups of three dots in a horizontal line |
+| 112 | Dotted trapezoid |
+| 128 | Dotted triangular chip shape |
+| 144 | Dotted trapezoid |
+| 160 | Two small dotted circles |
+| 176 | Two dotted quarter-circles forming a flat S-like diagonal |
+| 192 | Dotted semicircle |
+| 208 | Dotted semicircle with roughly double the dots |
+| 224 | Dense dotted full circle |
+| 240 | Sparse dotted circle |
+
+These are primarily transition, texture, and framing elements rather than
+recognizable circus pictures.
+
+Observed patterns in static graphics group 5:
+
+| CH5 | Observed shape |
+|---:|---|
+| 0 | “Merry Christmas” script |
+| 16 | Stocking |
+| 32 | Snowflake |
+| 48 | Star ornament |
+| 64 | Bells |
+| 80 | Star tree-topper |
+| 96 | Snowflake |
+| 112 | Wrapped present opening to reveal a teddy bear |
+| 128 | “Winter is coming” text |
+| 144 | Rough stocking graphic |
+| 160 | “Random Outdoor” text followed by Chinese characters |
+| 176 | Horizontal line |
+| 192 | Horizontal line |
+| 208 | Horizontal line |
+| 224 | Horizontal line |
+| 240 | Dark/no visible output |
+
+Asymmetric group-5 graphics and text appeared upside down in the fixture's
+current physical orientation. Static CH10 rotation and CH11/CH12 flip trials did
+not correct them. The fixture should be mounted rotated 180 degrees around its
+beam axis if these graphics are used. Snowflakes, the ornament, bells,
+tree-topper, and present/teddy animation are the useful scenic candidates.
+
 ## Preserved source
 
 The unchanged two-page scan is stored at

@@ -65,6 +65,47 @@
         "224": "half-heart with bright dots on the line",
         "240": "half-heart"
       },
+      "observed_group_4_patterns": {
+        "0": "two-dot horizontal line",
+        "16": "four-dot horizontal line",
+        "32": "six-dot horizontal line",
+        "48": "eight-dot horizontal line",
+        "64": "ten-dot horizontal line",
+        "80": "twelve-dot horizontal line",
+        "96": "four groups of three dots in a horizontal line",
+        "112": "dotted trapezoid",
+        "128": "dotted triangular chip shape",
+        "144": "dotted trapezoid",
+        "160": "two small dotted circles",
+        "176": "two dotted quarter-circles forming a flat S-like diagonal",
+        "192": "dotted semicircle",
+        "208": "dotted semicircle with roughly double the dots",
+        "224": "dense dotted full circle",
+        "240": "sparse dotted circle"
+      },
+      "observed_group_5_patterns": {
+        "0": "Merry Christmas script; upside down",
+        "16": "stocking; upside down",
+        "32": "snowflake",
+        "48": "star ornament; upside down",
+        "64": "bells; upside down",
+        "80": "star tree-topper",
+        "96": "snowflake",
+        "112": "wrapped present opening to reveal a teddy bear",
+        "128": "Winter is coming text; upside down",
+        "144": "rough stocking graphic; upside down",
+        "160": "Random Outdoor text followed by Chinese characters; upside down",
+        "176": "horizontal line",
+        "192": "horizontal line",
+        "208": "horizontal line",
+        "224": "horizontal line",
+        "240": "dark/no visible output"
+      },
+      "pictorial_orientation": {
+        "result": "asymmetric group 5 pictures and text are upside down in the current physical fixture orientation",
+        "software_trials": "static CH10 rotation and CH11/CH12 flip combinations did not correct orientation",
+        "mounting_rule": "rotate fixture 180 degrees around the beam axis if pictorial graphics are used"
+      },
       "rotation_ch10": "smooth and usable",
       "position_ch13_ch14": "combined movement appeared twisted and unstable; wider travel clipped laterally and distorted at lower positions",
       "production_motion_rule": "fixed X/Y position with rotation-only motion until further calibration"
