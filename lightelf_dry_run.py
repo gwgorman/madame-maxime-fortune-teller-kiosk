@@ -28,6 +28,7 @@ def manifest() -> list[dict]:
             "kind": scene.kind,
             "description": scene.description,
             "size_percent": scene.size_percent,
+            "production": scene.production,
             "packet_bytes": len(packet),
             "points": int.from_bytes(packet[20:22], "big"),
             "sha256": hashlib.sha256(packet).hexdigest(),

@@ -20,6 +20,8 @@ from lightelf_protocol import power_packet, svg_packet, text_packet
 
 LIVE_INTERLOCK = "I-ACCEPT-LIVE-LASER-OUTPUT"
 MAX_LEASE_SECONDS = 2.0
+POWER_SETTLE_SECONDS = 0.4
+VISIBLE_LEASE_SECONDS = 1.5
 
 
 class LightElfBleTransport:
@@ -190,8 +192,13 @@ class LightElfBleTransport:
                         client = await self._connect()
                     await self._write(client, power_packet(True))
                     self._output_active = True
-                    self._lease_deadline = time.monotonic() + 1.0
+                    # Arm the maximum fail-safe window before waiting for the
+                    # projector electronics, then start the visible lease only
+                    # after the complete drawing frame has landed.
+                    self._lease_deadline = time.monotonic() + MAX_LEASE_SECONDS
+                    await asyncio.sleep(POWER_SETTLE_SECONDS)
                     await self._write(client, payload)
+                    self._lease_deadline = time.monotonic() + VISIBLE_LEASE_SECONDS
                 elif name == "heartbeat":
                     if not self._lease_deadline:
                         raise RuntimeError("cannot renew an inactive LightELF lease")

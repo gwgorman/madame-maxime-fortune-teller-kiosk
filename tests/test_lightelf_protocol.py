@@ -3,9 +3,13 @@ import unittest
 
 from lightelf_adapter import ASSET_DIR, FRONT_SCENES
 from lightelf_protocol import (
-    MAX_POINTS, power_packet, svg_packet, svg_segments, text_packet, text_segments,
+    COLOR_IDS, MAX_POINTS, power_packet, svg_packet, svg_segments, text_packet,
+    text_segments,
 )
-from lightelf_transport import LIVE_INTERLOCK, LightElfBleTransport
+from lightelf_transport import (
+    LIVE_INTERLOCK, MAX_LEASE_SECONDS, POWER_SETTLE_SECONDS,
+    VISIBLE_LEASE_SECONDS, LightElfBleTransport,
+)
 from lightelf_dry_run import manifest
 
 
@@ -13,6 +17,14 @@ class LightElfProtocolTests(unittest.TestCase):
     def test_power_packets_are_fixed(self):
         self.assertEqual(power_packet(True).hex().upper(), "B0B1B2B3FFB4B5B6B7")
         self.assertEqual(power_packet(False).hex().upper(), "B0B1B2B300B4B5B6B7")
+
+    def test_captured_firmware_color_indices_and_timing_are_bounded(self):
+        self.assertEqual(
+            {name: COLOR_IDS[name] for name in ("red", "green", "blue", "yellow", "cyan", "purple", "white")},
+            {"red": 1, "green": 2, "blue": 3, "yellow": 4, "cyan": 5, "purple": 6, "white": 7},
+        )
+        self.assertLess(0, POWER_SETTLE_SECONDS)
+        self.assertLessEqual(VISIBLE_LEASE_SECONDS, MAX_LEASE_SECONDS)
 
     def test_all_svg_scenes_fit_safety_bounds_and_point_budget(self):
         for scene in FRONT_SCENES.values():
@@ -29,6 +41,13 @@ class LightElfProtocolTests(unittest.TestCase):
             self.assertEqual(packet[:4], bytes.fromhex("F0F1F2F3"))
             self.assertEqual(packet[-4:], bytes.fromhex("F4F5F6F7"))
             self.assertLessEqual(int.from_bytes(packet[20:22], "big"), MAX_POINTS)
+
+    def test_big_top_flag_is_above_the_tent_in_device_coordinates(self):
+        scene = FRONT_SCENES["big_top"]
+        segments = svg_segments(ASSET_DIR / scene.content, size_percent=scene.size_percent)
+        flag_y = min(y for point in segments[0] for _, y in [point])
+        tent_roof_y = min(y for point in segments[2] for _, y in [point])
+        self.assertLess(flag_y, tent_roof_y)
 
     def test_approved_text_scenes_fit_safety_bounds_and_point_budget(self):
         for scene in FRONT_SCENES.values():

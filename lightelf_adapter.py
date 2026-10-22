@@ -24,6 +24,7 @@ class LightElfScene:
     description: str
     color: str = "full"
     size_percent: int = 45
+    production: bool = True
 
     def __post_init__(self) -> None:
         if self.kind not in {"text", "svg"}:
@@ -34,7 +35,8 @@ class LightElfScene:
 
 FRONT_SCENES = {
     "welcome": LightElfScene(
-        "welcome", "text", "WELCOME", "Short arrival greeting", color="yellow"
+        "welcome", "text", "WELCOME", "Experimental mirrored text card",
+        color="yellow", production=False
     ),
     "party_title": LightElfScene(
         "party_title",
@@ -43,6 +45,7 @@ FRONT_SCENES = {
         "ASCII projection fallback for the Cirque du Soirée title",
         color="full",
         size_percent=35,
+        production=False,
     ),
     "big_top": LightElfScene(
         "big_top", "svg", "big_top.svg", "Symmetrical circus tent", color="full"
@@ -58,6 +61,8 @@ FRONT_SCENES = {
         color="cyan",
     ),
 }
+
+FRONT_PLAYLIST = tuple(name for name, scene in FRONT_SCENES.items() if scene.production)
 
 
 class LightElfTransport(Protocol):

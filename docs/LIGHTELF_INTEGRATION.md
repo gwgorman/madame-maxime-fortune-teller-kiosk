@@ -51,9 +51,10 @@ it produces no Bluetooth traffic; live output requires both `enabled=True` and
 unset until the physical compatibility and safety tests below pass.
 
 `lightelf_dry_run.py` compiles every front-laser scene, reporting byte count,
-point count, and a repeatable packet digest without importing Bleak or opening
-Bluetooth. The approved playlist currently contains `WELCOME`,
-`CIRQUE DU SOIREE`, a big top, a circus star, and a Ferris wheel.
+point count, production status, and a repeatable packet digest without
+importing Bleak or opening Bluetooth. The automatic front-laser playlist uses
+only decorative circus art. `WELCOME` and `CIRQUE DU SOIREE` remain available
+as operator experiments but are excluded from production rotation.
 
 ## Small-laser BLE discovery
 
@@ -103,6 +104,23 @@ the trailing identity fields, so the early `device_number` and `ota_version`
 offsets are retained as raw compatibility diagnostics rather than presented as
 human-readable model or firmware numbers. Both kiosk services remained active,
 and no optical output was requested or observed.
+
+A later read-only state query reported mode 8 (hand-drawn), text point time 100,
+and draw point time 0. The hand-draw engine is therefore already at its
+fastest/default timing; visible rebuilds of complex multi-stroke art must be
+addressed with a smaller point budget rather than a persistent speed change.
+
+Live optical qualification established the fixture's BLE Y-axis convention and
+the renderer was corrected accordingly. The big top then displayed upright.
+The Ferris wheel was reduced from 87 to 32 points; during a four-second test it
+performed one initial redraw at about one second and then remained stable.
+`WELCOME` exposed the decisive dual-output limitation: the left projection was
+upright while the right projection was rotated 180 degrees. Both apertures
+receive the same complete frame, so ordinary words cannot be made upright in
+both directions independently. Text is therefore excluded from the small
+front-laser production playlist. Readable party signage is reserved for the
+future backyard laser; a purpose-designed rotational ambigram is the only
+plausible small-laser exception.
 
 Review of the pinned upstream connection path confirms that there is no
 separate unlock packet. A successfully validated query challenge is the unlock

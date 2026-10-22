@@ -5,7 +5,14 @@ identified by Amazon ASIN `B0DPMP5K2N`. Greg has physically confirmed that its
 internal mirror produces two side-by-side beams from the front face, making the
 effective output envelope approximately double-wide. One side is the mirrored
 inverse of the other, which is especially visible in asymmetric shapes and
-movement. No live output has been tested or integrated into the kiosk.
+movement. Bounded DMX and BLE output have been tested, but neither control path
+is integrated into the production kiosk yet.
+
+BLE drawing tests on October 22, 2026 refined that observation: the second
+projection is rotated 180 degrees relative to the first. Ordinary text is
+upright on only one side and must not be used in the automatic front-of-house
+playlist. Use decorative art that tolerates the rotation and reserve readable
+words for the future backyard laser.
 
 Configured DMX address: `A057` (channels 57-72), physically set by Greg on
 October 21, 2026.

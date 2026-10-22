@@ -1,6 +1,7 @@
 import unittest
 
 from lightelf_adapter import (
+    FRONT_PLAYLIST,
     FRONT_SCENES,
     LightElfController,
     SimulatedLightElfTransport,
@@ -42,6 +43,11 @@ class LightElfControllerTests(unittest.TestCase):
 
     def test_party_title_has_ascii_projector_fallback(self):
         self.assertEqual(FRONT_SCENES["party_title"].content, "CIRQUE DU SOIREE")
+
+    def test_mirrored_text_is_excluded_from_production_playlist(self):
+        self.assertNotIn("welcome", FRONT_PLAYLIST)
+        self.assertNotIn("party_title", FRONT_PLAYLIST)
+        self.assertTrue(all(FRONT_SCENES[name].kind == "svg" for name in FRONT_PLAYLIST))
 
 
 if __name__ == "__main__":

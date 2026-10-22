@@ -32,6 +32,9 @@ class QueryReply:
     device_number: int
     user_number: int
     ota_version_raw: int
+    mode: int | None
+    text_point_time: int | None
+    draw_point_time: int | None
 
 
 def expected_challenge(random_bytes: bytes) -> bytes:
@@ -57,6 +60,15 @@ def parse_query_reply(
         raise ValueError("query reply is too short")
     token = response[-12:-8]
     challenge_ok = token in {expected_challenge(random_bytes), bytes.fromhex("8AC5624F")}
+    mode = text_point_time = draw_point_time = None
+    mode_start = response.find(bytes.fromhex("C0C1C2C3"))
+    mode_end = response.find(bytes.fromhex("C4C5C6C7"), mode_start + 4)
+    if mode_start >= 0 and mode_end > mode_start:
+        mode_payload = response[mode_start + 4:mode_end]
+        if len(mode_payload) >= 16:
+            mode = mode_payload[0]
+            text_point_time = mode_payload[14]
+            draw_point_time = mode_payload[15]
     return QueryReply(
         reply_bytes=len(response),
         query_attempts=query_attempts,
@@ -67,6 +79,9 @@ def parse_query_reply(
         device_number=response[4],
         user_number=response[-5],
         ota_version_raw=int.from_bytes(response[5:7], "big"),
+        mode=mode,
+        text_point_time=text_point_time,
+        draw_point_time=draw_point_time,
     )
 
 
@@ -89,7 +104,9 @@ async def _probe_async(address: str, timeout: float) -> QueryReply:
     device = await BleakScanner.find_device_by_address(address, timeout=timeout)
     if device is None:
         raise RuntimeError(f"LightELF device {address} is not advertising")
-    async with BleakClient(device, timeout=timeout) as client:
+    client = BleakClient(device, timeout=timeout)
+    try:
+        await client.connect()
         await client.start_notify(NOTIFY_UUID, receive)
         # Match the iPhone app trace for this exact firmware: subscribe only to
         # FF01, prime it with one read, then use acknowledged FF02 writes. The
@@ -107,6 +124,12 @@ async def _probe_async(address: str, timeout: float) -> QueryReply:
                     raise
                 response.clear()
                 reply_ready.clear()
+    finally:
+        if client.is_connected:
+            try:
+                await client.disconnect()
+            except (EOFError, ConnectionError):
+                pass
     parsed = parse_query_reply(bytes(response), challenge, query_attempts)
     if not parsed.challenge_ok:
         raise RuntimeError("LightELF query challenge validation failed")

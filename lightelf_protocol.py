@@ -14,8 +14,8 @@ from pathlib import Path
 
 PROJECTOR_LIMIT = 400
 MAX_POINTS = 180
-COLOR_IDS = {"red": 1, "green": 2, "yellow": 3, "blue": 4,
-             "magenta": 5, "cyan": 6, "white": 7, "full": 7}
+COLOR_IDS = {"red": 1, "green": 2, "blue": 3, "yellow": 4,
+             "cyan": 5, "purple": 6, "magenta": 6, "white": 7, "full": 7}
 TOKEN = re.compile(r"[A-Za-z]|[-+]?(?:\d+(?:\.\d*)?|\.\d+)")
 FONT_STROKES = {
     "A": ("a", "b", "c", "e", "f", "g"), "C": ("a", "d", "e", "f"),
@@ -139,19 +139,26 @@ def svg_segments(path: Path, *, size_percent: int) -> list[list[tuple[int, int]]
             cx, cy = float(element.attrib["cx"]), float(element.attrib["cy"])
             radius = float(element.attrib["r"])
             raw.append([
-                (cx + radius * math.cos(2 * math.pi * i / 16),
-                 cy + radius * math.sin(2 * math.pi * i / 16))
-                for i in range(17)
+                (cx + radius * math.cos(2 * math.pi * i / 8),
+                 cy + radius * math.sin(2 * math.pi * i / 8))
+                for i in range(9)
             ])
     scale = (PROJECTOR_LIMIT * 2 * size_percent / 100) / max(width, height)
     center_x, center_y = left + width / 2, top + height / 2
-    return [[(round((x - center_x) * scale), round((center_y - y) * scale))
+    # This firmware's BLE drawing coordinates use screen-style positive Y down,
+    # matching SVG. Do not apply the usual Cartesian Y-axis inversion.
+    return [[(round((x - center_x) * scale), round((y - center_y) * scale))
              for x, y in stroke] for stroke in raw]
 
 
 def svg_packet(path: Path, *, color: str, size_percent: int) -> bytes:
     return draw_packet(
-        svg_segments(path, size_percent=size_percent), color=COLOR_IDS[color]
+        svg_segments(path, size_percent=size_percent),
+        color=COLOR_IDS[color],
+        # SVG curves have already been converted to short line segments. One
+        # device point per vertex avoids doubling the galvo workload and making
+        # complex drawings visibly rebuild stroke by stroke.
+        steps_per_edge=2,
     )
 
 
@@ -168,15 +175,15 @@ def text_segments(text: str, *, size_percent: int) -> list[list[tuple[int, int]]
     target_width = PROJECTOR_LIMIT * 2 * size_percent / 100
     scale = min(target_width / raw_width, target_width / 6.0)
     left = -raw_width * scale / 2
-    bottom = -3 * scale
+    top = -3 * scale
     segments = []
     for index, char in enumerate(text):
         x_offset = left + index * advance * scale
         for name in FONT_STROKES.get(char, ()):
             (x1, y1), (x2, y2) = FONT_SEGMENTS[name]
             segments.append([
-                (round(x_offset + x1 * scale), round(bottom + y1 * scale)),
-                (round(x_offset + x2 * scale), round(bottom + y2 * scale)),
+                (round(x_offset + x1 * scale), round(top + (6 - y1) * scale)),
+                (round(x_offset + x2 * scale), round(top + (6 - y2) * scale)),
             ])
     return segments
 

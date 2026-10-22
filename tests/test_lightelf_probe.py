@@ -43,6 +43,9 @@ class LightElfProbeTests(unittest.TestCase):
         self.assertEqual(parsed.device_number, 7)
         self.assertEqual(parsed.user_number, 9)
         self.assertEqual(parsed.ota_version_raw, 0x0123)
+        self.assertIsNone(parsed.mode)
+        self.assertIsNone(parsed.text_point_time)
+        self.assertIsNone(parsed.draw_point_time)
 
         retried = parse_query_reply(reply, challenge, query_attempts=2)
         self.assertEqual(retried.query_attempts, 2)
