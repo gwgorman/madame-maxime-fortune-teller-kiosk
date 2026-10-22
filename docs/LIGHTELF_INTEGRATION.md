@@ -65,10 +65,14 @@ and validates the returned token. Debian packages `python3-bleak` and
 `python3-dbus-fast` were installed on the Pi for the supported BlueZ transport.
 The first live query session connected, resolved services, subscribed, and sent
 the identity envelope but received no notification reply. Later connections
-timed out while the controller continued advertising. No power, mode, drawing,
-text, or playback packet was sent and no optical change was observed. Before
-the next query attempt, physically power-cycle the small laser and fully close
-the LightELF phone app; do not repeatedly retry the wedged BLE controller.
+timed out while the controller continued advertising. Moving the fixture
+improved its observed signal from roughly -80 dBm to -70/-75 dBm and restored
+reliable service discovery. A subsequent probe exactly matched the upstream
+notification-settle delay and unacknowledged-write mode, but still received no
+reply. No power, mode, drawing, text, or playback packet was sent and no optical
+change was observed. Do not repeatedly retry the controller; the next useful
+step is to capture the official app's successful query exchange or establish
+that this firmware uses a different handshake.
 
 ## Physical qualification gate
 

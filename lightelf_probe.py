@@ -91,10 +91,12 @@ async def _probe_async(address: str, timeout: float) -> QueryReply:
             await client.start_notify(WRITE_UUID, receive)
         except Exception:
             pass
-        # The identity packet is one short write. An acknowledged write is more
-        # reliable on direct BlueZ and cannot trigger the large-frame timing
-        # issue that requires unacknowledged writes for drawings.
-        await client.write_gatt_char(WRITE_UUID, query_packet(challenge), response=True)
+        # Match the device app's handshake: let CCCD subscriptions settle, then
+        # use the characteristic's write-without-response path. Some LightELF
+        # firmware advertises acknowledged writes but does not answer queries
+        # delivered through that path.
+        await asyncio.sleep(0.2)
+        await client.write_gatt_char(WRITE_UUID, query_packet(challenge), response=False)
         await asyncio.wait_for(reply_ready.wait(), timeout=timeout)
     parsed = parse_query_reply(bytes(response), challenge)
     if not parsed.challenge_ok:
