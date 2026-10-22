@@ -24,6 +24,7 @@ QUERY_END = bytes.fromhex("E4E5E6E7")
 @dataclass(frozen=True)
 class QueryReply:
     reply_bytes: int
+    query_attempts: int
     challenge_ok: bool
     device_on: bool
     device_type: int
@@ -49,13 +50,16 @@ def query_packet(random_bytes: bytes) -> bytes:
     return QUERY_START + random_bytes + QUERY_END
 
 
-def parse_query_reply(response: bytes, random_bytes: bytes) -> QueryReply:
+def parse_query_reply(
+    response: bytes, random_bytes: bytes, query_attempts: int = 1
+) -> QueryReply:
     if len(response) < 12:
         raise ValueError("query reply is too short")
     token = response[-12:-8]
     challenge_ok = token in {expected_challenge(random_bytes), bytes.fromhex("8AC5624F")}
     return QueryReply(
         reply_bytes=len(response),
+        query_attempts=query_attempts,
         challenge_ok=challenge_ok,
         device_on=response[-8] != 0,
         device_type=response[-7],
@@ -87,18 +91,23 @@ async def _probe_async(address: str, timeout: float) -> QueryReply:
         raise RuntimeError(f"LightELF device {address} is not advertising")
     async with BleakClient(device, timeout=timeout) as client:
         await client.start_notify(NOTIFY_UUID, receive)
-        try:
-            await client.start_notify(WRITE_UUID, receive)
-        except Exception:
-            pass
-        # Match the device app's handshake: let CCCD subscriptions settle, then
-        # use the characteristic's write-without-response path. Some LightELF
-        # firmware advertises acknowledged writes but does not answer queries
-        # delivered through that path.
-        await asyncio.sleep(0.2)
-        await client.write_gatt_char(WRITE_UUID, query_packet(challenge), response=False)
-        await asyncio.wait_for(reply_ready.wait(), timeout=timeout)
-    parsed = parse_query_reply(bytes(response), challenge)
+        # Match the iPhone app trace for this exact firmware: subscribe only to
+        # FF01, prime it with one read, then use acknowledged FF02 writes. The
+        # projector ignores the first query and replies to the same query on a
+        # roughly three-second retry.
+        await client.read_gatt_char(NOTIFY_UUID)
+        packet = query_packet(challenge)
+        for query_attempts in range(1, 4):
+            await client.write_gatt_char(WRITE_UUID, packet, response=True)
+            try:
+                await asyncio.wait_for(reply_ready.wait(), timeout=3.0)
+                break
+            except TimeoutError:
+                if query_attempts == 3:
+                    raise
+                response.clear()
+                reply_ready.clear()
+    parsed = parse_query_reply(bytes(response), challenge, query_attempts)
     if not parsed.challenge_ok:
         raise RuntimeError("LightELF query challenge validation failed")
     return parsed

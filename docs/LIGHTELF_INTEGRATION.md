@@ -63,31 +63,49 @@ Sonos devices and are unrelated.
 `lightelf_probe.py` now implements only the bounded E0/E7 identity challenge
 and validates the returned token. Debian packages `python3-bleak` and
 `python3-dbus-fast` were installed on the Pi for the supported BlueZ transport.
-The first live query session connected, resolved services, subscribed, and sent
-the identity envelope but received no notification reply. Later connections
+Early live query sessions received no notification reply, and later connections
 timed out while the controller continued advertising. Moving the fixture
 improved its observed signal from roughly -80 dBm to -70/-75 dBm and restored
-reliable service discovery. A subsequent probe exactly matched the upstream
-notification-settle delay and unacknowledged-write mode, but still received no
-reply. No power, mode, drawing, text, or playback packet was sent and no optical
-change was observed. Do not repeatedly retry the controller; the next useful
-step is to capture the official app's successful query exchange or establish
-that this firmware uses a different handshake.
+reliable service discovery. An upstream-style single query still received no
+reply, which led to the official-app capture below. No power, mode, drawing,
+text, or playback packet was sent and no optical change was observed.
+
+An Apple PacketLogger trace of the official iPhone app subsequently established
+the firmware-specific sequence without invoking any optical control:
+
+1. subscribe to notifications on FF01;
+2. read FF01 once (the returned value is empty);
+3. send the 12-byte E0/E7 query to FF02 as an acknowledged write;
+4. after roughly three seconds without a reply, resend the *identical* query;
+5. receive the large, fragmented query/state reply on FF01 about 100 ms later.
+
+The raw trace is intentionally excluded from Git because an iOS Bluetooth trace
+also contains identifiers for unrelated nearby devices. Only this sanitized
+target-device sequence is retained in the public repository.
+
+The corrected Pi probe succeeded on October 22, 2026. It received a 483-byte
+reply on query attempt 2, validated the challenge token, and reported protocol
+generation 2. The reply contains a complete concatenated state stream before
+the trailing identity fields, so the early `device_number` and `ota_version`
+offsets are retained as raw compatibility diagnostics rather than presented as
+human-readable model or firmware numbers. Both kiosk services remained active,
+and no optical output was requested or observed.
 
 ## Physical qualification gate
 
 1. [x] Record the BLE name, address, and advertised services without enabling
    optical output.
-2. [ ] Read the firmware response and protocol generation, then confirm the
-   projector accepts the upstream query/unlock exchange.
-3. Terminate the complete double-wide beam envelope on a matte inaccessible
+2. [x] Read and validate the firmware response and protocol generation.
+3. [ ] Confirm the projector accepts the calculated unlock exchange without
+   changing optical state.
+4. Terminate the complete double-wide beam envelope on a matte inaccessible
    surface and test a tiny bounded symmetric drawing.
-4. Test BLE disconnect, controller crash, Pi restart, and fixture power cycle.
-5. Determine whether DMX blackout overrides BLE output. If not, add a separate
+5. Test BLE disconnect, controller crash, Pi restart, and fixture power cycle.
+6. Determine whether DMX blackout overrides BLE output. If not, add a separate
    physical power/interlock layer before unattended use.
-6. Confirm whether drawings persist, whether more than one can be stored, and
+7. Confirm whether drawings persist, whether more than one can be stored, and
    whether any DMX-reserved slots select uploaded content.
-7. Only then implement and enable the real transport behind the same adapter.
+8. Only then implement and enable the real transport behind the same adapter.
 
 The future backyard laser will use a separate scene catalog and installation
 profile. Its proposed `FORTUNE TELLER` direction sign must not be conflated with

@@ -26,6 +26,7 @@ class LightElfProbeTests(unittest.TestCase):
             + bytes.fromhex("E4E5E6E7")
         )
         parsed = parse_query_reply(reply, challenge)
+        self.assertEqual(parsed.query_attempts, 1)
         self.assertTrue(parsed.challenge_ok)
         self.assertFalse(parsed.device_on)
         self.assertEqual(parsed.device_type, 2)
@@ -33,6 +34,9 @@ class LightElfProbeTests(unittest.TestCase):
         self.assertEqual(parsed.device_number, 7)
         self.assertEqual(parsed.user_number, 9)
         self.assertEqual(parsed.ota_version_raw, 0x0123)
+
+        retried = parse_query_reply(reply, challenge, query_attempts=2)
+        self.assertEqual(retried.query_attempts, 2)
 
     def test_parse_rejects_short_reply(self):
         with self.assertRaises(ValueError):
