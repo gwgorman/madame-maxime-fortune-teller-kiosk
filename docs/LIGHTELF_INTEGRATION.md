@@ -30,7 +30,8 @@ minimal transport and protocol modules while preserving its MIT notice.
 
 ## Current implementation
 
-`lightelf_adapter.py` provides:
+`lightelf_adapter.py`, `lightelf_protocol.py`, and `lightelf_transport.py`
+provide:
 
 - a named and size-bounded front-laser scene catalog;
 - a simulator that never opens Bluetooth;
@@ -38,9 +39,21 @@ minimal transport and protocol modules while preserving its MIT notice.
 - heartbeat renewal and automatic blackout;
 - rejection of output while disarmed;
 - line-art SVG assets designed for the mirrored fixture.
+- deterministic SVG and approved line-font packet rendering;
+- a persistent BLE worker with an independent two-second maximum lease;
+- automatic double-blackout, bounded reconnect attempts, and anonymous JSONL
+  event diagnostics;
+- a two-part live-output interlock that is disabled by default.
 
-It intentionally contains no live BLE transport. No output is possible through
-this adapter until the physical compatibility and safety tests below pass.
+The kiosk does not instantiate the live transport. Merely importing or creating
+it produces no Bluetooth traffic; live output requires both `enabled=True` and
+`MADAME_MAXIME_LIGHTELF_LIVE=I-ACCEPT-LIVE-LASER-OUTPUT`. Keep that variable
+unset until the physical compatibility and safety tests below pass.
+
+`lightelf_dry_run.py` compiles every front-laser scene, reporting byte count,
+point count, and a repeatable packet digest without importing Bleak or opening
+Bluetooth. The approved playlist currently contains `WELCOME`,
+`CIRQUE DU SOIREE`, a big top, a circus star, and a Ferris wheel.
 
 ## Small-laser BLE discovery
 

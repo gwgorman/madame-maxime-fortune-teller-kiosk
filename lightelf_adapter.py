@@ -65,6 +65,8 @@ class LightElfTransport(Protocol):
 
     def show_svg(self, path: Path, *, color: str, size_percent: int) -> None: ...
 
+    def heartbeat(self, *, ttl: float = 1.0) -> None: ...
+
     def blackout(self) -> None: ...
 
 
@@ -79,6 +81,9 @@ class SimulatedLightElfTransport:
 
     def show_svg(self, path: Path, *, color: str, size_percent: int) -> None:
         self.operations.append(("svg", path.name, color, size_percent))
+
+    def heartbeat(self, *, ttl: float = 1.0) -> None:
+        self.operations.append(("heartbeat", ttl))
 
     def blackout(self) -> None:
         self.operations.append(("blackout",))
@@ -104,6 +109,7 @@ class LightElfController:
         if not self.armed:
             raise RuntimeError("LightELF heartbeat received while disarmed")
         self.arm(now=now, ttl=ttl)
+        self.transport.heartbeat(ttl=min(float(ttl), MAX_ARM_SECONDS))
 
     def show(self, name: str, *, now: float | None = None) -> None:
         now = time.monotonic() if now is None else now

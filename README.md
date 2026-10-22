@@ -126,6 +126,19 @@ sudo apt install python3-bleak
 
 The probe is identity-only and does not contain power or drawing commands.
 
+The front-laser playlist can be compiled and inspected without opening
+Bluetooth or producing light:
+
+```bash
+python3 lightelf_dry_run.py
+```
+
+The real BLE worker is present for staged qualification but remains disabled by
+default and is not connected to the kiosk UI. Enabling it requires both an
+explicit constructor flag and the exact `MADAME_MAXIME_LIGHTELF_LIVE` operator
+interlock documented in [the LightELF integration notes](docs/LIGHTELF_INTEGRATION.md).
+Do not enable it until every remaining physical qualification item passes.
+
 Omit `--windowed` for the full-screen kiosk presentation. Press `Esc` or `Q`
 to exit. The default journal is
 `~/.local/state/madame-maxime/journal.json`; override it with
