@@ -91,13 +91,23 @@ offsets are retained as raw compatibility diagnostics rather than presented as
 human-readable model or firmware numbers. Both kiosk services remained active,
 and no optical output was requested or observed.
 
+Review of the pinned upstream connection path confirms that there is no
+separate unlock packet. A successfully validated query challenge is the unlock
+gate: the client enables command transmission locally only after
+`challenge_ok` is true. The Pi's successful identity probe therefore completed
+the safe query/unlock qualification. The similarly named device-settings packet
+is **not** an unlock command; it can alter the DMX address, orientation,
+brightness, password, and other persistent settings and must not be used for
+this test.
+
 ## Physical qualification gate
 
 1. [x] Record the BLE name, address, and advertised services without enabling
    optical output.
 2. [x] Read and validate the firmware response and protocol generation.
-3. [ ] Confirm the projector accepts the calculated unlock exchange without
-   changing optical state.
+3. [x] Confirm the projector accepts the query/challenge unlock gate without
+   changing optical state. No separate unlock packet exists in the pinned
+   upstream implementation.
 4. Terminate the complete double-wide beam envelope on a matte inaccessible
    surface and test a tiny bounded symmetric drawing.
 5. Test BLE disconnect, controller crash, Pi restart, and fixture power cycle.
