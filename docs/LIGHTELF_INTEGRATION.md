@@ -42,11 +42,30 @@ minimal transport and protocol modules while preserving its MIT notice.
 It intentionally contains no live BLE transport. No output is possible through
 this adapter until the physical compatibility and safety tests below pass.
 
+## Small-laser BLE discovery
+
+Read-only discovery on the production Pi succeeded on October 22, 2026:
+
+- advertised name: `TD5322A_V3.1.2BLE`;
+- public BLE address: `3E:D9:F7:40:86:00`;
+- advertised service: `0000FF00-0000-1000-8000-00805F9B34FB`;
+- notification value handle `0x0011`: characteristic `FF01`, properties `0x12`;
+- write/notification value handle `0x0014`: characteristic `FF02`, properties
+  `0x1c`;
+- manufacturer-data key `0x8984`, value `53 22 00 00`.
+
+This exactly matches the upstream common LightELF profile. Service enumeration
+completed without pairing, trusting the device, subscribing, querying,
+unlocking, writing a characteristic, or changing optical output. The Pi then
+disconnected successfully. Nearby `S57` advertisements were identified as
+Sonos devices and are unrelated.
+
 ## Physical qualification gate
 
-1. Record the BLE name, address, advertised services, firmware response, and
-   protocol generation without enabling optical output.
-2. Confirm the projector accepts the upstream query/unlock exchange.
+1. [x] Record the BLE name, address, and advertised services without enabling
+   optical output.
+2. [ ] Read the firmware response and protocol generation, then confirm the
+   projector accepts the upstream query/unlock exchange.
 3. Terminate the complete double-wide beam envelope on a matte inaccessible
    surface and test a tiny bounded symmetric drawing.
 4. Test BLE disconnect, controller crash, Pi restart, and fixture power cycle.

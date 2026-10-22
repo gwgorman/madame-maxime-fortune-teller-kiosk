@@ -10,6 +10,13 @@ movement. No live output has been tested or integrated into the kiosk.
 Configured DMX address: `A057` (channels 57-72), physically set by Greg on
 October 21, 2026.
 
+Read-only BLE discovery on October 22, 2026 identified the fixture as
+`TD5322A_V3.1.2BLE`, public address `3E:D9:F7:40:86:00`. It advertises the
+standard LightELF `FF00` service with `FF01` notification and `FF02`
+write/notification characteristics. Enumeration did not pair, trust, query,
+unlock, write, or alter optical output; the Pi disconnected afterward. See
+[`docs/LIGHTELF_INTEGRATION.md`](../../docs/LIGHTELF_INTEGRATION.md).
+
 On October 21, 2026, a bounded live test sent the minimum documented CH1 enable
 value with dynamic functions disabled. The fixture displayed a static
 horizontal line and then returned to complete darkness under DMX blackout.
