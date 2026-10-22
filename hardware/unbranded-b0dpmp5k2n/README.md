@@ -179,9 +179,17 @@ Observed ILDA animation category 2 patterns so far:
 | 96 | Near-duplicate animated Christmas candles |
 | 112 | Near-duplicate candles, possibly a slightly different orientation |
 | 128 | Near-duplicate animated Christmas candles |
+| 144 | Near-duplicate animated Christmas candles |
+| 160 | Near-duplicate animated Christmas candles |
+| 176 | Near-duplicate animated Christmas candles |
+| 192 | Near-duplicate animated Christmas candles |
+| 208 | Near-duplicate animated Christmas candles |
+| 224 | Near-duplicate animated Christmas candles |
+| 240 | Near-duplicate animated Christmas candles |
 
 The singing Elvis and rotating cube are the strongest general-purpose effects
-in this partially tested category. Testing is paused after CH5 128.
+in this category. Every sampled slot from CH5 80 through 240 produced the same
+basic animated-candles family, with only minor or imperceptible differences.
 
 ## Preserved source
 
