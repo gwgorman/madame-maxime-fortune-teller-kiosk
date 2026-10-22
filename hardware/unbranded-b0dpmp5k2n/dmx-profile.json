@@ -17,8 +17,18 @@
       "not_yet_verified": ["shape selection", "movement", "scan bounds", "mirror geometry", "DMX-loss behavior", "remaining controls"]
     },
     "observed_calibration": {
-      "pattern_ch5_176": "asterisk/starburst; rotated cleanly with fixed X/Y",
-      "pattern_ch5_208": "radiation/fallout-style symbol",
+      "observed_group_1_patterns": {
+        "176": "asterisk/starburst; rotated cleanly with fixed X/Y",
+        "184": "child-drawn star",
+        "192": "sun",
+        "200": "fan",
+        "208": "radiation/fallout-style symbol",
+        "216": "Y",
+        "224": "X",
+        "232": "four small boxes, one in each corner",
+        "240": "thin rectangular bar",
+        "248": "tiny bright square"
+      },
       "rotation_ch10": "smooth and usable",
       "position_ch13_ch14": "combined movement appeared twisted and unstable; wider travel clipped laterally and distorted at lower positions",
       "production_motion_rule": "fixed X/Y position with rotation-only motion until further calibration"

@@ -25,6 +25,23 @@ position travel also clipped at the sides and distorted shapes toward the
 bottom. Production cues should therefore keep X/Y position fixed and use
 rotation-only motion unless a later calibration proves a clean bounded range.
 
+Observed rotating patterns in static graphics group 1:
+
+| CH5 | Observed shape |
+|---:|---|
+| 176 | Asterisk/starburst |
+| 184 | Child-drawn star |
+| 192 | Sun |
+| 200 | Fan |
+| 208 | Radiation/fallout-style symbol |
+| 216 | Y |
+| 224 | X |
+| 232 | Four small boxes, one in each corner |
+| 240 | Thin rectangular bar |
+| 248 | Tiny bright square |
+
+The star, sun, and fan are initial circus-scene candidates.
+
 ## Preserved source
 
 The unchanged two-page scan is stored at
