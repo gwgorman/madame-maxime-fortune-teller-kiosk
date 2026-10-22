@@ -42,6 +42,52 @@ Observed rotating patterns in static graphics group 1:
 
 The star, sun, and fan are initial circus-scene candidates.
 
+Observed patterns in static graphics group 2:
+
+| CH5 | Observed shape |
+|---:|---|
+| 0 | Big circle |
+| 16 | Two small circles |
+| 32 | Four circles in a diagonal line |
+| 48 | Four circles in a square |
+| 64 | Dashed big circle |
+| 80 | Quarter-circle arc |
+| 96 | Spiral |
+| 112 | Three spirals |
+| 128 | Horizontal squiggle |
+| 144 | Vertical squiggle |
+| 160 | Pinwheel |
+| 176 | Small circles in a square layout |
+| 192 | Half spiral (tentative) |
+| 208 | Spiral cone |
+| 224 | Flower |
+| 240 | Alignment/test pattern |
+
+The pinwheel, spiral cone, and flower are initial circus-scene candidates.
+
+Observed patterns in static graphics group 3:
+
+| CH5 | Observed shape |
+|---:|---|
+| 0 | Solid diagonal, upper left to lower right |
+| 16 | Solid diagonal, lower left to upper right |
+| 32 | Two-dash diagonal |
+| 48 | Three-dash diagonal |
+| 64 | Six-dash diagonal |
+| 80 | Eight-dash diagonal |
+| 96 | Ten-dash diagonal |
+| 112 | Twelve-segment near-solid diagonal with bright dots |
+| 128 | Six-dash diagonal |
+| 144 | Diamond |
+| 160 | Six-sided polygon |
+| 176 | Eight-sided polygon |
+| 192 | Rounded eight-segment shape |
+| 208 | Circle made from four dashes |
+| 224 | Half-heart with bright dots on the line |
+| 240 | Half-heart |
+
+The diamond, polygons, and half-heart variants may be useful scenic elements.
+
 ## Preserved source
 
 The unchanged two-page scan is stored at
