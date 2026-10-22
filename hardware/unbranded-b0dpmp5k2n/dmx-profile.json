@@ -6,6 +6,10 @@
     "amazon_asin": "B0DPMP5K2N",
     "description": "16-channel indoor RGB animation laser with an internal mirror producing two side-by-side, front-facing outputs",
     "supported_dmx_modes": [16],
+    "configured_start_address": 57,
+    "configured_channel_span": [57, 72],
+    "address_owner_verified": true,
+    "address_verified_date": "2026-10-21",
     "optical_paths": 2,
     "output_geometry": {
       "aperture_side": "front",

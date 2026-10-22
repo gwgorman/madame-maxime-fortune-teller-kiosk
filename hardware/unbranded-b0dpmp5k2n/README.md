@@ -7,6 +7,9 @@ effective output envelope approximately double-wide. One side is the mirrored
 inverse of the other, which is especially visible in asymmetric shapes and
 movement. No live output has been tested or integrated into the kiosk.
 
+Configured DMX address: `A057` (channels 57-72), physically set by Greg on
+October 21, 2026. This records the address only; it is not a live-output test.
+
 ## Preserved source
 
 The unchanged two-page scan is stored at
@@ -36,8 +39,8 @@ all 16 channels and every documented value range.
 1. Treat this as one double-wide envelope containing two side-by-side beam
    paths. Mount and terminate the entire envelope on a matte, non-reflective
    surface inaccessible to guests before enabling CH1.
-2. Record the exact rear-panel label, serial markings, configured DMX address,
-   key-switch/interlock behavior, and response to DMX loss.
+2. Record the exact rear-panel label, serial markings, key-switch/interlock
+   behavior, and response to DMX loss. The configured address is `A057`.
 3. Start with all channels zero and verify CH1 0-9 produces no optical output.
 4. Select a small, static pattern and centered positions before cautiously
    raising CH1 above 9.
