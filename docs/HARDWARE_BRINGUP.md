@@ -38,6 +38,8 @@ Installation addresses:
 Both fixtures were physically observed responding independently to red, green,
 blue, white, and blackout. A cable fault initially hid A001; an isolated
 full-red test distinguished that fault from addressing or software trouble.
+PAR 2 was reverified at A007 through red, green, blue, white, and blackout on
+October 21, 2026.
 
 ### Diagnostic history
 

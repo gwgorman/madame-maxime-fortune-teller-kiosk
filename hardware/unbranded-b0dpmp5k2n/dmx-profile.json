@@ -10,6 +10,12 @@
     "configured_channel_span": [57, 72],
     "address_owner_verified": true,
     "address_verified_date": "2026-10-21",
+    "live_test": {
+      "date": "2026-10-21",
+      "result": "minimum static horizontal line displayed; commanded blackout returned fixture to complete darkness",
+      "verified": ["address response", "minimum static output", "DMX blackout"],
+      "not_yet_verified": ["shape selection", "movement", "scan bounds", "mirror geometry", "DMX-loss behavior", "remaining controls"]
+    },
     "optical_paths": 2,
     "output_geometry": {
       "aperture_side": "front",

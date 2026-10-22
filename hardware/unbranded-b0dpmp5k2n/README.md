@@ -8,7 +8,14 @@ inverse of the other, which is especially visible in asymmetric shapes and
 movement. No live output has been tested or integrated into the kiosk.
 
 Configured DMX address: `A057` (channels 57-72), physically set by Greg on
-October 21, 2026. This records the address only; it is not a live-output test.
+October 21, 2026.
+
+On October 21, 2026, a bounded live test sent the minimum documented CH1 enable
+value with dynamic functions disabled. The fixture displayed a static
+horizontal line and then returned to complete darkness under DMX blackout.
+This verifies address response, minimum static output, and blackout only.
+Shapes, movement, scan bounds, mirror geometry, DMX-loss behavior, and the
+remaining controls have not yet been physically validated.
 
 ## Preserved source
 
