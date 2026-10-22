@@ -1,0 +1,61 @@
+# LightELF Bluetooth integration
+
+## Purpose
+
+The front-of-house small laser is an independent circus arrival display. Its
+initial library contains symmetrical big-top, star, and Ferris-wheel drawings,
+plus optional `WELCOME` and `CIRQUE DU SOIREE` text cards. The public event name
+remains **Cirque du Soirée**; the ASCII text is only a projector-font fallback.
+
+The mirrored small fixture produces two side-by-side outputs with opposite
+handedness. Symmetrical art is therefore the production default. Words are
+experiments because one copy will be reversed.
+
+## Upstream protocol reference
+
+The planned BLE transport is based on the MIT-licensed
+[`aderusha/lightelf_laser`](https://github.com/aderusha/lightelf_laser)
+implementation, reviewed at commit
+`d2b11238249dad0d0cb7ae225e2f26aee9b58587`. It documents and implements:
+
+- FF00/FF01/FF02 and FFE0/FFE1 GATT profiles;
+- query, notification, challenge, and unlock handling;
+- static vector/SVG and text point streams;
+- firmware scrolling text and native animations;
+- device capability detection and paced BLE writes.
+
+No upstream source has been copied into this repository yet. Before production,
+either pin the upstream implementation as a packaged dependency or extract the
+minimal transport and protocol modules while preserving its MIT notice.
+
+## Current implementation
+
+`lightelf_adapter.py` provides:
+
+- a named and size-bounded front-laser scene catalog;
+- a simulator that never opens Bluetooth;
+- an explicit arm lease capped at two seconds;
+- heartbeat renewal and automatic blackout;
+- rejection of output while disarmed;
+- line-art SVG assets designed for the mirrored fixture.
+
+It intentionally contains no live BLE transport. No output is possible through
+this adapter until the physical compatibility and safety tests below pass.
+
+## Physical qualification gate
+
+1. Record the BLE name, address, advertised services, firmware response, and
+   protocol generation without enabling optical output.
+2. Confirm the projector accepts the upstream query/unlock exchange.
+3. Terminate the complete double-wide beam envelope on a matte inaccessible
+   surface and test a tiny bounded symmetric drawing.
+4. Test BLE disconnect, controller crash, Pi restart, and fixture power cycle.
+5. Determine whether DMX blackout overrides BLE output. If not, add a separate
+   physical power/interlock layer before unattended use.
+6. Confirm whether drawings persist, whether more than one can be stored, and
+   whether any DMX-reserved slots select uploaded content.
+7. Only then implement and enable the real transport behind the same adapter.
+
+The future backyard laser will use a separate scene catalog and installation
+profile. Its proposed `FORTUNE TELLER` direction sign must not be conflated with
+the front laser's welcome/circus role.

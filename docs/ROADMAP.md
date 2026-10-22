@@ -57,6 +57,9 @@
 - [x] Define named, unarmed-by-default, safety-bounded small-laser cues
 - [x] Add the single-owner DMX broker and heartbeat-enforced laser arming
 - [x] Deploy and qualify the broker on the Pi with controlled fixture tests
+- [x] Add a simulated, safety-leased LightELF adapter and front circus catalog
+- [ ] Physically qualify the small laser's BLE profile and LightELF protocol
+- [ ] Add the real BLE transport only after disconnect and blackout testing
 - [ ] Integrate reviewed laser cues with fortune-teller states
 
 ## Phase 5: production qualification
