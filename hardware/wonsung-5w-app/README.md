@@ -1,5 +1,11 @@
 # Wonsung 5W-APP laser
 
+## Installation status
+
+The fixture is not yet physically present. `A017` (channels 17-52 in 36-channel
+mode) is reserved in the address plan only; it has not been configured or
+tested.
+
 This folder is the future integration record for Greg's Wonsung 5W-APP laser.
 No live laser output has been tested or added to the kiosk.
 

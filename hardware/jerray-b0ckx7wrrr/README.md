@@ -47,7 +47,7 @@ the current Pi controller.
 |---|---:|---|
 | PAR 1 | A001-A006 | Installed |
 | PAR 2 | A007-A012 | Installed |
-| Wonsung 5W-APP in 36-channel mode | A017-A052 | Provisional |
+| Wonsung 5W-APP in 36-channel mode | A017-A052 | Reserved only; fixture not yet present |
 | Unbranded B0DPMP5K2N laser | A057-A072 | Address physically set; output untested |
 
 This plan keeps gaps between fixture classes and fits in a 96-channel
