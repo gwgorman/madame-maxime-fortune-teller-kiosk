@@ -17,6 +17,14 @@ This verifies address response, minimum static output, and blackout only.
 Shapes, movement, scan bounds, mirror geometry, DMX-loss behavior, and the
 remaining controls have not yet been physically validated.
 
+Additional bounded testing identified CH5 value 208 as a radiation/fallout-style
+symbol and CH5 value 176 as an asterisk/starburst. Continuous CH10 rotation of
+the starburst looked smooth and useful. Combined rotation with CH13/14 position
+changes looked twisted and unstable through the mirrored optical path; wider
+position travel also clipped at the sides and distorted shapes toward the
+bottom. Production cues should therefore keep X/Y position fixed and use
+rotation-only motion unless a later calibration proves a clean bounded range.
+
 ## Preserved source
 
 The unchanged two-page scan is stored at

@@ -16,6 +16,13 @@
       "verified": ["address response", "minimum static output", "DMX blackout"],
       "not_yet_verified": ["shape selection", "movement", "scan bounds", "mirror geometry", "DMX-loss behavior", "remaining controls"]
     },
+    "observed_calibration": {
+      "pattern_ch5_176": "asterisk/starburst; rotated cleanly with fixed X/Y",
+      "pattern_ch5_208": "radiation/fallout-style symbol",
+      "rotation_ch10": "smooth and usable",
+      "position_ch13_ch14": "combined movement appeared twisted and unstable; wider travel clipped laterally and distorted at lower positions",
+      "production_motion_rule": "fixed X/Y position with rotation-only motion until further calibration"
+    },
     "optical_paths": 2,
     "output_geometry": {
       "aperture_side": "front",
