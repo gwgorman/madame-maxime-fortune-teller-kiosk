@@ -119,6 +119,17 @@
         "224": "girl wearing a large hat and waving",
         "240": "open-cockpit propeller airplane slowly rotating about its Z-axis"
       },
+      "observed_ilda_category_2_patterns": {
+        "0": "two-scene young girl looking, then confused",
+        "16": "singing Elvis",
+        "32": "circle-based slinky effect",
+        "48": "silly reindeer with a candy cane",
+        "64": "rotating 3D cube",
+        "80": "animated Christmas candles",
+        "96": "near-duplicate animated Christmas candles",
+        "112": "near-duplicate candles, possibly a slightly different orientation",
+        "128": "near-duplicate animated Christmas candles"
+      },
       "pictorial_orientation": {
         "initial_result": "asymmetric pictures and text appeared upside down",
         "dmx_trials": "static CH10 rotation and CH11/CH12 flip combinations did not correct orientation",

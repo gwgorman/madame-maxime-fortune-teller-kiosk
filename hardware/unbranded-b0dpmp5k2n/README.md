@@ -166,6 +166,23 @@ appeared upside down at the time. Later samples verified that the correction
 persisted. The waving girl, cobra, bats, stork, eagle, and vintage airplane are
 initial circus/Halloween candidates.
 
+Observed ILDA animation category 2 patterns so far:
+
+| CH5 | Observed animation |
+|---:|---|
+| 0 | Two-scene young girl looking, then confused |
+| 16 | Singing Elvis |
+| 32 | Circle-based slinky effect |
+| 48 | Silly reindeer with a candy cane |
+| 64 | Rotating 3D cube |
+| 80 | Animated Christmas candles |
+| 96 | Near-duplicate animated Christmas candles |
+| 112 | Near-duplicate candles, possibly a slightly different orientation |
+| 128 | Near-duplicate animated Christmas candles |
+
+The singing Elvis and rotating cube are the strongest general-purpose effects
+in this partially tested category. Testing is paused after CH5 128.
+
 ## Preserved source
 
 The unchanged two-page scan is stored at
