@@ -45,6 +45,15 @@ class BrokerState:
         scene = ParScene(*values)
         self.universe.set_pars(PAR_ADDRESSES, scene)
 
+    def set_par_fixture(self, address: int, values) -> None:
+        address = int(address)
+        if address not in PAR_ADDRESSES:
+            raise ValueError(f"unknown PAR fixture address: {address}")
+        values = tuple(values)
+        if len(values) != 4:
+            raise ValueError("PAR scene requires master, red, green, and blue")
+        self.universe.set_par(address, ParScene(*values))
+
     def arm_laser(self, name: str, now: float, ttl: float = DEFAULT_LASER_TTL) -> None:
         ttl = max(0.1, min(float(ttl), MAX_LASER_TTL))
         self.universe.set_channels(LASER_ADDRESS, cue_channels(name, armed=True))
@@ -77,6 +86,8 @@ class BrokerState:
         command = message.get("command")
         if command == "par":
             self.set_par(message["values"])
+        elif command == "par_fixture":
+            self.set_par_fixture(message["address"], message["values"])
         elif command == "laser_arm":
             self.arm_laser(message["cue"], now, message.get("ttl", DEFAULT_LASER_TTL))
         elif command == "laser_heartbeat":
@@ -106,6 +117,9 @@ class DmxClient:
 
     def set_par(self, values) -> None:
         self.send("par", values=list(values))
+
+    def set_par_fixture(self, address: int, values) -> None:
+        self.send("par_fixture", address=address, values=list(values))
 
     def arm_laser(self, cue: str, ttl: float = DEFAULT_LASER_TTL) -> None:
         self.send("laser_arm", cue=cue, ttl=ttl)

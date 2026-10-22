@@ -27,6 +27,17 @@ class DmxBrokerStateTests(unittest.TestCase):
         self.assertEqual(frame[1:7], bytes((40, 1, 2, 3, 0, 0)))
         self.assertEqual(frame[LASER_ADDRESS:LASER_ADDRESS + 16], bytes(16))
 
+    def test_individual_par_diagnostic_does_not_change_other_fixture(self):
+        self.state.set_par((20, 1, 2, 3))
+        self.state.set_par_fixture(7, (90, 4, 5, 6))
+        frame = self.universe.snapshot()
+        self.assertEqual(frame[1:7], bytes((20, 1, 2, 3, 0, 0)))
+        self.assertEqual(frame[7:13], bytes((90, 4, 5, 6, 0, 0)))
+
+    def test_individual_par_rejects_unknown_address(self):
+        with self.assertRaises(ValueError):
+            self.state.set_par_fixture(30, (90, 4, 5, 6))
+
     def test_heartbeat_extends_only_matching_armed_cue(self):
         self.state.arm_laser("cobra_strike", now=1.0, ttl=0.5)
         self.state.heartbeat_laser("cobra_strike", now=1.4, ttl=0.5)
