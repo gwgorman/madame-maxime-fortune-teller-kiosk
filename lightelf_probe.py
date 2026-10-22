@@ -69,7 +69,7 @@ def parse_query_reply(response: bytes, random_bytes: bytes) -> QueryReply:
 async def _probe_async(address: str, timeout: float) -> QueryReply:
     """Perform only notification setup and the LightELF identity query."""
     try:
-        from bleak import BleakClient
+        from bleak import BleakClient, BleakScanner
     except ImportError as exc:
         raise RuntimeError("python3-bleak is required for the identity probe") from exc
 
@@ -82,7 +82,10 @@ async def _probe_async(address: str, timeout: float) -> QueryReply:
         if response.endswith(QUERY_END):
             reply_ready.set()
 
-    async with BleakClient(address, timeout=timeout) as client:
+    device = await BleakScanner.find_device_by_address(address, timeout=timeout)
+    if device is None:
+        raise RuntimeError(f"LightELF device {address} is not advertising")
+    async with BleakClient(device, timeout=timeout) as client:
         await client.start_notify(NOTIFY_UUID, receive)
         try:
             await client.start_notify(WRITE_UUID, receive)
