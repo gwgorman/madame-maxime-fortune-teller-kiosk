@@ -56,6 +56,12 @@ October 21, 2026.
    first as root and then as the ordinary `ggorman` kiosk user.
 6. Both connected fixtures subsequently passed independent RGBW and blackout
    tests from the Pi.
+7. On October 22, 2026, the production Pi's single-owner DMX broker passed a
+   live end-to-end qualification: A001 illuminated red alone, A007 illuminated
+   green alone, and the A057 small laser displayed the reviewed rotating
+   starburst cue. Stopping its client heartbeat returned the physical laser to
+   blackout automatically while both the broker and Office console remained
+   active.
 
 ### Required Linux approach
 
@@ -76,15 +82,15 @@ OLA is disabled and stopped because it otherwise competes for the adapter:
 sudo systemctl disable --now olad
 ```
 
-The current tested driver and manual test utility live in the transporter
-repository until integrated into this runtime. The previous Pi driver was
-preserved as:
+The tested driver and manual test utility now live in this repository. On the
+production Pi, `madame-maxime-dmx.service` is the sole ENTTEC owner and begins
+with an all-zero universe. The previous Pi driver was preserved as:
 
 ```text
 /home/ggorman/dmx_lighting.py.pre-direct-ftdi-20261019
 ```
 
-Current manual test:
+Legacy manual PAR test, to be used only while the broker service is stopped:
 
 ```bash
 python3 /home/ggorman/dmx_lighting.py --test
@@ -92,6 +98,11 @@ python3 /home/ggorman/dmx_lighting.py --test
 
 The test starts with blackout, exercises A001 and A007 separately, and ends in
 blackout.
+
+Normal applications communicate through `DmxClient`; they must not open the
+ENTTEC device directly. The broker transmits 96 channels, covering PAR1 at
+A001, PAR2 at A007, and the 16-channel small laser at A057. Laser commands are
+unarmed by default and expire unless the client renews a matching heartbeat.
 
 ## Pending physical verification
 

@@ -56,7 +56,7 @@
 - [x] Physically catalog the small laser's static and ILDA graphics libraries
 - [x] Define named, unarmed-by-default, safety-bounded small-laser cues
 - [x] Add the single-owner DMX broker and heartbeat-enforced laser arming
-- [ ] Deploy and qualify the broker on the Pi with controlled fixture tests
+- [x] Deploy and qualify the broker on the Pi with controlled fixture tests
 - [ ] Integrate reviewed laser cues with fortune-teller states
 
 ## Phase 5: production qualification
