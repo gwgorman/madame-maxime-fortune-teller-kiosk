@@ -137,6 +137,33 @@
         "224": "near-duplicate animated Christmas candles",
         "240": "near-duplicate animated Christmas candles"
       },
+      "observed_ilda_category_3": {
+        "result": "alias of ILDA category 2 in tested firmware",
+        "verified_checkpoints": {
+          "0": "confused girl matched category 2",
+          "16": "singing Elvis matched category 2",
+          "64": "rotating 3D cube matched category 2",
+          "192": "animated candles matched category 2"
+        }
+      },
+      "observed_ilda_category_4": {
+        "result": "alias of ILDA category 2 in tested firmware",
+        "verified_checkpoints": {
+          "0": "confused girl matched category 2",
+          "16": "singing Elvis matched category 2",
+          "64": "rotating 3D cube matched category 2",
+          "192": "animated candles matched category 2"
+        }
+      },
+      "observed_ilda_category_5": {
+        "result": "alias of ILDA category 2 in tested firmware",
+        "verified_checkpoints": {
+          "0": "confused girl matched category 2",
+          "16": "singing Elvis matched category 2",
+          "64": "rotating 3D cube matched category 2",
+          "192": "animated candles matched category 2"
+        }
+      },
       "pictorial_orientation": {
         "initial_result": "asymmetric pictures and text appeared upside down",
         "dmx_trials": "static CH10 rotation and CH11/CH12 flip combinations did not correct orientation",

@@ -191,6 +191,21 @@ The singing Elvis and rotating cube are the strongest general-purpose effects
 in this category. Every sampled slot from CH5 80 through 240 produced the same
 basic animated-candles family, with only minor or imperceptible differences.
 
+Reserved ILDA animation category 3 is an alias of category 2 in the tested
+firmware. Checkpoints at CH5 0, 16, 64, and 192 exactly reproduced the confused
+girl, singing Elvis, rotating cube, and candles respectively. The remaining
+duplicate slots were not replayed.
+
+Reserved ILDA animation category 4 is also an alias of category 2. Checkpoints
+at CH5 0, 16, 64, and 192 reproduced the same confused girl, Elvis, rotating
+cube, and candles sequence.
+
+Reserved ILDA animation category 5 is likewise an alias of category 2.
+Checkpoints at CH5 0, 16, 64, and 192 again reproduced the confused girl,
+Elvis, rotating cube, and candles. Therefore categories 3-5 contain no newly
+observed graphics in this firmware and should not be treated as separate scene
+libraries.
+
 ## Preserved source
 
 The unchanged two-page scan is stored at
