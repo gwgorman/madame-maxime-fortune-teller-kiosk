@@ -37,6 +37,12 @@ Distance, camera, microphone, audio, and DMX each expose a small interface with
 real and simulated implementations. Adapter errors become status events; they
 do not terminate the UI.
 
+The ENTTEC interface must have exactly one owning process. PAR scenes and laser
+cues will be merged by a single DMX broker rather than opening the USB adapter
+from competing processes. Laser cues are blackout unless explicitly armed,
+use complete 16-channel frames, and require a heartbeat; broker timeout,
+Office-console handoff, kiosk exit, or process failure forces laser blackout.
+
 ### Personality service
 
 Keeps Madame Maxime's prompts, state, and voice assets separate from the
