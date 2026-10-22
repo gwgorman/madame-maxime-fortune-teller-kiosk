@@ -46,11 +46,11 @@ the current Pi controller.
 | Device | Address span |
 |---|---:|
 | PAR 1 | A001-A006 |
-| PAR 2 | A030-A035 |
-| Wonsung 5W-APP in 36-channel mode | A050-A085 |
-| Unbranded B0DPMP5K2N laser | A100-A115 |
+| PAR 2 | A007-A012 |
+| Wonsung 5W-APP in 36-channel mode | A017-A052 |
+| Unbranded B0DPMP5K2N laser | A057-A072 |
 
-This plan keeps gaps between fixture classes and fits in a 128-channel
+This plan keeps gaps between fixture classes and fits in a 96-channel
 transmitted frame. Do not configure it permanently until both lasers have been
 bench-tested in their intended DMX modes.
 
@@ -77,7 +77,7 @@ bench-tested in their intended DMX modes.
 ## Driver implication
 
 The current Open DMX driver transmits 64 channels to maximize timing margin for
-the PAR-only installation. The provisional laser addresses require at least 115
-channels. Raise the transmitted frame to 128 channels only when laser support
+the PAR-only installation. The provisional laser addresses require at least 72
+channels. Raise the transmitted frame to 96 channels only when laser support
 is implemented, then repeat the long idle-flicker test through the wireless
 link before any optical output is enabled.

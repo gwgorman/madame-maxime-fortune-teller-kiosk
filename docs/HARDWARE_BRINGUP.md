@@ -33,7 +33,7 @@ Two LauceNatz 36LED PAR fixtures use six-channel mode:
 Installation addresses:
 
 - First PAR: `A001`, channels 1-6
-- Second PAR: `A030`, channels 30-35
+- Second PAR: `A007`, channels 7-12 (moved from A030 on October 21, 2026)
 
 Both fixtures were physically observed responding independently to red, green,
 blue, white, and blackout. A cable fault initially hid A001; an isolated
@@ -47,7 +47,8 @@ full-red test distinguished that fault from addressing or software trouble.
    but the fixtures still did not respond.
 3. Reducing the FTDI latency timer from 16 ms to 1 ms did not fix OLA output.
 4. QLC+ 5 on macOS detected `FT232R USB UART (S/N: BG00UVK9)` and immediately
-   drove A030 using channels 30-35. This proved the adapter, 5-to-3-pin adapter,
+   drove the second fixture at its then-current A030 address using channels
+   30-35. This proved the adapter, 5-to-3-pin adapter,
    DMX cable, polarity, address, and fixture.
 5. Direct `libftdi` control on the Pi then drove the same fixture successfully,
    first as root and then as the ordinary `ggorman` kiosk user.
@@ -87,7 +88,7 @@ Current manual test:
 python3 /home/ggorman/dmx_lighting.py --test
 ```
 
-The test starts with blackout, exercises A001 and A030 separately, and ends in
+The test starts with blackout, exercises A001 and A007 separately, and ends in
 blackout.
 
 ## Pending physical verification

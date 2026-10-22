@@ -20,7 +20,7 @@ Verified on October 19, 2026:
 
 - ENTTEC Open DMX USB interface identified as FTDI `0403:6001`, serial
   `BG00UVK9`.
-- Two six-channel LauceNatz PAR fixtures at DMX addresses `A001` and `A030`.
+- Two six-channel LauceNatz PAR fixtures at DMX addresses `A001` and `A007`.
 - Independent red, green, blue, white, and blackout control of both fixtures.
 - Direct `libftdi` output works as the ordinary kiosk user.
 - OLA and the ordinary Linux serial path do not produce usable output with

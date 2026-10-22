@@ -30,6 +30,7 @@ class LightingController:
         self.universe = None
         self.output = None
         self.par_scene = None
+        self.par_addresses = ()
         self.current = list(SCENES["idle"])
         self.last_update = time.monotonic()
         self.state_name = "idle"
@@ -41,9 +42,10 @@ class LightingController:
         if not self.enabled:
             return
         try:
-            from dmx_lighting import OpenDmxOutput, ParScene, Universe
+            from dmx_lighting import OpenDmxOutput, PAR_ADDRESSES, ParScene, Universe
 
             self.par_scene = ParScene
+            self.par_addresses = PAR_ADDRESSES
             self.universe = Universe()
             self.output = OpenDmxOutput(self.universe)
             self.output.start()
@@ -62,7 +64,7 @@ class LightingController:
         if not self.available:
             return
         scene = self.par_scene(*(round(value) for value in values))
-        self.universe.set_pars((1, 30), scene)
+        self.universe.set_pars(self.par_addresses, scene)
 
     def update(self, state_name: str, now: float) -> None:
         if not self.available:
