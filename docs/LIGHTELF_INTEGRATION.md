@@ -60,6 +60,16 @@ unlocking, writing a characteristic, or changing optical output. The Pi then
 disconnected successfully. Nearby `S57` advertisements were identified as
 Sonos devices and are unrelated.
 
+`lightelf_probe.py` now implements only the bounded E0/E7 identity challenge
+and validates the returned token. Debian packages `python3-bleak` and
+`python3-dbus-fast` were installed on the Pi for the supported BlueZ transport.
+The first live query session connected, resolved services, subscribed, and sent
+the identity envelope but received no notification reply. Later connections
+timed out while the controller continued advertising. No power, mode, drawing,
+text, or playback packet was sent and no optical change was observed. Before
+the next query attempt, physically power-cycle the small laser and fully close
+the LightELF phone app; do not repeatedly retry the wedged BLE controller.
+
 ## Physical qualification gate
 
 1. [x] Record the BLE name, address, and advertised services without enabling

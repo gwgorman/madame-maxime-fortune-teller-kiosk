@@ -118,6 +118,14 @@ sudo apt install python3-pygame
 python3 madame_maxime.py --windowed
 ```
 
+The optional LightELF identity probe requires Debian's maintained BLE client:
+
+```bash
+sudo apt install python3-bleak
+```
+
+The probe is identity-only and does not contain power or drawing commands.
+
 Omit `--windowed` for the full-screen kiosk presentation. Press `Esc` or `Q`
 to exit. The default journal is
 `~/.local/state/madame-maxime/journal.json`; override it with
