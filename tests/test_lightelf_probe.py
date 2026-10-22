@@ -1,5 +1,6 @@
 import unittest
 
+from lightelf_bounded_test import MAX_DURATION, tiny_diamond_packet
 from lightelf_probe import expected_challenge, parse_query_reply, query_packet
 
 
@@ -9,6 +10,14 @@ class LightElfProbeTests(unittest.TestCase):
         self.assertEqual(
             query_packet(challenge), bytes.fromhex("E0E1E2E312345678E4E5E6E7")
         )
+
+    def test_bounded_optical_packet_is_fixed_tiny_diamond(self):
+        packet = tiny_diamond_packet()
+        self.assertEqual(packet[:4], bytes.fromhex("F0F1F2F3"))
+        self.assertEqual(packet[-4:], bytes.fromhex("F4F5F6F7"))
+        self.assertEqual(int.from_bytes(packet[20:22], "big"), 17)
+        self.assertEqual(len(packet), 111)
+        self.assertEqual(MAX_DURATION, 2.0)
 
     def test_challenge_formula_matches_reference(self):
         self.assertEqual(

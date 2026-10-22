@@ -108,14 +108,32 @@ this test.
 3. [x] Confirm the projector accepts the query/challenge unlock gate without
    changing optical state. No separate unlock packet exists in the pinned
    upstream implementation.
-4. Terminate the complete double-wide beam envelope on a matte inaccessible
-   surface and test a tiny bounded symmetric drawing.
+4. [x] Terminate the complete double-wide beam envelope on a matte inaccessible
+   surface and test a tiny bounded symmetric drawing. On October 22, 2026,
+   `lightelf_bounded_test.py` displayed its fixed centered 80-by-80-unit diamond
+   for 1.5 seconds; Greg visually confirmed the expected image and blackout.
 5. Test BLE disconnect, controller crash, Pi restart, and fixture power cycle.
 6. Determine whether DMX blackout overrides BLE output. If not, add a separate
    physical power/interlock layer before unattended use.
 7. Confirm whether drawings persist, whether more than one can be stored, and
    whether any DMX-reserved slots select uploaded content.
 8. Only then implement and enable the real transport behind the same adapter.
+
+`lightelf_bounded_test.py` remains a qualification utility, not a general live
+transport. It accepts no arbitrary geometry or packet input, requires the exact
+`BEAM-AREA-CLEAR` acknowledgement, caps illumination at two seconds, and sends
+POWER OFF twice from its cleanup path. A BlueZ D-Bus EOF during the first test's
+final disconnect occurred only after both safety writes; the utility now treats
+that already-disconnected condition as a clean shutdown.
+
+The same session exposed a separate DMX-bus issue. With the small laser attached
+at the end of the DMX chain and in its OFF mode, the two upstream PAR fixtures
+flickered independently. Disconnecting the cable from the laser made both PARs
+immediately stable; reconnecting the same cable to PAR 2 while leaving its far
+end unattached remained stable. This isolates the disturbance to the laser box
+in OFF mode rather than the Pi, ENTTEC adapter, PARs, or cable. A proper 120-ohm
+DMX terminator on the laser's DMX OUT/THRU connector is the next test. Until that
+passes, do not include the small laser on the production PAR daisy chain.
 
 The future backyard laser will use a separate scene catalog and installation
 profile. Its proposed `FORTUNE TELLER` direction sign must not be conflated with
