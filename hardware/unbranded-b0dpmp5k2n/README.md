@@ -133,11 +133,38 @@ Observed patterns in static graphics group 5:
 | 224 | Horizontal line |
 | 240 | Dark/no visible output |
 
-Asymmetric group-5 graphics and text appeared upside down in the fixture's
-current physical orientation. Static CH10 rotation and CH11/CH12 flip trials did
-not correct them. The fixture should be mounted rotated 180 degrees around its
-beam axis if these graphics are used. Snowflakes, the ornament, bells,
-tree-topper, and present/teddy animation are the useful scenic candidates.
+Asymmetric group-5 graphics and text initially appeared upside down. Static
+CH10 rotation and CH11/CH12 DMX flip trials did not correct them. Pressing both
+`Invert-X` and `Invert-Y` on the supplied IR remote corrected the orientation,
+and the correction persisted across DMX blackout and a fresh DMX session. The
+fixture can therefore remain upright on its feet. Snowflakes, the ornament,
+bells, tree-topper, and present/teddy animation are the useful scenic candidates.
+
+Observed ILDA animation category 1 patterns so far:
+
+| CH5 | Observed animation |
+|---:|---|
+| 0 | Swimming dolphin |
+| 16 | Walking stork |
+| 32 | Perched eagle |
+| 48 | Fighter jets streaking top-to-bottom |
+| 64 | Page-a-day calendar changing pages and moving around |
+| 80 | Boeing 747 in a flat spin |
+| 96 | Flying bat with animated wings |
+| 112 | Salamander crawling left-to-right |
+| 128 | Reindeer/moose watching a flying sparkle |
+| 144 | Ghost or creepy peeping figure |
+| 160 | Dolphin leaping from water with a splash |
+| 176 | Bird flying through a landscape of trees and mountains |
+| 192 | One, then two, then three bats with flapping wings |
+| 208 | Striking cobra |
+| 224 | Girl wearing a large hat and waving |
+| 240 | Open-cockpit propeller airplane slowly rotating about its Z-axis |
+
+The first four were observed before the IR orientation correction and therefore
+appeared upside down at the time. Later samples verified that the correction
+persisted. The waving girl, cobra, bats, stork, eagle, and vintage airplane are
+initial circus/Halloween candidates.
 
 ## Preserved source
 
