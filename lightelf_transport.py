@@ -104,6 +104,17 @@ class LightElfBleTransport:
         packet = text_packet(text, color=color, size_percent=size_percent)
         self._submit("show", packet)
 
+    def show_axis_flip_text(
+        self, text: str, *, color: str, size_percent: int, spin: int = 140,
+        spin_field: int = 8,
+    ) -> None:
+        """Operator-only slow 3-D axis flip; never used by the auto playlist."""
+        packet = text_packet(
+            text, color=color, size_percent=size_percent, spin=spin,
+            spin_field=spin_field,
+        )
+        self._submit("show", packet)
+
     def heartbeat(self, *, ttl: float = 1.0) -> None:
         self._submit("heartbeat", min(max(float(ttl), 0.1), MAX_LEASE_SECONDS))
 

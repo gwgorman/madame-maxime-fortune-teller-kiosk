@@ -122,6 +122,23 @@ front-laser production playlist. Readable party signage is reserved for the
 future backyard laser; a purpose-designed rotational ambigram is the only
 plausible small-laser exception.
 
+The two hand-draw transform fields at configuration offsets 7 and 8 were also
+qualified at slow value 140. Both produce 3-D axis flips: the drawing narrows
+to a line, reappears reversed, narrows again, and returns forward. Neither
+field performs an in-plane Z-axis rotation. The firmware's stored animations
+use a different engine, and DMX channel 10 remains the known true rotation
+control for those built-in images. These hand-draw flips remain operator-only.
+
+An additional official-app iPhone trace tested the drawing library's Save
+action. Save sent the normal `F0 F1 F2 F3` live-drawing envelope with all 16
+configuration bytes zero (including the save-tag byte), streamed the point
+data to FF02, and ended with `F7`. It sent no follow-up commit or flash-storage
+command. The app therefore retains saved artwork on the phone and replays it
+live over BLE; it does not install that artwork into a fixture slot. The raw
+trace remains excluded because it includes unrelated nearby Bluetooth
+identifiers. Custom art cannot be selected later by DMX without an external
+controller streaming it.
+
 Review of the pinned upstream connection path confirms that there is no
 separate unlock packet. A successfully validated query challenge is the unlock
 gate: the client enables command transmission locally only after
@@ -146,8 +163,9 @@ this test.
 5. Test BLE disconnect, controller crash, Pi restart, and fixture power cycle.
 6. Determine whether DMX blackout overrides BLE output. If not, add a separate
    physical power/interlock layer before unattended use.
-7. Confirm whether drawings persist, whether more than one can be stored, and
-   whether any DMX-reserved slots select uploaded content.
+7. [x] Confirm drawing storage behavior. Official-app Save uses a zero save tag
+   and no device commit command: artwork is phone-local and streamed live, so
+   no uploaded fixture slot exists for DMX selection.
 8. Only then implement and enable the real transport behind the same adapter.
 
 `lightelf_bounded_test.py` remains a qualification utility, not a general live

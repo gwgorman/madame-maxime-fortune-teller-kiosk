@@ -47,7 +47,10 @@ def power_packet(on: bool) -> bytes:
     return bytes.fromhex("B0B1B2B3" + ("FF" if on else "00") + "B4B5B6B7")
 
 
-def draw_packet(segments, *, color: int = 7, steps_per_edge: int = 3) -> bytes:
+def draw_packet(
+    segments, *, color: int = 7, steps_per_edge: int = 3,
+    transforms: dict[int, int] | None = None,
+) -> bytes:
     """Encode bounded continuous strokes in the old-protocol F0 envelope."""
     if not 1 <= int(color) <= 7:
         raise ValueError("color must be a LightELF color index from 1 through 7")
@@ -73,6 +76,12 @@ def draw_packet(segments, *, color: int = 7, steps_per_edge: int = 3) -> bytes:
         raise ValueError(f"drawing must contain 1 through {MAX_POINTS} points")
 
     payload = bytearray(16)  # 15 config bytes plus unsaved (zero) save tag
+    for index, value in (transforms or {}).items():
+        if index not in {7, 8}:
+            raise ValueError("operator demo permits only the two verified spin fields")
+        if not 128 <= int(value) <= 160:
+            raise ValueError("operator-demo spin must stay in the slow 128-160 band")
+        payload[index] = int(value)
     payload.extend(len(points).to_bytes(2, "big"))
     for x, y, control in points:
         payload.extend(_word(x))
@@ -188,9 +197,13 @@ def text_segments(text: str, *, size_percent: int) -> list[list[tuple[int, int]]
     return segments
 
 
-def text_packet(text: str, *, color: str, size_percent: int) -> bytes:
+def text_packet(
+    text: str, *, color: str, size_percent: int, spin: int | None = None,
+    spin_field: int = 8,
+) -> bytes:
     return draw_packet(
         text_segments(text, size_percent=size_percent),
         color=COLOR_IDS[color],
         steps_per_edge=2,
+        transforms={spin_field: spin} if spin is not None else None,
     )

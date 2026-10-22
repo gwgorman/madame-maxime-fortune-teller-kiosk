@@ -64,6 +64,16 @@ class LightElfProtocolTests(unittest.TestCase):
             )
             self.assertLessEqual(int.from_bytes(packet[20:22], "big"), MAX_POINTS)
 
+    def test_operator_text_axis_flip_is_limited_to_verified_slow_band(self):
+        packet = text_packet("WELCOME", color="yellow", size_percent=45, spin=140)
+        self.assertEqual(packet[12], 140)
+        other_axis = text_packet(
+            "WELCOME", color="yellow", size_percent=45, spin=140, spin_field=7
+        )
+        self.assertEqual(other_axis[11], 140)
+        with self.assertRaises(ValueError):
+            text_packet("WELCOME", color="yellow", size_percent=45, spin=200)
+
     def test_live_transport_requires_two_part_interlock(self):
         old = os.environ.pop("MADAME_MAXIME_LIGHTELF_LIVE", None)
         try:

@@ -1,7 +1,7 @@
 __pycache__/
 *.py[cod]
 *.pklg
-lightelf-iphone-handshake-*.txt
+lightelf-iphone-*.txt
 .DS_Store
 .env
 *.key
