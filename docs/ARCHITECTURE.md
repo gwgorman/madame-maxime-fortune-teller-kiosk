@@ -37,11 +37,18 @@ Distance, camera, microphone, audio, and DMX each expose a small interface with
 real and simulated implementations. Adapter errors become status events; they
 do not terminate the UI.
 
-The ENTTEC interface must have exactly one owning process. PAR scenes and laser
-cues will be merged by a single DMX broker rather than opening the USB adapter
-from competing processes. Laser cues are blackout unless explicitly armed,
-use complete 16-channel frames, and require a heartbeat; broker timeout,
-Office-console handoff, kiosk exit, or process failure forces laser blackout.
+The ENTTEC interface has exactly one owning process: `dmx_broker.py`. PAR scenes
+and laser cues are merged into its 96-channel universe over a private local
+Unix datagram socket. Laser cues are blackout unless explicitly armed, use
+complete 16-channel frames, and require a matching heartbeat at least once per
+second. A missing client heartbeat, Office-console handoff, or kiosk exit
+forces laser blackout without disturbing the PAR scene.
+
+The broker runs as a user service, begins with an all-zero universe, uses an
+exclusive process lock, and restarts after a fault in 250 ms. A software crash
+cannot guarantee instantaneous darkness because some DMX receivers may hold
+their last frame until transmission resumes; a physical interlock remains the
+required hard safety boundary for a laser installation.
 
 ### Personality service
 

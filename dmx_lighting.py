@@ -61,7 +61,10 @@ WARM_AMBER = ParScene(42, 255, 72, 8)
 
 
 class Universe:
-    def __init__(self) -> None:
+    def __init__(self, transmit_channels: int = TRANSMIT_CHANNELS) -> None:
+        if not 1 <= transmit_channels <= UNIVERSE_SIZE:
+            raise ValueError("transmit_channels must be between 1 and 512")
+        self.transmit_channels = transmit_channels
         # Byte zero is the DMX start code; channels 1-512 follow it.
         self._frame = bytearray(UNIVERSE_SIZE + 1)
         self._lock = threading.Lock()
@@ -82,13 +85,21 @@ class Universe:
             for address in addresses:
                 self._frame[address : address + 6] = channels
 
+    def set_channels(self, address: int, values) -> None:
+        """Atomically update an arbitrary contiguous fixture frame."""
+        channels = bytes(values)
+        if address < 1 or address + len(channels) - 1 > UNIVERSE_SIZE:
+            raise ValueError(f"fixture at {address} is outside the DMX universe")
+        with self._lock:
+            self._frame[address : address + len(channels)] = channels
+
     def blackout(self) -> None:
         with self._lock:
             self._frame[1:] = bytes(UNIVERSE_SIZE)
 
     def snapshot(self) -> bytes:
         with self._lock:
-            return bytes(self._frame[: TRANSMIT_CHANNELS + 1])
+            return bytes(self._frame[: self.transmit_channels + 1])
 
 
 class OpenDmxOutput:

@@ -23,12 +23,11 @@ SCENES = {
 class LightingController:
     """Animate two PAR fixtures while allowing the UI to survive every fault."""
 
-    def __init__(self, enabled: bool = False) -> None:
+    def __init__(self, enabled: bool = False, client=None) -> None:
         self.enabled = enabled
         self.available = False
         self.error = None
-        self.universe = None
-        self.output = None
+        self.client = client
         self.par_scene = None
         self.par_addresses = ()
         self.current = list(SCENES["idle"])
@@ -42,13 +41,10 @@ class LightingController:
         if not self.enabled:
             return
         try:
-            from dmx_lighting import OpenDmxOutput, PAR_ADDRESSES, ParScene, Universe
+            if self.client is None:
+                from dmx_broker import DmxClient
 
-            self.par_scene = ParScene
-            self.par_addresses = PAR_ADDRESSES
-            self.universe = Universe()
-            self.output = OpenDmxOutput(self.universe)
-            self.output.start()
+                self.client = DmxClient()
             self.available = True
             self._write(self.current)
             self._stop.clear()
@@ -63,8 +59,11 @@ class LightingController:
     def _write(self, values) -> None:
         if not self.available:
             return
-        scene = self.par_scene(*(round(value) for value in values))
-        self.universe.set_pars(self.par_addresses, scene)
+        try:
+            self.client.set_par(round(value) for value in values)
+        except Exception as exc:
+            self.error = str(exc)
+            self.available = False
 
     def update(self, state_name: str, now: float) -> None:
         if not self.available:
@@ -92,17 +91,14 @@ class LightingController:
         blend = min(1.0, elapsed * 2.8)
         self.current = [old + (new - old) * blend for old, new in zip(self.current, target)]
         self._write(self.current)
-        if self.output.error:
-            self.error = self.output.error
-            self.available = False
 
     def stop(self) -> None:
         self._stop.set()
         if self._animation_thread:
             self._animation_thread.join(timeout=1.0)
-        if self.output:
+        if self.client:
             try:
-                self.output.stop(blackout=True)
+                self.client.blackout_all()
             except Exception as exc:
                 self.error = str(exc)
         self.available = False

@@ -1,0 +1,15 @@
+[Unit]
+Description=Madame Maxime single-owner DMX broker
+After=default.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/ggorman/madame-maxime
+ExecStart=/usr/bin/python3 /home/ggorman/madame-maxime/dmx_broker.py --serve
+Restart=on-failure
+RestartSec=0.25
+KillSignal=SIGTERM
+TimeoutStopSec=3
+
+[Install]
+WantedBy=default.target

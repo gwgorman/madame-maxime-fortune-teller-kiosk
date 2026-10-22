@@ -26,8 +26,12 @@ Verified on October 19, 2026:
 - OLA and the ordinary Linux serial path do not produce usable output with
   this installation and must not own the adapter.
 
-The field-verified direct-FTDI implementation is now included as
-[`dmx_lighting.py`](dmx_lighting.py). Its original verification record remains
+The field-verified direct-FTDI implementation is included as
+[`dmx_lighting.py`](dmx_lighting.py). A dedicated
+[`dmx_broker.py`](dmx_broker.py) service is the sole owner of the adapter and
+merges both PAR fixtures with the small laser at `A057`. Laser cues require a
+matching heartbeat and otherwise return to blackout automatically. The
+original PAR verification record remains
 at transporter-console commit
 [`04b325b`](https://github.com/gwgorman/raspberry-pi-transporter-console/commit/04b325b).
 
@@ -118,8 +122,20 @@ to exit. The default journal is
 `~/.local/state/madame-maxime/journal.json`; override it with
 `MADAME_MAXIME_JOURNAL` during tests.
 
-On the production Pi, add `--dmx` to use the verified ENTTEC adapter and PARs.
-The touchscreen remains operational if the adapter or driver is unavailable.
+On the production Pi, install and start the single-owner DMX broker before
+using `--dmx`:
+
+```bash
+mkdir -p ~/.config/systemd/user
+cp systemd/madame-maxime-dmx.service ~/.config/systemd/user/
+systemctl --user daemon-reload
+systemctl --user enable --now madame-maxime-dmx.service
+python3 madame_maxime.py --dmx
+```
+
+The touchscreen remains operational if the broker, adapter, or driver is
+unavailable. Stopping the kiosk sends a full-universe blackout; the broker
+itself remains available for the next kiosk launch.
 The current milestone is intentionally silent: it does not initialize Pygame's
 audio mixer and contains no speech or sound playback path.
 
