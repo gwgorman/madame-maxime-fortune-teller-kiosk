@@ -304,6 +304,23 @@ CUES = {
     "group150_slot_208": _cue("group150_slot_208", 150, 208, "Duplicate doubled candle animation"),
     "group150_slot_224": _cue("group150_slot_224", 150, 224, "Duplicate doubled candle animation"),
     "group150_slot_240": _cue("group150_slot_240", 150, 240, "Duplicate doubled candle animation"),
+
+    "group175_slot_000": _cue("group175_slot_000", 175, 0, "Duplicate doubled confused-girl animation"),
+    "group175_slot_016": _cue("group175_slot_016", 175, 16, "Duplicate doubled Elvis animation"),
+    "group175_slot_032": _cue("group175_slot_032", 175, 32, "Duplicate doubled slinky animation"),
+    "group175_slot_048": _cue("group175_slot_048", 175, 48, "Duplicate doubled candy-cane moose animation"),
+    "group175_slot_064": _cue("group175_slot_064", 175, 64, "Duplicate doubled rotating-cube animation"),
+    "group175_slot_080": _cue("group175_slot_080", 175, 80, "Duplicate doubled candle animation"),
+    "group175_slot_096": _cue("group175_slot_096", 175, 96, "Duplicate doubled candle animation"),
+    "group175_slot_112": _cue("group175_slot_112", 175, 112, "Duplicate doubled candle animation"),
+    "group175_slot_128": _cue("group175_slot_128", 175, 128, "Duplicate doubled candle animation"),
+    "group175_slot_144": _cue("group175_slot_144", 175, 144, "Duplicate doubled candle animation"),
+    "group175_slot_160": _cue("group175_slot_160", 175, 160, "Duplicate doubled candle animation"),
+    "group175_slot_176": _cue("group175_slot_176", 175, 176, "Duplicate doubled candle animation"),
+    "group175_slot_192": _cue("group175_slot_192", 175, 192, "Duplicate doubled candle animation"),
+    "group175_slot_208": _cue("group175_slot_208", 175, 208, "Duplicate doubled candle animation"),
+    "group175_slot_224": _cue("group175_slot_224", 175, 224, "Duplicate doubled candle animation"),
+    "group175_slot_240": _cue("group175_slot_240", 175, 240, "Duplicate doubled candle animation"),
 }
 
 
@@ -356,6 +373,12 @@ DIAGNOSTIC_LOOP = (
     "group150_slot_144", "group150_slot_160",
     "group150_slot_176", "group150_slot_192", "group150_slot_208",
     "group150_slot_224", "group150_slot_240",
+    "group175_slot_000", "group175_slot_016", "group175_slot_032",
+    "group175_slot_048", "group175_slot_064", "group175_slot_080",
+    "group175_slot_096", "group175_slot_112", "group175_slot_128",
+    "group175_slot_144", "group175_slot_160", "group175_slot_176",
+    "group175_slot_192", "group175_slot_208", "group175_slot_224",
+    "group175_slot_240",
 )
 
 PLAYLISTS = {

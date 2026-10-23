@@ -289,6 +289,13 @@ Only slot 80 is exposed as the production `christmas_candles` cue. Slots
 96-240 remain diagnostic duplicates so an unattended playlist does not repeat
 the same animation under multiple names.
 
+Group 175 is a complete alias of group 150. Physical testing of every exact
+slot confirmed the same doubled output: confused girl at 0, Elvis at 16,
+slinky at 32, candy-cane moose at 48, rotating cube at 64, and identical
+Christmas candles at every value from 80 through 240. The entire group remains
+diagnostic-only because group 150 already provides the canonical production
+cues.
+
 Review of the pinned upstream connection path confirms that there is no
 separate unlock packet. A successfully validated query challenge is the unlock
 gate: the client enables command transmission locally only after
