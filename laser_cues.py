@@ -114,15 +114,33 @@ CUES = {
     "flower": _cue("flower", 25, 224, "Two mirrored flowers", family="circus"),
     "alignment_pattern": _cue("alignment_pattern", 25, 240, "Alignment test pattern"),
 
-    "diagonal_down": _cue("diagonal_down", 50, 0, "Diagonal upper-left to lower-right", family="transition"),
-    "diagonal_up": _cue("diagonal_up", 50, 16, "Diagonal lower-left to upper-right", family="transition"),
-    "dashed_diagonal": _cue("dashed_diagonal", 50, 64, "Six-dash diagonal", family="transition"),
-    "diamond": _cue("diamond", 50, 144, "Diamond", family="circus"),
-    "hexagon": _cue("hexagon", 50, 160, "Six-sided polygon"),
-    "octagon": _cue("octagon", 50, 176, "Eight-sided polygon"),
-    "rounded_octagon": _cue("rounded_octagon", 50, 192, "Rounded eight-segment shape"),
-    "quartered_circle": _cue("quartered_circle", 50, 208, "Circle formed from four dashes", family="transition"),
-    "half_heart": _cue("half_heart", 50, 240, "Half-heart"),
+    "diagonal_down": _cue(
+        "diagonal_down", 50, 0, "Two horizontal lines; internal slot A",
+        family="transition",
+    ),
+    "diagonal_up": _cue(
+        "diagonal_up", 50, 16, "Two horizontal lines; internal slot B",
+        family="transition",
+    ),
+    "dashed_diagonal": _cue(
+        "dashed_diagonal", 50, 64, "Two six-dash horizontal lines",
+        family="transition",
+    ),
+    "diamond": _cue("diamond", 50, 144, "Two mirrored squares", family="circus"),
+    "hexagon": _cue("hexagon", 50, 160, "Two mirrored hexagons"),
+    "octagon": _cue("octagon", 50, 176, "Two mirrored octagons"),
+    "rounded_octagon": _cue(
+        "rounded_octagon", 50, 192, "Two eight-segment dashed circles"
+    ),
+    "quartered_circle": _cue(
+        "quartered_circle", 50, 208, "Two four-segment dashed circles",
+        family="transition",
+    ),
+    "dotted_half_heart": _cue(
+        "dotted_half_heart", 50, 224, "Two twelve-segment half-circles",
+        family="circus",
+    ),
+    "half_heart": _cue("half_heart", 50, 240, "Two smooth half-circles"),
 
     "four_dot_line": _cue("four_dot_line", 75, 16, "Four-dot horizontal line", family="transition"),
     "eight_dot_line": _cue("eight_dot_line", 75, 48, "Eight-dot horizontal line", family="transition"),
@@ -173,7 +191,8 @@ CIRCUS_LOOP = (
     "starburst_spin", "storybook_star", "sun", "fan", "big_circle",
     "four_circle_square", "spiral", "three_spirals", "pinwheel",
     "quarter_arc_cluster", "spiral_cone", "flower", "diamond", "hexagon", "octagon",
-    "dotted_trapezoid", "dotted_triangle", "dense_dotted_circle",
+    "dotted_trapezoid", "dotted_triangle", "dotted_half_heart",
+    "dense_dotted_circle",
     "snowflake", "star_ornament", "star_topper", "circle_slinky",
     "rotating_cube",
 )

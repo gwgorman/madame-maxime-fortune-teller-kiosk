@@ -176,6 +176,22 @@ the heartbeat-protected DMX broker and visually confirmed on October 23, 2026:
 These are exact selector values, not 16-value bands. Midpoint tests such as 24,
 56, and 104 produced different firmware images and must not be substituted.
 
+The same procedure verified the useful group-50 slots. Every entry below is
+projected twice by the fixture's mirrored outputs:
+
+| CH5 | Combined projected image |
+| ---: | --- |
+| 0 | Two horizontal lines; internal slot A |
+| 16 | Two horizontal lines; internal slot B |
+| 64 | Two six-dash horizontal lines |
+| 144 | Two squares |
+| 160 | Two hexagons |
+| 176 | Two octagons |
+| 192 | Two eight-segment dashed circles |
+| 208 | Two four-segment dashed circles |
+| 224 | Two twelve-segment half-circles |
+| 240 | Two smooth half-circles |
+
 Review of the pinned upstream connection path confirms that there is no
 separate unlock packet. A successfully validated query challenge is the unlock
 gate: the client enables command transmission locally only after
