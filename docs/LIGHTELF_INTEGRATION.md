@@ -296,6 +296,12 @@ Christmas candles at every value from 80 through 240. The entire group remains
 diagnostic-only because group 150 already provides the canonical production
 cues.
 
+Group 200 was then tested across all 16 exact CH5 slots and produced the same
+complete result yet again. This establishes that CH4 is range-based at its
+upper end: values 150, 175, and 200 all address the same final firmware image
+bank. Group 200 remains diagnostic-only, and group 225 does not require another
+full optical sweep. Production cues use CH4 value 150 as the canonical selector.
+
 Review of the pinned upstream connection path confirms that there is no
 separate unlock packet. A successfully validated query challenge is the unlock
 gate: the client enables command transmission locally only after
