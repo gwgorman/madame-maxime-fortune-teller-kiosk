@@ -201,11 +201,38 @@ CUES = {
         family="transition",
     ),
 
-    "snowflake": _cue("snowflake", 100, 32, "Snowflake", family="circus"),
-    "star_ornament": _cue("star_ornament", 100, 48, "Star ornament", family="circus"),
-    "bells": _cue("bells", 100, 64, "Bells", family="seasonal"),
-    "star_topper": _cue("star_topper", 100, 80, "Star tree-topper", family="circus"),
-    "gift_teddy": _cue("gift_teddy", 100, 112, "Present opening to reveal a teddy bear", family="seasonal"),
+    "merry_christmas": _cue(
+        "merry_christmas", 100, 0, "Two script Merry Christmas projections",
+        family="seasonal",
+    ),
+    "stocking": _cue("stocking", 100, 16, "Two Christmas stockings", family="seasonal"),
+    "snowflake": _cue("snowflake", 100, 32, "Two snowflakes", family="circus"),
+    "star_ornament": _cue("star_ornament", 100, 48, "Two star ornaments", family="circus"),
+    "bells": _cue("bells", 100, 64, "Two sets of bells", family="seasonal"),
+    "star_topper": _cue("star_topper", 100, 80, "Two star tree-toppers", family="circus"),
+    "snowflake_b": _cue("snowflake_b", 100, 96, "Two alternate snowflakes", family="seasonal"),
+    "gift_teddy": _cue(
+        "gift_teddy", 100, 112,
+        "Two animated gifts bursting open to reveal teddy bears", family="seasonal",
+    ),
+    "winter_message": _cue(
+        "winter_message", 100, 128, "Two Winter Is Coming messages", family="seasonal"
+    ),
+    "stocking_b": _cue(
+        "stocking_b", 100, 144, "Two candy canes", family="seasonal"
+    ),
+    "group100_slot_160": _cue(
+        "group100_slot_160", 100, 160, "Two Random labels plus Chinese characters"
+    ),
+    "group100_slot_176": _cue(
+        "group100_slot_176", 100, 176, "Two Outdoor labels plus Chinese characters"
+    ),
+    "group100_slot_192": _cue("group100_slot_192", 100, 192, "Two horizontal lines"),
+    "group100_slot_208": _cue(
+        "group100_slot_208", 100, 208, "Two script Merry Christmas projections"
+    ),
+    "group100_slot_224": _cue("group100_slot_224", 100, 224, "Two horizontal lines"),
+    "group100_slot_240": _cue("group100_slot_240", 100, 240, "Two horizontal lines"),
 
     "stork_walk": _cue("stork_walk", 125, 16, "Walking stork", family="character"),
     "eagle_perch": _cue("eagle_perch", 125, 32, "Perched eagle", family="character"),
@@ -270,7 +297,15 @@ CHARACTER_LOOP = (
 
 HALLOWEEN_LOOP = ("bat_flight", "ghost_peek", "bat_trio")
 
-SEASONAL_LOOP = ("bells", "gift_teddy", "candy_cane_reindeer")
+SEASONAL_LOOP = (
+    "merry_christmas", "stocking", "bells", "snowflake_b", "gift_teddy",
+    "winter_message", "stocking_b", "candy_cane_reindeer",
+)
+
+DIAGNOSTIC_LOOP = (
+    "group100_slot_160", "group100_slot_176", "group100_slot_192",
+    "group100_slot_208", "group100_slot_224", "group100_slot_240",
+)
 
 PLAYLISTS = {
     "circus": CIRCUS_LOOP,
@@ -279,6 +314,7 @@ PLAYLISTS = {
     "characters": CHARACTER_LOOP,
     "halloween": HALLOWEEN_LOOP,
     "seasonal": SEASONAL_LOOP,
+    "diagnostic": DIAGNOSTIC_LOOP,
 }
 
 

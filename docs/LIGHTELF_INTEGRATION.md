@@ -214,6 +214,32 @@ map was physically verified the same way:
 | 224 | Two full fine-dotted circles |
 | 240 | Two large six-dot circles |
 
+Group 100 is the seasonal/text bank. The fixture doubles every entry through
+its mirrored outputs. All 16 exact slots were physically verified:
+
+| CH5 | Combined projected image |
+| ---: | --- |
+| 0 | Two script Merry Christmas projections |
+| 16 | Two Christmas stockings |
+| 32 | Two snowflakes |
+| 48 | Two star ornaments |
+| 64 | Two sets of bells |
+| 80 | Two star tree-toppers |
+| 96 | Two alternate snowflakes |
+| 112 | Two animated gifts bursting open to reveal teddy bears |
+| 128 | Two Winter Is Coming messages |
+| 144 | Two candy canes |
+| 160 | Two Random labels plus Chinese characters |
+| 176 | Two Outdoor labels plus Chinese characters |
+| 192 | Two horizontal lines |
+| 208 | Two script Merry Christmas projections |
+| 224 | Two horizontal lines |
+| 240 | Two horizontal lines |
+
+Slots 160-240 remain in the diagnostic playlist because they are redundant or
+unsuitable for unattended circus operation. The useful seasonal slots are
+kept in the seasonal playlist.
+
 Review of the pinned upstream connection path confirms that there is no
 separate unlock packet. A successfully validated query challenge is the unlock
 gate: the client enables command transmission locally only after
