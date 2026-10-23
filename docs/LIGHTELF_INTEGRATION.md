@@ -192,6 +192,28 @@ projected twice by the fixture's mirrored outputs:
 | 224 | Two twelve-segment half-circles |
 | 240 | Two smooth half-circles |
 
+Group 75 contains the point- and dot-based graphics. Its complete exact-value
+map was physically verified the same way:
+
+| CH5 | Combined projected image |
+| ---: | --- |
+| 0 | Three bright horizontal dots; internal slot A |
+| 16 | Three bright horizontal dots; internal slot B |
+| 32 | Two horizontal rows of six bright dots |
+| 48 | Two horizontal rows of eight bright dots |
+| 64 | Two horizontal rows of sixteen bright dots |
+| 80 | Two fine dotted horizontal lines |
+| 96 | Two horizontal rows of grouped dot triplets |
+| 112 | Two dotted triangles |
+| 128 | Two fine-dotted triangles |
+| 144 | Two dotted squares |
+| 160 | Three tiny dotted circles |
+| 176 | Upper-right dotted quarter-circle, mirrored twice |
+| 192 | Lower-left and upper-right dotted quarter-arcs, mirrored twice |
+| 208 | Two dotted half-circles |
+| 224 | Two full fine-dotted circles |
+| 240 | Two large six-dot circles |
+
 Review of the pinned upstream connection path confirms that there is no
 separate unlock packet. A successfully validated query challenge is the unlock
 gate: the client enables command transmission locally only after

@@ -142,15 +142,64 @@ CUES = {
     ),
     "half_heart": _cue("half_heart", 50, 240, "Two smooth half-circles"),
 
-    "four_dot_line": _cue("four_dot_line", 75, 16, "Four-dot horizontal line", family="transition"),
-    "eight_dot_line": _cue("eight_dot_line", 75, 48, "Eight-dot horizontal line", family="transition"),
-    "twelve_dot_line": _cue("twelve_dot_line", 75, 80, "Twelve-dot horizontal line", family="transition"),
-    "dotted_trapezoid": _cue("dotted_trapezoid", 75, 112, "Dotted trapezoid", family="circus"),
-    "dotted_triangle": _cue("dotted_triangle", 75, 128, "Dotted triangular shape", family="circus"),
-    "dotted_circles": _cue("dotted_circles", 75, 160, "Two small dotted circles"),
-    "dotted_semicircle": _cue("dotted_semicircle", 75, 208, "Dense dotted semicircle", family="transition"),
-    "dense_dotted_circle": _cue("dense_dotted_circle", 75, 224, "Dense dotted circle", family="circus"),
-    "sparse_dotted_circle": _cue("sparse_dotted_circle", 75, 240, "Sparse dotted circle", family="transition"),
+    "two_dot_line": _cue(
+        "two_dot_line", 75, 0, "Three bright horizontal dots; internal slot A",
+        family="transition",
+    ),
+    "four_dot_line": _cue(
+        "four_dot_line", 75, 16, "Three bright horizontal dots; internal slot B",
+        family="transition",
+    ),
+    "six_dot_line": _cue(
+        "six_dot_line", 75, 32, "Two horizontal rows of six bright dots",
+        family="transition",
+    ),
+    "eight_dot_line": _cue(
+        "eight_dot_line", 75, 48, "Two horizontal rows of eight bright dots",
+        family="transition",
+    ),
+    "ten_dot_line": _cue(
+        "ten_dot_line", 75, 64, "Two horizontal rows of sixteen bright dots",
+        family="transition",
+    ),
+    "twelve_dot_line": _cue(
+        "twelve_dot_line", 75, 80, "Two fine dotted horizontal lines",
+        family="transition",
+    ),
+    "four_dot_triplets": _cue(
+        "four_dot_triplets", 75, 96, "Two horizontal rows of grouped dot triplets",
+        family="transition",
+    ),
+    "dotted_trapezoid": _cue(
+        "dotted_trapezoid", 75, 112, "Two dotted triangles", family="circus"
+    ),
+    "dotted_triangle": _cue(
+        "dotted_triangle", 75, 128, "Two fine-dotted triangles", family="circus"
+    ),
+    "dotted_trapezoid_b": _cue(
+        "dotted_trapezoid_b", 75, 144, "Two dotted squares", family="circus"
+    ),
+    "dotted_circles": _cue("dotted_circles", 75, 160, "Three tiny dotted circles"),
+    "dotted_quarter_arcs": _cue(
+        "dotted_quarter_arcs", 75, 176,
+        "Upper-right dotted quarter-circle, mirrored twice",
+        family="transition",
+    ),
+    "sparse_dotted_semicircle": _cue(
+        "sparse_dotted_semicircle", 75, 192,
+        "Lower-left and upper-right dotted quarter-arcs, mirrored twice",
+        family="transition",
+    ),
+    "dotted_semicircle": _cue(
+        "dotted_semicircle", 75, 208, "Two dotted half-circles", family="transition"
+    ),
+    "dense_dotted_circle": _cue(
+        "dense_dotted_circle", 75, 224, "Two full fine-dotted circles", family="circus"
+    ),
+    "sparse_dotted_circle": _cue(
+        "sparse_dotted_circle", 75, 240, "Two large six-dot circles",
+        family="transition",
+    ),
 
     "snowflake": _cue("snowflake", 100, 32, "Snowflake", family="circus"),
     "star_ornament": _cue("star_ornament", 100, 48, "Star ornament", family="circus"),
@@ -191,7 +240,8 @@ CIRCUS_LOOP = (
     "starburst_spin", "storybook_star", "sun", "fan", "big_circle",
     "four_circle_square", "spiral", "three_spirals", "pinwheel",
     "quarter_arc_cluster", "spiral_cone", "flower", "diamond", "hexagon", "octagon",
-    "dotted_trapezoid", "dotted_triangle", "dotted_half_heart",
+    "dotted_trapezoid", "dotted_triangle", "dotted_trapezoid_b",
+    "dotted_half_heart",
     "dense_dotted_circle",
     "snowflake", "star_ornament", "star_topper", "circle_slinky",
     "rotating_cube",
@@ -200,9 +250,10 @@ CIRCUS_LOOP = (
 TRANSITION_LOOP = (
     "thin_bar", "dashed_circle", "quarter_circle", "horizontal_squiggle",
     "vertical_squiggle", "diagonal_down", "diagonal_up",
-    "dashed_diagonal", "quartered_circle", "four_dot_line",
-    "eight_dot_line", "twelve_dot_line", "dotted_semicircle",
-    "sparse_dotted_circle",
+    "dashed_diagonal", "quartered_circle", "two_dot_line", "four_dot_line",
+    "six_dot_line", "eight_dot_line", "ten_dot_line", "twelve_dot_line",
+    "four_dot_triplets", "dotted_quarter_arcs", "sparse_dotted_semicircle",
+    "dotted_semicircle", "sparse_dotted_circle",
 )
 
 GEOMETRY_LOOP = (
