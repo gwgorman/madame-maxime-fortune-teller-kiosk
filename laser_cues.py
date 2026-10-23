@@ -73,20 +73,46 @@ CUES = {
     "thin_bar": _cue("thin_bar", 0, 240, "Thin rectangular bar", family="transition"),
     "bright_square": _cue("bright_square", 0, 248, "Tiny bright square", family="transition"),
 
-    "big_circle": _cue("big_circle", 25, 0, "Large circle"),
-    "two_circles": _cue("two_circles", 25, 16, "Two small circles"),
-    "four_circle_diagonal": _cue("four_circle_diagonal", 25, 32, "Four circles on a diagonal"),
-    "four_circle_square": _cue("four_circle_square", 25, 48, "Four circles in a square"),
-    "dashed_circle": _cue("dashed_circle", 25, 64, "Dashed circle", family="transition"),
-    "quarter_circle": _cue("quarter_circle", 25, 80, "Quarter-circle arc", family="transition"),
-    "spiral": _cue("spiral", 25, 96, "Spiral", family="circus"),
-    "three_spirals": _cue("three_spirals", 25, 112, "Three spirals", family="circus"),
-    "horizontal_squiggle": _cue("horizontal_squiggle", 25, 128, "Horizontal squiggle", family="transition"),
-    "vertical_squiggle": _cue("vertical_squiggle", 25, 144, "Vertical squiggle", family="transition"),
-    "pinwheel": _cue("pinwheel", 25, 160, "Pinwheel", family="circus"),
-    "small_circle_square": _cue("small_circle_square", 25, 176, "Small circles in a square"),
-    "spiral_cone": _cue("spiral_cone", 25, 208, "Spiral cone", family="circus"),
-    "flower": _cue("flower", 25, 224, "Flower", family="circus"),
+    "big_circle": _cue("big_circle", 25, 8, "Large circle"),
+    "two_circles": _cue("two_circles", 25, 16, "Three-circle mirrored projection"),
+    "four_circle_diagonal": _cue("four_circle_diagonal", 25, 32, "Eight-circle mirrored projection"),
+    "four_circle_square": _cue(
+        "four_circle_square", 25, 48,
+        "Six-circle mirrored projection; lower circles may clip",
+    ),
+    "dashed_circle": _cue(
+        "dashed_circle", 25, 64,
+        "Two solid circles with three dashed circles", family="transition",
+    ),
+    "quarter_circle": _cue(
+        "quarter_circle", 25, 80, "Two quarter-circle arcs", family="transition"
+    ),
+    "spiral": _cue("spiral", 25, 96, "Two mirrored spirals", family="circus"),
+    "three_spirals": _cue(
+        "three_spirals", 25, 112,
+        "Six pinwheels arranged as two triangles", family="circus",
+    ),
+    "horizontal_squiggle": _cue(
+        "horizontal_squiggle", 25, 128, "Horizontal squiggle", family="transition"
+    ),
+    "vertical_squiggle": _cue(
+        "vertical_squiggle", 25, 144, "Vertical squiggle", family="transition"
+    ),
+    "pinwheel": _cue("pinwheel", 25, 160, "Two mirrored pinwheels", family="circus"),
+    "small_circle_square": _cue(
+        "small_circle_square", 25, 176,
+        "Two mirrored rings of eight small circles",
+    ),
+    "quarter_arc_cluster": _cue(
+        "quarter_arc_cluster", 25, 192,
+        "Four small circles around a quarter arc and bright center, mirrored twice",
+        family="circus",
+    ),
+    "spiral_cone": _cue(
+        "spiral_cone", 25, 208, "Vertical tornado / spiral cone", family="circus"
+    ),
+    "flower": _cue("flower", 25, 224, "Two mirrored flowers", family="circus"),
+    "alignment_pattern": _cue("alignment_pattern", 25, 240, "Alignment test pattern"),
 
     "diagonal_down": _cue("diagonal_down", 50, 0, "Diagonal upper-left to lower-right", family="transition"),
     "diagonal_up": _cue("diagonal_up", 50, 16, "Diagonal lower-left to upper-right", family="transition"),
@@ -146,7 +172,7 @@ CUES = {
 CIRCUS_LOOP = (
     "starburst_spin", "storybook_star", "sun", "fan", "big_circle",
     "four_circle_square", "spiral", "three_spirals", "pinwheel",
-    "spiral_cone", "flower", "diamond", "hexagon", "octagon",
+    "quarter_arc_cluster", "spiral_cone", "flower", "diamond", "hexagon", "octagon",
     "dotted_trapezoid", "dotted_triangle", "dense_dotted_circle",
     "snowflake", "star_ornament", "star_topper", "circle_slinky",
     "rotating_cube",
@@ -162,8 +188,8 @@ TRANSITION_LOOP = (
 
 GEOMETRY_LOOP = (
     "x_mark", "four_corner_boxes", "bright_square", "two_circles",
-    "four_circle_diagonal", "small_circle_square", "rounded_octagon",
-    "half_heart", "dotted_circles",
+    "four_circle_diagonal", "small_circle_square", "alignment_pattern",
+    "rounded_octagon", "half_heart", "dotted_circles",
 )
 
 CHARACTER_LOOP = (

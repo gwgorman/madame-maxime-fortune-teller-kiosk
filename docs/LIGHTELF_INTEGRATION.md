@@ -147,6 +147,35 @@ durable `circus`, `transitions`, `geometry`, `characters`, `halloween`, and
 opening DMX hardware. BLE drawings remain optional supervised overlays rather
 than a startup or recovery dependency.
 
+### Physically verified group-25 pattern map
+
+The small fixture contains two side-by-side, mirrored optical outputs. Names
+from the original single-image scan therefore do not always describe the
+combined wall projection. The values below were replayed individually through
+the heartbeat-protected DMX broker and visually confirmed on October 23, 2026:
+
+| CH5 | Combined projected image |
+| ---: | --- |
+| 8 | Large circle |
+| 16 | Three circles |
+| 32 | Eight circles |
+| 48 | Six circles; lower shapes can clip or squash |
+| 64 | Two solid circles plus three dashed circles |
+| 80 | Two quarter-circle arcs |
+| 96 | Two spirals |
+| 112 | Six pinwheels arranged as two triangles |
+| 128 | Horizontal squiggle |
+| 144 | Vertical squiggle |
+| 160 | Two pinwheels |
+| 176 | Two rings of eight small circles |
+| 192 | Four small circles around a quarter arc and bright center, mirrored twice |
+| 208 | Vertical tornado / spiral cone |
+| 224 | Two flowers |
+| 240 | Alignment test pattern |
+
+These are exact selector values, not 16-value bands. Midpoint tests such as 24,
+56, and 104 produced different firmware images and must not be substituted.
+
 Review of the pinned upstream connection path confirms that there is no
 separate unlock packet. A successfully validated query challenge is the unlock
 gate: the client enables command transmission locally only after
