@@ -234,22 +234,49 @@ CUES = {
     "group100_slot_224": _cue("group100_slot_224", 100, 224, "Two horizontal lines"),
     "group100_slot_240": _cue("group100_slot_240", 100, 240, "Two horizontal lines"),
 
-    "stork_walk": _cue("stork_walk", 125, 16, "Walking stork", family="character"),
-    "eagle_perch": _cue("eagle_perch", 125, 32, "Perched eagle", family="character"),
-    "bat_flight": _cue("bat_flight", 125, 96, "Flying bat", family="halloween"),
-    "salamander_walk": _cue("salamander_walk", 125, 112, "Crawling salamander", family="character"),
+    "dolphin_swim": _cue("dolphin_swim", 125, 0, "Two swimming dolphins", family="character"),
+    "stork_walk": _cue("stork_walk", 125, 16, "Two walking flamingos", family="character"),
+    "eagle_perch": _cue("eagle_perch", 125, 32, "Two perched eagles", family="character"),
+    "fighter_jets": _cue(
+        "fighter_jets", 125, 48, "Two fighter-jet animations",
+        family="character",
+    ),
+    "calendar_flip": _cue(
+        "calendar_flip", 125, 64, "Two animated day-by-day calendars", family="character"
+    ),
+    "spinning_747": _cue(
+        "spinning_747", 125, 80, "Two Boeing 747s in flat spins", family="character"
+    ),
+    "bat_flight": _cue("bat_flight", 125, 96, "Two flying bats", family="halloween"),
+    "salamander_walk": _cue(
+        "salamander_walk", 125, 112, "Two salamanders crawling left to right",
+        family="character",
+    ),
     "sparkle_moose": _cue(
-        "sparkle_moose", 125, 128, "Reindeer or moose watching a flying sparkle", family="character"
+        "sparkle_moose", 125, 128,
+        "Two moose or reindeer watching flying sparkles", family="character"
     ),
-    "ghost_peek": _cue("ghost_peek", 125, 144, "Ghost or peeping figure", family="halloween"),
+    "ghost_peek": _cue(
+        "ghost_peek", 125, 144, "Two ghost or peeping-figure animations",
+        family="halloween",
+    ),
     "dolphin_splash": _cue(
-        "dolphin_splash", 125, 160, "Dolphin leaping from water", family="character"
+        "dolphin_splash", 125, 160, "Two dolphins leaping and splashing",
+        family="character",
     ),
-    "bat_trio": _cue("bat_trio", 125, 192, "One, two, then three flying bats", family="halloween"),
-    "cobra_strike": _cue("cobra_strike", 125, 208, "Striking cobra", family="character"),
-    "maxime_wave": _cue("maxime_wave", 125, 224, "Girl in a large hat waving", family="character"),
+    "bird_landscape": _cue(
+        "bird_landscape", 125, 176, "Two birds flying through landscapes",
+        family="character",
+    ),
+    "bat_trio": _cue(
+        "bat_trio", 125, 192, "Two animations of one, two, then three flying bats",
+        family="halloween",
+    ),
+    "cobra_strike": _cue("cobra_strike", 125, 208, "Two striking cobras", family="character"),
+    "maxime_wave": _cue("maxime_wave", 125, 224, "Two waving girls", family="character"),
     "vintage_plane": _cue(
-        "vintage_plane", 125, 240, "Rotating open-cockpit propeller airplane", family="character"
+        "vintage_plane", 125, 240,
+        "Two rotating open-cockpit propeller airplanes", family="character"
     ),
     "confused_girl": _cue("confused_girl", 150, 0, "Girl looking, then confused", family="character"),
     "elvis": _cue("elvis", 150, 16, "Singing Elvis", family="character"),
@@ -290,9 +317,10 @@ GEOMETRY_LOOP = (
 )
 
 CHARACTER_LOOP = (
-    "stork_walk", "eagle_perch", "salamander_walk", "sparkle_moose",
-    "dolphin_splash", "cobra_strike", "maxime_wave", "vintage_plane",
-    "confused_girl", "elvis",
+    "dolphin_swim", "stork_walk", "eagle_perch", "fighter_jets",
+    "calendar_flip", "spinning_747", "salamander_walk", "sparkle_moose",
+    "dolphin_splash", "bird_landscape", "cobra_strike", "maxime_wave",
+    "vintage_plane", "confused_girl", "elvis",
 )
 
 HALLOWEEN_LOOP = ("bat_flight", "ghost_peek", "bat_trio")

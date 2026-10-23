@@ -240,6 +240,28 @@ Slots 160-240 remain in the diagnostic playlist because they are redundant or
 unsuitable for unattended circus operation. The useful seasonal slots are
 kept in the seasonal playlist.
 
+Group 125 is the animated character bank. Every entry is doubled by the
+mirrored optics. All 16 exact slots were physically verified:
+
+| CH5 | Combined projected animation |
+| ---: | --- |
+| 0 | Two swimming dolphins |
+| 16 | Two walking flamingos |
+| 32 | Two perched eagles |
+| 48 | Two fighter-jet animations |
+| 64 | Two animated day-by-day calendars |
+| 80 | Two Boeing 747s in flat spins |
+| 96 | Two flying bats |
+| 112 | Two salamanders crawling left to right |
+| 128 | Two moose or reindeer watching flying sparkles |
+| 144 | Two ghost or peeping-figure animations |
+| 160 | Two dolphins leaping and splashing |
+| 176 | Two birds flying through landscapes |
+| 192 | Two animations of one, two, then three flying bats |
+| 208 | Two striking cobras |
+| 224 | Two waving girls |
+| 240 | Two rotating open-cockpit propeller airplanes |
+
 Review of the pinned upstream connection path confirms that there is no
 separate unlock packet. A successfully validated query challenge is the unlock
 gate: the client enables command transmission locally only after
