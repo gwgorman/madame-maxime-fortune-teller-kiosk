@@ -2,6 +2,7 @@ import unittest
 
 from laser_cues import (
     CUES,
+    PLAYLISTS,
     LASER_CHANNELS,
     MINIMUM_ENABLE,
     SAFE_HORIZONTAL,
@@ -9,6 +10,7 @@ from laser_cues import (
     SAFE_VERTICAL,
     blackout_channels,
     cue_channels,
+    playlist,
 )
 
 
@@ -33,6 +35,30 @@ class LaserCueTests(unittest.TestCase):
     def test_only_verified_starburst_uses_rotation(self):
         rotating = {cue.name for cue in CUES.values() if cue.rotation}
         self.assertEqual(rotating, {"starburst_spin"})
+
+    def test_every_playlist_resolves_to_unique_observed_slots(self):
+        for name, cue_names in PLAYLISTS.items():
+            self.assertTrue(cue_names, name)
+            self.assertEqual(len(cue_names), len(set(cue_names)), name)
+            resolved = playlist(name)
+            self.assertEqual(tuple(cue.name for cue in resolved), cue_names)
+            for cue in resolved:
+                self.assertIs(CUES[cue.name], cue)
+
+    def test_every_named_cue_belongs_to_exactly_one_playlist(self):
+        assignments = [cue_name for names in PLAYLISTS.values() for cue_name in names]
+        self.assertEqual(set(assignments), set(CUES))
+        self.assertEqual(len(assignments), len(set(assignments)))
+
+    def test_circus_playlist_avoids_text_and_unqualified_rotation(self):
+        for cue in playlist("circus"):
+            self.assertNotIn("text", cue.description.lower())
+            if cue.rotation:
+                self.assertEqual(cue.name, "starburst_spin")
+
+    def test_playlist_lookup_rejects_unknown_name(self):
+        with self.assertRaises(KeyError):
+            playlist("not-a-real-playlist")
 
     def test_unknown_cue_is_rejected(self):
         with self.assertRaises(KeyError):

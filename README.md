@@ -31,6 +31,10 @@ The field-verified direct-FTDI implementation is included as
 [`dmx_broker.py`](dmx_broker.py) service is the sole owner of the adapter and
 merges both PAR fixtures with the small laser at `A057`. Laser cues require a
 matching heartbeat and otherwise return to blackout automatically. The
+DMX-first built-in library contains 61 named cues organized into durable
+circus, transition, geometry, character, Halloween, and seasonal playlists. Only the
+physically verified starburst uses automatic rotation; the ordinary party loop
+does not depend on Bluetooth, a phone, or uploaded fixture storage. The
 original PAR verification record remains
 at transporter-console commit
 [`04b325b`](https://github.com/gwgorman/raspberry-pi-transporter-console/commit/04b325b).
@@ -131,6 +135,14 @@ Bluetooth or producing light:
 
 ```bash
 python3 lightelf_dry_run.py
+```
+
+Inspect the durable built-in DMX library without opening the adapter or
+producing light:
+
+```bash
+python3 laser_library_report.py
+python3 laser_library_report.py --json
 ```
 
 The real BLE worker is present for staged qualification but remains disabled by

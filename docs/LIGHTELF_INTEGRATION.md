@@ -139,6 +139,14 @@ trace remains excluded because it includes unrelated nearby Bluetooth
 identifiers. Custom art cannot be selected later by DMX without an external
 controller streaming it.
 
+For unattended party operation, `laser_cues.py` is therefore the primary
+front-laser library. It maps the physically cataloged firmware slots into
+durable `circus`, `transitions`, `geometry`, `characters`, `halloween`, and
+`seasonal` playlists.
+`laser_library_report.py` can inspect that catalog as text or JSON without
+opening DMX hardware. BLE drawings remain optional supervised overlays rather
+than a startup or recovery dependency.
+
 Review of the pinned upstream connection path confirms that there is no
 separate unlock packet. A successfully validated query challenge is the unlock
 gate: the client enables command transmission locally only after

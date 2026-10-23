@@ -55,12 +55,14 @@
 - Vintage French-circus graphics and practical accessibility checks
 - [x] Physically catalog the small laser's static and ILDA graphics libraries
 - [x] Define named, unarmed-by-default, safety-bounded small-laser cues
+- [x] Organize observed built-in cues into durable DMX-first party playlists
 - [x] Add the single-owner DMX broker and heartbeat-enforced laser arming
 - [x] Deploy and qualify the broker on the Pi with controlled fixture tests
 - [x] Add a simulated, safety-leased LightELF adapter and front circus catalog
 - [x] Discover and verify the small laser's LightELF BLE profile read-only
-- [ ] Query/unlock and physically qualify the LightELF protocol without output
-- [ ] Add the real BLE transport only after disconnect and blackout testing
+- [x] Query/unlock and physically qualify bounded LightELF output
+- [x] Add a disabled-by-default, lease-bounded real BLE transport
+- [x] Confirm official-app saved artwork is phone-local, not fixture storage
 - [ ] Integrate reviewed laser cues with fortune-teller states
 
 ## Phase 5: production qualification
