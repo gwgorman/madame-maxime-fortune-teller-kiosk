@@ -262,6 +262,33 @@ mirrored optics. All 16 exact slots were physically verified:
 | 224 | Two waving girls |
 | 240 | Two rotating open-cockpit propeller airplanes |
 
+Group 150 begins with five distinct animations, then aliases the same candle
+animation across every remaining exact slot. All entries are doubled by the
+mirrored optics:
+
+| CH5 | Combined projected animation |
+| ---: | --- |
+| 0 | Two girls looking, then confused |
+| 16 | Two singing Elvis animations |
+| 32 | Two circle-based slinky effects |
+| 48 | Two moose or reindeer with candy canes |
+| 64 | Two rotating 3D cubes |
+| 80 | Two animated Christmas-candle scenes; canonical slot |
+| 96 | Same doubled candle animation |
+| 112 | Same doubled candle animation |
+| 128 | Same doubled candle animation |
+| 144 | Same doubled candle animation |
+| 160 | Same doubled candle animation |
+| 176 | Same doubled candle animation |
+| 192 | Same doubled candle animation |
+| 208 | Same doubled candle animation |
+| 224 | Same doubled candle animation |
+| 240 | Same doubled candle animation |
+
+Only slot 80 is exposed as the production `christmas_candles` cue. Slots
+96-240 remain diagnostic duplicates so an unattended playlist does not repeat
+the same animation under multiple names.
+
 Review of the pinned upstream connection path confirms that there is no
 separate unlock packet. A successfully validated query challenge is the unlock
 gate: the client enables command transmission locally only after

@@ -278,13 +278,32 @@ CUES = {
         "vintage_plane", 125, 240,
         "Two rotating open-cockpit propeller airplanes", family="character"
     ),
-    "confused_girl": _cue("confused_girl", 150, 0, "Girl looking, then confused", family="character"),
-    "elvis": _cue("elvis", 150, 16, "Singing Elvis", family="character"),
-    "circle_slinky": _cue("circle_slinky", 150, 32, "Circle-based slinky effect", family="circus"),
-    "candy_cane_reindeer": _cue(
-        "candy_cane_reindeer", 150, 48, "Reindeer with a candy cane", family="seasonal"
+    "confused_girl": _cue(
+        "confused_girl", 150, 0, "Two girls looking, then confused", family="character"
     ),
-    "rotating_cube": _cue("rotating_cube", 150, 64, "Rotating 3D cube", family="circus"),
+    "elvis": _cue("elvis", 150, 16, "Two singing Elvis animations", family="character"),
+    "circle_slinky": _cue(
+        "circle_slinky", 150, 32, "Two circle-based slinky effects", family="circus"
+    ),
+    "candy_cane_reindeer": _cue(
+        "candy_cane_reindeer", 150, 48, "Two moose or reindeer with candy canes",
+        family="seasonal",
+    ),
+    "rotating_cube": _cue("rotating_cube", 150, 64, "Two rotating 3D cubes", family="circus"),
+    "christmas_candles": _cue(
+        "christmas_candles", 150, 80, "Two animated Christmas-candle scenes",
+        family="seasonal",
+    ),
+    "group150_slot_096": _cue("group150_slot_096", 150, 96, "Duplicate doubled candle animation"),
+    "group150_slot_112": _cue("group150_slot_112", 150, 112, "Duplicate doubled candle animation"),
+    "group150_slot_128": _cue("group150_slot_128", 150, 128, "Duplicate doubled candle animation"),
+    "group150_slot_144": _cue("group150_slot_144", 150, 144, "Duplicate doubled candle animation"),
+    "group150_slot_160": _cue("group150_slot_160", 150, 160, "Duplicate doubled candle animation"),
+    "group150_slot_176": _cue("group150_slot_176", 150, 176, "Duplicate doubled candle animation"),
+    "group150_slot_192": _cue("group150_slot_192", 150, 192, "Duplicate doubled candle animation"),
+    "group150_slot_208": _cue("group150_slot_208", 150, 208, "Duplicate doubled candle animation"),
+    "group150_slot_224": _cue("group150_slot_224", 150, 224, "Duplicate doubled candle animation"),
+    "group150_slot_240": _cue("group150_slot_240", 150, 240, "Duplicate doubled candle animation"),
 }
 
 
@@ -327,12 +346,16 @@ HALLOWEEN_LOOP = ("bat_flight", "ghost_peek", "bat_trio")
 
 SEASONAL_LOOP = (
     "merry_christmas", "stocking", "bells", "snowflake_b", "gift_teddy",
-    "winter_message", "stocking_b", "candy_cane_reindeer",
+    "winter_message", "stocking_b", "candy_cane_reindeer", "christmas_candles",
 )
 
 DIAGNOSTIC_LOOP = (
     "group100_slot_160", "group100_slot_176", "group100_slot_192",
     "group100_slot_208", "group100_slot_224", "group100_slot_240",
+    "group150_slot_096", "group150_slot_112", "group150_slot_128",
+    "group150_slot_144", "group150_slot_160",
+    "group150_slot_176", "group150_slot_192", "group150_slot_208",
+    "group150_slot_224", "group150_slot_240",
 )
 
 PLAYLISTS = {
