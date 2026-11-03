@@ -212,6 +212,10 @@ During each questionnaire card the UI starts one bounded capture, shows
 `LISTENING` and `INTERPRETING`, briefly highlights an unambiguous recognized
 choice, then advances. Ambiguous, failed, or absent speech produces a visible
 touch fallback; it never traps the guest in a retry loop.
+Every accepted voice or touch answer also gets a two-second, full-screen
+confirmation before the next distinctly colored, prominently numbered card.
+This deliberately favors clarity for a loud, distracted party crowd over fast
+expert operation.
 
 The `OPERATOR` control opens a protected confirmation panel. `RETURN TO OFFICE
 CONSOLE` blackouts and releases the PAR fixtures, closes Madame Maxime, selects

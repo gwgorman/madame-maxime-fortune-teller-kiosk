@@ -28,6 +28,7 @@ INK = (13, 8, 19)
 TEAL = (44, 174, 165)
 CREAM = (246, 229, 188)
 MUTED = (169, 137, 110)
+QUESTION_ACCENTS = (GOLD, TEAL, (177, 112, 214), (232, 116, 72))
 OFFICE_CONFIG_PATH = Path.home() / ".config" / "startrek-console.json"
 OFFICE_SERVICE = "app-startrek@autostart.service"
 
@@ -93,6 +94,8 @@ class SilentKiosk:
         self.voice_state = "off" if not enable_voice else "waiting"
         self.voice_selection = None
         self.voice_apply_at = None
+        self.transition_selection = None
+        self.transition_until = 0.0
         self.lighting.start()
         if enable_dmx and not self.lighting.available:
             self.notice = "DMX OFFLINE — TOUCHSCREEN CONTINUES SAFELY"
@@ -153,14 +156,14 @@ class SilentKiosk:
         return key, rect
 
     def choice_buttons(self, prefix, values, x=1325, y=285, width=500, height=104,
-                       gap=26, selected=None):
+                       gap=26, selected=None, base_color=(191, 137, 55)):
         buttons = []
         columns = 2 if len(values) > 3 else 1
         cell_width = (width - gap) / 2 if columns == 2 else width
         for index, value in enumerate(values):
             row, column = divmod(index, columns)
             box = (x + column * (cell_width + gap), y + row * (height + gap), cell_width, height)
-            color = TEAL if value == selected else (191, 137, 55)
+            color = TEAL if value == selected else base_color
             buttons.append(self.button(f"{prefix}:{value}", value, box, color, INK))
         return buttons
 
@@ -179,11 +182,27 @@ class SilentKiosk:
     def apply_voice_selection(self, selected, now):
         state = self.controller.state
         if state is SessionState.QUESTIONNAIRE:
-            return self.controller.select_answer(selected, now)
+            accepted = self.controller.select_answer(selected, now)
         if state is SessionState.TOPIC:
-            return self.controller.select_topic(selected, now)
-        if state is SessionState.RETURN_PROMPT:
-            return self.controller.answer_return(selected, now)
+            accepted = self.controller.select_topic(selected, now)
+        elif state is SessionState.RETURN_PROMPT:
+            accepted = self.controller.answer_return(selected, now)
+        elif state is not SessionState.QUESTIONNAIRE:
+            accepted = False
+        if accepted:
+            self.begin_transition(selected, now)
+        return accepted
+
+    def begin_transition(self, selected, now):
+        self.transition_selection = selected
+        # Long enough to register through party noise, conversation, and drinks.
+        self.transition_until = now + 2.0
+
+    def transition_active(self, now):
+        if self.transition_selection and now < self.transition_until:
+            return True
+        if self.transition_selection:
+            self.transition_selection = None
         return False
 
     def sync_voice(self, now):
@@ -219,6 +238,9 @@ class SilentKiosk:
             self.voice_apply_at = None
             if self.apply_voice_selection(selected, now):
                 self.voice_state = "waiting"
+            return
+
+        if self.transition_active(now):
             return
 
         if prompt and self.voice_state == "waiting" and not self.voice.busy:
@@ -306,6 +328,10 @@ class SilentKiosk:
             self.draw_operator_menu()
             return
         title, subtitle = self.state_copy()
+        if self.controller.state is SessionState.QUESTIONNAIRE:
+            question_number = self.controller.question_index + 1
+            accent = QUESTION_ACCENTS[self.controller.question_index]
+            self.draw_text(f"QUESTION {question_number} OF 4", 28, accent, (415, 235), True, 390)
         self.draw_text(title, 36, CREAM, (415, 325), True, 390)
         if self.controller.state is SessionState.REVEAL and self.controller.fortune:
             card, prediction, observation, instruction = self.controller.fortune.display_parts()
@@ -331,10 +357,21 @@ class SilentKiosk:
             buttons.append(self.button("begin", "RECEIVE MY FORTUNE", (650, 825, 620, 130)))
         elif state is SessionState.QUESTIONNAIRE:
             _key, _prompt, values = self.controller.current_question
-            buttons.extend(self.choice_buttons("answer", values, selected=self.voice_selection))
+            accent = QUESTION_ACCENTS[self.controller.question_index]
+            buttons.extend(self.choice_buttons(
+                "answer", values, selected=self.voice_selection, base_color=accent,
+            ))
             for index in range(4):
-                color = PALE_GOLD if index < self.controller.question_index else (91, 48, 63)
-                self.pg.draw.circle(self.screen, color, self.transform(1410 + index * 62, 780), max(4, int(10 * self.scale)))
+                if index < self.controller.question_index:
+                    color, radius = PALE_GOLD, 8
+                elif index == self.controller.question_index:
+                    color, radius = accent, 15
+                else:
+                    color, radius = (91, 48, 63), 8
+                self.pg.draw.circle(
+                    self.screen, color, self.transform(1410 + index * 62, 780),
+                    max(4, int(radius * self.scale)),
+                )
         elif state is SessionState.TOPIC:
             buttons.extend(self.choice_buttons("topic", TOPICS, y=260, height=92,
                                                selected=self.voice_selection))
@@ -357,6 +394,27 @@ class SilentKiosk:
             self.draw_text(voice_copy, 20, voice_color, (1500, 820), True, 500)
 
         self.draw_text(self.notice, 18, PALE_GOLD, (960, 1019), True)
+
+        if self.transition_active(now):
+            self.draw_transition_confirmation()
+
+    def draw_transition_confirmation(self):
+        veil = self.pg.Surface(self.screen.get_size(), self.pg.SRCALPHA)
+        veil.fill((7, 3, 10, 218))
+        self.screen.blit(veil, (0, 0))
+        panel = self.rect(510, 315, 900, 410)
+        self.pg.draw.rect(self.screen, DEEP_RED, panel, border_radius=int(34 * self.scale))
+        self.pg.draw.rect(self.screen, TEAL, panel, width=max(4, int(8 * self.scale)), border_radius=int(34 * self.scale))
+        self.draw_text(f"{self.transition_selection} RECEIVED", 58, PALE_GOLD, (960, 440), True, 760)
+        if self.controller.state is SessionState.QUESTIONNAIRE:
+            next_copy = f"NOW — QUESTION {self.controller.question_index + 1} OF 4"
+        elif self.controller.state is SessionState.TOPIC:
+            next_copy = "THE FOUR SIGNS ARE SET"
+        else:
+            next_copy = "THE CRYSTAL IS CONTINUING"
+        self.draw_text(next_copy, 30, CREAM, (960, 585), True, 760)
+        self.draw_text("Your answer has been recorded.", 22, MUTED, (960, 650), False, 760)
+        self.buttons = []
 
     def draw_operator_menu(self):
         veil = self.pg.Surface(self.screen.get_size(), self.pg.SRCALPHA)
@@ -389,15 +447,21 @@ class SilentKiosk:
             elif key.startswith("answer:"):
                 if self.voice:
                     self.voice.invalidate()
-                self.controller.select_answer(key.split(":", 1)[1], now)
+                selected = key.split(":", 1)[1]
+                if self.controller.select_answer(selected, now):
+                    self.begin_transition(selected, now)
             elif key.startswith("topic:"):
                 if self.voice:
                     self.voice.invalidate()
-                self.controller.select_topic(key.split(":", 1)[1], now)
+                selected = key.split(":", 1)[1]
+                if self.controller.select_topic(selected, now):
+                    self.begin_transition(selected, now)
             elif key.startswith("outcome:"):
                 if self.voice:
                     self.voice.invalidate()
-                self.controller.answer_return(key.split(":", 1)[1], now)
+                selected = key.split(":", 1)[1]
+                if self.controller.answer_return(selected, now):
+                    self.begin_transition(selected, now)
             elif key == "finished":
                 self.controller.finish_reveal(now)
             elif key == "reset":
