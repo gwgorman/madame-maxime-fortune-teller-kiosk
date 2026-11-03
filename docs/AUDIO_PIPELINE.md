@@ -100,6 +100,13 @@ correctable by touch. Low confidence immediately changes the prompt to
 `PLEASE TAP YOUR ANSWER`; it does not send the guest through repeated apology
 loops.
 
+The first on-Pi end-to-end acceptance test passed on November 3, 2026: a real
+touch started the questionnaire, the guest spoke `Mischief`, the correct choice
+highlighted, and the state machine advanced. The next unanswered card safely
+settled on `VOICE UNCLEAR — PLEASE TAP`. Capture and network transcription run
+off the Pygame thread, and a touch invalidates any stale result before applying
+the touched choice.
+
 ## Open-question transcription
 
 The guest's optional question is captured for at most ten seconds and sent as a

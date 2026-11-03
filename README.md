@@ -37,6 +37,9 @@ Verified on November 3, 2026 after migration to Raspberry Pi 5:
   exposes a private Unix-socket transcription interface.
 - OpenAI `gpt-transcribe` returned the exact full test sentence and the exact
   one-word questionnaire answer `Adventure`.
+- The live kiosk accepted the spoken questionnaire answer `Mischief`, visibly
+  highlighted it, and advanced to the next card. If no usable answer follows,
+  the screen falls back to `VOICE UNCLEAR — PLEASE TAP` without blocking touch.
 - Raw audio and transcripts remain memory-only during normal operation.
 
 The field-verified direct-FTDI implementation is included as
@@ -125,8 +128,10 @@ The first hardware-independent reading is now available. It provides the silent
 touchscreen flow, deterministic state machine, simulated approach and return
 events, four-card questionnaire, optional question topic, tagged local fortune
 construction, rolling repetition avoidance, sequel reading, timeouts, automatic
-reset, anonymous atomic event journal, and optional failure-isolated DMX scenes.
-It deliberately does not initialize an audio mixer or play sound.
+reset, anonymous atomic event journal, optional failure-isolated DMX scenes,
+and asynchronous voice selection for the closed-answer screens. Touch always
+overrides an in-flight or recognized voice choice. It deliberately does not
+initialize an audio mixer or play sound.
 
 Install Pygame and launch it in a development window:
 
@@ -184,7 +189,9 @@ The touchscreen remains operational if the broker, adapter, or driver is
 unavailable. Stopping the kiosk sends a full-universe blackout; the broker
 itself remains available for the next kiosk launch.
 The current milestone is intentionally silent: it does not initialize Pygame's
-audio mixer and contains no speech or sound playback path.
+audio mixer and contains no speech or sound playback path. Speech *input* is
+available through the independent worker below; pass `--no-voice` for a fully
+touch-only launch.
 
 The independent speech worker can be installed without enabling kiosk audio:
 
@@ -201,6 +208,10 @@ python3 speech_client.py --status
 The service unit expects that project-local environment at
 `~/madame-maxime/.venv`. Provision the API key with
 `scripts/configure_openai_key.sh`; it is never stored in this repository.
+During each questionnaire card the UI starts one bounded capture, shows
+`LISTENING` and `INTERPRETING`, briefly highlights an unambiguous recognized
+choice, then advances. Ambiguous, failed, or absent speech produces a visible
+touch fallback; it never traps the guest in a retry loop.
 
 The `OPERATOR` control opens a protected confirmation panel. `RETURN TO OFFICE
 CONSOLE` blackouts and releases the PAR fixtures, closes Madame Maxime, selects

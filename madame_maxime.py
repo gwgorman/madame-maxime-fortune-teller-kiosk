@@ -16,6 +16,7 @@ from pathlib import Path
 from fortune_engine import TOPICS
 from lighting import LightingController
 from session import EventJournal, SessionController, SessionState, default_journal_path
+from voice_input import VoiceChoiceAdapter
 
 
 WIDTH, HEIGHT = 1920, 1080
@@ -66,7 +67,8 @@ def launch_office_console(config_path: Path = OFFICE_CONFIG_PATH, runner=subproc
 
 
 class SilentKiosk:
-    def __init__(self, pygame, fullscreen: bool, enable_dmx: bool = False) -> None:
+    def __init__(self, pygame, fullscreen: bool, enable_dmx: bool = False,
+                 enable_voice: bool = True) -> None:
         self.pg = pygame
         flags = pygame.FULLSCREEN if fullscreen else pygame.RESIZABLE
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT), flags)
@@ -86,6 +88,11 @@ class SilentKiosk:
         self.portrait_scaled = None
         self.portrait_scaled_size = None
         self.lighting = LightingController(enable_dmx)
+        self.voice = VoiceChoiceAdapter() if enable_voice else None
+        self.voice_prompt_key = None
+        self.voice_state = "off" if not enable_voice else "waiting"
+        self.voice_selection = None
+        self.voice_apply_at = None
         self.lighting.start()
         if enable_dmx and not self.lighting.available:
             self.notice = "DMX OFFLINE — TOUCHSCREEN CONTINUES SAFELY"
@@ -145,15 +152,90 @@ class SilentKiosk:
         self.draw_text(label, 31, text_color, (box[0] + box[2] / 2, box[1] + box[3] / 2), True)
         return key, rect
 
-    def choice_buttons(self, prefix, values, x=1325, y=285, width=500, height=104, gap=26):
+    def choice_buttons(self, prefix, values, x=1325, y=285, width=500, height=104,
+                       gap=26, selected=None):
         buttons = []
         columns = 2 if len(values) > 3 else 1
         cell_width = (width - gap) / 2 if columns == 2 else width
         for index, value in enumerate(values):
             row, column = divmod(index, columns)
             box = (x + column * (cell_width + gap), y + row * (height + gap), cell_width, height)
-            buttons.append(self.button(f"{prefix}:{value}", value, box, (191, 137, 55), INK))
+            color = TEAL if value == selected else (191, 137, 55)
+            buttons.append(self.button(f"{prefix}:{value}", value, box, color, INK))
         return buttons
+
+    def voice_prompt(self):
+        state = self.controller.state
+        if state is SessionState.QUESTIONNAIRE:
+            key, prompt, choices = self.controller.current_question
+            return (state.value, self.controller.question_index, key), prompt, choices
+        if state is SessionState.TOPIC:
+            return (state.value,), "What shall I examine?", TOPICS
+        if state is SessionState.RETURN_PROMPT:
+            choices = ("YES", "NOT YET", "IT GOT WORSE")
+            return (state.value,), "Has the previous fortune already come true?", choices
+        return None
+
+    def apply_voice_selection(self, selected, now):
+        state = self.controller.state
+        if state is SessionState.QUESTIONNAIRE:
+            return self.controller.select_answer(selected, now)
+        if state is SessionState.TOPIC:
+            return self.controller.select_topic(selected, now)
+        if state is SessionState.RETURN_PROMPT:
+            return self.controller.answer_return(selected, now)
+        return False
+
+    def sync_voice(self, now):
+        if not self.voice:
+            return
+        prompt = self.voice_prompt()
+        key = prompt[0] if prompt else None
+        if key != self.voice_prompt_key:
+            self.voice.invalidate()
+            self.voice_prompt_key = key
+            self.voice_selection = None
+            self.voice_apply_at = None
+            self.voice_state = "waiting" if prompt else "off"
+
+        for kind, payload in self.voice.poll():
+            if kind == "thinking":
+                self.voice_state = "thinking"
+            elif kind == "result":
+                selected = payload.get("selected")
+                if selected:
+                    self.voice_selection = selected
+                    self.voice_apply_at = now + 1.8
+                    self.voice_state = "confirmed"
+                else:
+                    self.voice_state = "fallback"
+            elif kind == "error":
+                self.voice_state = "fallback"
+
+        if self.voice_selection and self.voice_apply_at and now >= self.voice_apply_at:
+            selected = self.voice_selection
+            self.voice.invalidate()
+            self.voice_selection = None
+            self.voice_apply_at = None
+            if self.apply_voice_selection(selected, now):
+                self.voice_state = "waiting"
+            return
+
+        if prompt and self.voice_state == "waiting" and not self.voice.busy:
+            _key, spoken_prompt, choices = prompt
+            if self.voice.start(spoken_prompt, choices):
+                self.voice_state = "listening"
+
+    def voice_status_copy(self):
+        if self.voice_state == "listening":
+            return "LISTENING — SAY ONE CHOICE", TEAL
+        if self.voice_state == "thinking":
+            return "INTERPRETING…", PALE_GOLD
+        if self.voice_state == "confirmed" and self.voice_selection:
+            return f"HEARD: {self.voice_selection} — TAP TO CORRECT", TEAL
+        if self.voice_state == "fallback":
+            return "VOICE UNCLEAR — PLEASE TAP", (255, 115, 105)
+        return "", MUTED
 
     def draw_frame(self, now):
         sw, sh = self.screen.get_size()
@@ -210,7 +292,7 @@ class SilentKiosk:
         if state is SessionState.QUESTIONNAIRE:
             return self.controller.current_question[1], "Choose carefully. The crystal is judgmental but discreet."
         if state is SessionState.TOPIC:
-            return "WHAT SHALL I EXAMINE?", "Until the microphone arrives, choose the shape of your question."
+            return "WHAT SHALL I EXAMINE?", "Speak one choice, or touch the shape of your question."
         if state is SessionState.RETURN_PROMPT:
             return "YOU AGAIN", "The crystal remembers. Has the previous fortune already come true?"
         if state is SessionState.THINKING:
@@ -249,14 +331,18 @@ class SilentKiosk:
             buttons.append(self.button("begin", "RECEIVE MY FORTUNE", (650, 825, 620, 130)))
         elif state is SessionState.QUESTIONNAIRE:
             _key, _prompt, values = self.controller.current_question
-            buttons.extend(self.choice_buttons("answer", values))
+            buttons.extend(self.choice_buttons("answer", values, selected=self.voice_selection))
             for index in range(4):
                 color = PALE_GOLD if index < self.controller.question_index else (91, 48, 63)
                 self.pg.draw.circle(self.screen, color, self.transform(1410 + index * 62, 780), max(4, int(10 * self.scale)))
         elif state is SessionState.TOPIC:
-            buttons.extend(self.choice_buttons("topic", TOPICS, y=260, height=92))
+            buttons.extend(self.choice_buttons("topic", TOPICS, y=260, height=92,
+                                               selected=self.voice_selection))
         elif state is SessionState.RETURN_PROMPT:
-            buttons.extend(self.choice_buttons("outcome", ("YES", "NOT YET", "IT GOT WORSE"), y=315, height=112))
+            buttons.extend(self.choice_buttons(
+                "outcome", ("YES", "NOT YET", "IT GOT WORSE"), y=315,
+                height=112, selected=self.voice_selection,
+            ))
         elif state is SessionState.REVEAL:
             buttons.append(self.button("finished", "THE VEIL MAY CLOSE", (690, 850, 540, 96), TEAL))
         elif state is SessionState.FAREWELL:
@@ -265,6 +351,10 @@ class SilentKiosk:
         buttons.append(self.button("cancel", "RESET", (75, 925, 225, 72), (122, 45, 54), CREAM))
         buttons.append(self.button("operator", "OPERATOR", (1620, 925, 225, 72), (49, 83, 83), CREAM))
         self.buttons = buttons
+
+        voice_copy, voice_color = self.voice_status_copy()
+        if voice_copy:
+            self.draw_text(voice_copy, 20, voice_color, (1500, 820), True, 500)
 
         self.draw_text(self.notice, 18, PALE_GOLD, (960, 1019), True)
 
@@ -297,10 +387,16 @@ class SilentKiosk:
             elif key == "begin":
                 self.controller.begin(now)
             elif key.startswith("answer:"):
+                if self.voice:
+                    self.voice.invalidate()
                 self.controller.select_answer(key.split(":", 1)[1], now)
             elif key.startswith("topic:"):
+                if self.voice:
+                    self.voice.invalidate()
                 self.controller.select_topic(key.split(":", 1)[1], now)
             elif key.startswith("outcome:"):
+                if self.voice:
+                    self.voice.invalidate()
                 self.controller.answer_return(key.split(":", 1)[1], now)
             elif key == "finished":
                 self.controller.finish_reveal(now)
@@ -308,6 +404,8 @@ class SilentKiosk:
                 self.controller.cancel(now)
                 self.controller.approach(now)
             elif key == "cancel":
+                if self.voice:
+                    self.voice.invalidate()
                 self.controller.cancel(now)
             elif key == "operator":
                 self.operator_menu_open = True
@@ -322,6 +420,7 @@ class SilentKiosk:
         while self.running:
             now = time.monotonic()
             self.controller.update(now)
+            self.sync_voice(now)
             self.lighting.update(self.controller.state.value, now)
             for event in self.pg.event.get():
                 if event.type == self.pg.QUIT:
@@ -344,6 +443,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Silent Madame Maxime kiosk simulator")
     parser.add_argument("--windowed", action="store_true", help="use a resizable window")
     parser.add_argument("--dmx", action="store_true", help="enable the verified ENTTEC Open DMX adapter")
+    parser.add_argument("--no-voice", action="store_true", help="disable microphone choice input")
     args = parser.parse_args()
     os.environ.setdefault("PYGAME_HIDE_SUPPORT_PROMPT", "1")
     try:
@@ -355,7 +455,10 @@ def main() -> int:
     # pygame.init(), because that would also initialize the mixer device.
     pygame.display.init()
     pygame.font.init()
-    kiosk = SilentKiosk(pygame, fullscreen=not args.windowed, enable_dmx=args.dmx)
+    kiosk = SilentKiosk(
+        pygame, fullscreen=not args.windowed, enable_dmx=args.dmx,
+        enable_voice=not args.no_voice,
+    )
     try:
         kiosk.run()
     finally:

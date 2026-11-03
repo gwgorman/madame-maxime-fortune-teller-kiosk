@@ -192,7 +192,7 @@ def capture_from_stream(
     }
 
 
-def handle_request(microphone: PersistentMicrophone, request: dict) -> dict:
+def handle_request(microphone: PersistentMicrophone, request: dict, progress=None) -> dict:
     if request.get("action") == "status":
         return {"ok": True, "streaming": not bool(microphone.failure), "sequence": microphone.latest_sequence()}
     if request.get("action") != "transcribe":
@@ -203,6 +203,8 @@ def handle_request(microphone: PersistentMicrophone, request: dict) -> dict:
         max_seconds=float(request.get("max_seconds", 10.0)),
         threshold=int(request.get("threshold", DEFAULT_THRESHOLD)),
     )
+    if progress:
+        progress({"event": "captured", "metrics": metrics})
     began = time.monotonic()
     text = transcribe(
         wav,
@@ -237,7 +239,10 @@ def serve(path: Path = DEFAULT_SOCKET) -> None:
                             break
                         payload += chunk
                     request = json.loads(payload.split(b"\n", 1)[0])
-                    response = handle_request(microphone, request)
+                    def send_progress(message):
+                        connection.sendall(json.dumps(message).encode("utf-8") + b"\n")
+
+                    response = handle_request(microphone, request, send_progress)
                 except Exception as exc:
                     response = {"ok": False, "error": str(exc)}
                 connection.sendall(json.dumps(response).encode("utf-8") + b"\n")
