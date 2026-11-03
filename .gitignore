@@ -10,3 +10,5 @@ private/
 recordings/
 captures/
 generated/
+secrets.env
+tmp/

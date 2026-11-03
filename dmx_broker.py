@@ -15,10 +15,18 @@ import time
 from pathlib import Path
 
 from dmx_lighting import OpenDmxOutput, PAR_ADDRESSES, ParScene, Universe
+from big_laser_cues import (
+    BIG_LASER_ADDRESS,
+    blackout_channels as big_laser_blackout_channels,
+    bright_line_color_channels,
+    bright_line_geometry_channels,
+    bright_line_test_channels,
+    safe_geometry_channels,
+)
 from laser_cues import LASER_ADDRESS, blackout_channels, cue_channels
 
 
-BROKER_CHANNELS = 96
+BROKER_CHANNELS = 108
 DEFAULT_LASER_TTL = 1.0
 MAX_LASER_TTL = 2.0
 
@@ -37,6 +45,8 @@ class BrokerState:
         self.universe = universe or Universe(BROKER_CHANNELS)
         self.laser_cue: str | None = None
         self.laser_deadline: float | None = None
+        self.big_laser_cue: str | None = None
+        self.big_laser_deadline: float | None = None
 
     def set_par(self, values) -> None:
         values = tuple(values)
@@ -71,16 +81,58 @@ class BrokerState:
         self.laser_cue = None
         self.laser_deadline = None
 
+    def arm_big_laser(self, name: str, now: float, ttl: float = DEFAULT_LASER_TTL) -> None:
+        cues = {
+            "safe_geometry": safe_geometry_channels,
+            "bright_line_test": bright_line_test_channels,
+            "bright_line_red": lambda **kwargs: bright_line_color_channels(8, **kwargs),
+            "bright_line_green": lambda **kwargs: bright_line_color_channels(16, **kwargs),
+            "bright_line_blue": lambda **kwargs: bright_line_color_channels(24, **kwargs),
+            "bright_line_small": lambda **kwargs: bright_line_geometry_channels(size=64, **kwargs),
+            "bright_line_medium": lambda **kwargs: bright_line_geometry_channels(size=128, **kwargs),
+            "bright_line_large": lambda **kwargs: bright_line_geometry_channels(size=192, **kwargs),
+            "bright_line_left": lambda **kwargs: bright_line_geometry_channels(x_position=80, **kwargs),
+            "bright_line_center": lambda **kwargs: bright_line_geometry_channels(x_position=128, **kwargs),
+            "bright_line_right": lambda **kwargs: bright_line_geometry_channels(x_position=176, **kwargs),
+        }
+        if name not in cues:
+            raise ValueError(f"unknown big-laser cue: {name!r}")
+        ttl = max(0.1, min(float(ttl), MAX_LASER_TTL))
+        self.universe.set_channels(
+            BIG_LASER_ADDRESS, cues[name](armed=True)
+        )
+        self.big_laser_cue = name
+        self.big_laser_deadline = now + ttl
+
+    def heartbeat_big_laser(
+        self, name: str, now: float, ttl: float = DEFAULT_LASER_TTL
+    ) -> None:
+        if self.big_laser_cue != name or self.big_laser_deadline is None:
+            raise ValueError("big-laser heartbeat does not match an armed cue")
+        ttl = max(0.1, min(float(ttl), MAX_LASER_TTL))
+        self.big_laser_deadline = now + ttl
+
+    def blackout_big_laser(self) -> None:
+        self.universe.set_channels(BIG_LASER_ADDRESS, big_laser_blackout_channels())
+        self.big_laser_cue = None
+        self.big_laser_deadline = None
+
     def blackout_all(self) -> None:
         self.universe.blackout()
         self.laser_cue = None
         self.laser_deadline = None
+        self.big_laser_cue = None
+        self.big_laser_deadline = None
 
     def tick(self, now: float) -> bool:
+        expired = False
         if self.laser_deadline is not None and now >= self.laser_deadline:
             self.blackout_laser()
-            return True
-        return False
+            expired = True
+        if self.big_laser_deadline is not None and now >= self.big_laser_deadline:
+            self.blackout_big_laser()
+            expired = True
+        return expired
 
     def handle(self, message: dict, now: float) -> bool:
         command = message.get("command")
@@ -96,6 +148,16 @@ class BrokerState:
             )
         elif command == "laser_blackout":
             self.blackout_laser()
+        elif command == "big_laser_arm":
+            self.arm_big_laser(
+                message["cue"], now, message.get("ttl", DEFAULT_LASER_TTL)
+            )
+        elif command == "big_laser_heartbeat":
+            self.heartbeat_big_laser(
+                message["cue"], now, message.get("ttl", DEFAULT_LASER_TTL)
+            )
+        elif command == "big_laser_blackout":
+            self.blackout_big_laser()
         elif command == "blackout":
             self.blackout_all()
         elif command == "shutdown":
@@ -129,6 +191,15 @@ class DmxClient:
 
     def blackout_laser(self) -> None:
         self.send("laser_blackout")
+
+    def arm_big_laser(self, cue: str, ttl: float = DEFAULT_LASER_TTL) -> None:
+        self.send("big_laser_arm", cue=cue, ttl=ttl)
+
+    def heartbeat_big_laser(self, cue: str, ttl: float = DEFAULT_LASER_TTL) -> None:
+        self.send("big_laser_heartbeat", cue=cue, ttl=ttl)
+
+    def blackout_big_laser(self) -> None:
+        self.send("big_laser_blackout")
 
     def blackout_all(self) -> None:
         self.send("blackout")

@@ -1,0 +1,14 @@
+[Unit]
+Description=Madame Maxine persistent speech capture worker
+After=pipewire.service wireplumber.service
+Wants=pipewire.service wireplumber.service
+
+[Service]
+Type=simple
+WorkingDirectory=%h/madame-maxime
+ExecStart=%h/madame-maxime/.venv/bin/python %h/madame-maxime/speech_service.py
+Restart=on-failure
+RestartSec=1
+
+[Install]
+WantedBy=default.target

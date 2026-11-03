@@ -2,12 +2,15 @@
 
 ## Installation status
 
-The fixture is not yet physically present. `A017` (channels 17-52 in 36-channel
-mode) is reserved in the address plan only; it has not been configured or
-tested.
+The fixture is installed at **A073** in **36-channel mode**, occupying DMX
+channels 73-108. On 2026-10-26 the Raspberry Pi/ENTTEC controller successfully
+produced a bright white horizontal line using a centered, static cue. The rear
+emission indicator responded and the optical result was visually confirmed.
 
-This folder is the future integration record for Greg's Wonsung 5W-APP laser.
-No live laser output has been tested or added to the kiosk.
+The broker controls this fixture independently from the PARs and small laser.
+It requires an explicit arm plus a continuing heartbeat and automatically
+blacks out after heartbeat expiry. Both documented strobe channels remain
+locked to zero in the diagnostic cue.
 
 ## Preserved source
 
@@ -31,10 +34,21 @@ The scan covers printed manual pages 13-20. It identifies the fixture as having:
 machine-readable profile. Manufacturer wording that is ambiguous or apparently
 duplicated is retained and marked for physical verification.
 
+## Custom-pattern boundary
+
+The documented DMX personality selects patterns already stored in the fixture
+and controls their color, scan speed, size, position, rotation, movement, zoom,
+drawing, and wave effects. It does **not** provide channels for streaming a new
+vector drawing over DMX.
+
+The `Downloaded ILD programs` group indicates that custom artwork uploaded to
+the fixture can subsequently be selected over DMX. Uploading that artwork is a
+separate LightELF/BLE operation. The BLE upload protocol and the mapping between
+downloaded slots and DMX selector values still require capture and verification.
+
 ## Safe future bring-up
 
-1. Record the exact rear-panel label, firmware, configured DMX address, and
-   selected 16/36-channel mode.
+1. Confirm the rear panel still reads A073 and 36-channel mode before testing.
 2. Mount the unit so every possible beam terminates on a non-reflective surface
    inaccessible to guests. Do not aim toward people, windows, roads, or sky.
 3. Verify the key switch, interlock, emergency stop, aperture shutter, and

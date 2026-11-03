@@ -26,6 +26,19 @@ Verified on October 19, 2026:
 - OLA and the ordinary Linux serial path do not produce usable output with
   this installation and must not own the adapter.
 
+Verified on November 3, 2026 after migration to Raspberry Pi 5:
+
+- Seeed reSpeaker XVF3800 capture is stable at stereo signed 16-bit/16 kHz;
+  both input channels carry valid speech.
+- Tzumi SuperBass is the trusted Bluetooth A2DP output while the reSpeaker is
+  the persistent PipeWire input.
+- `madame-maxime-speech.service` continuously drains the reSpeaker DSP stream,
+  applies WebRTC voice classification plus local level/timeout bounds, and
+  exposes a private Unix-socket transcription interface.
+- OpenAI `gpt-transcribe` returned the exact full test sentence and the exact
+  one-word questionnaire answer `Adventure`.
+- Raw audio and transcripts remain memory-only during normal operation.
+
 The field-verified direct-FTDI implementation is included as
 [`dmx_lighting.py`](dmx_lighting.py). A dedicated
 [`dmx_broker.py`](dmx_broker.py) service is the sole owner of the adapter and
@@ -172,6 +185,22 @@ unavailable. Stopping the kiosk sends a full-universe blackout; the broker
 itself remains available for the next kiosk launch.
 The current milestone is intentionally silent: it does not initialize Pygame's
 audio mixer and contains no speech or sound playback path.
+
+The independent speech worker can be installed without enabling kiosk audio:
+
+```bash
+cd ~/madame-maxime
+python3 -m venv .venv
+.venv/bin/pip install -r requirements-speech.txt
+cp systemd/madame-maxime-speech.service ~/.config/systemd/user/
+systemctl --user daemon-reload
+systemctl --user enable --now madame-maxime-speech.service
+python3 speech_client.py --status
+```
+
+The service unit expects that project-local environment at
+`~/madame-maxime/.venv`. Provision the API key with
+`scripts/configure_openai_key.sh`; it is never stored in this repository.
 
 The `OPERATOR` control opens a protected confirmation panel. `RETURN TO OFFICE
 CONSOLE` blackouts and releases the PAR fixtures, closes Madame Maxime, selects

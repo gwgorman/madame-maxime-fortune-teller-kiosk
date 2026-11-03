@@ -3,7 +3,7 @@
 ## Decision
 
 - **Capture and turn control:** local on the Raspberry Pi
-- **Speech-to-text:** OpenAI `gpt-4o-transcribe`
+- **Speech-to-text:** OpenAI `gpt-transcribe`
 - **Text-to-speech:** ElevenLabs using the approved Madame Maxime voice
 - **Static dialogue:** pre-rendered and cached locally
 - **Dynamic fortunes:** generated through ElevenLabs' HTTP streaming endpoint
@@ -35,6 +35,27 @@ reSpeaker microphones
 All reSpeaker channel, format, DSP, and routing assumptions remain provisional
 until physical bring-up.
 
+### Current Pi 5 bring-up
+
+The Seeed reSpeaker XVF3800 is field-verified as a standard USB Audio Class
+device with native stereo, signed 16-bit, 16 kHz capture. Both capture channels
+contain valid signal. `speech_input.py` records that stable hardware endpoint,
+downmixes once to mono in memory, applies local level gating with one-second
+pre-roll, WebRTC voice classification, and bounded silence endpointing, then
+submits an in-memory WAV to the
+ordinary transcription endpoint. Normal operation writes neither audio nor
+transcripts to disk.
+
+The quiet-office baseline measured on November 3, 2026 was RMS 73 median and
+99 maximum in 20 ms windows. After WebRTC voice classification was added, the
+energy floor was set to RMS 110 so soft and off-axis one-word answers are not
+lost; WebRTC remains responsible for rejecting chair and handling noise. The
+floor is exposed as `MADAME_MAXIME_VAD_RMS` for gazebo calibration rather than
+treated as a production assumption.
+
+The output path is independently field-verified over Bluetooth A2DP to the
+Tzumi SuperBass speaker. The reSpeaker remains the PipeWire default source.
+
 ## Listening behavior
 
 The UI opens the microphone only during an explicit visible `LISTENING` state.
@@ -44,11 +65,13 @@ Provisional capture rules:
 
 - mono PCM after the reSpeaker's processed channel;
 - resample only once, at the STT boundary;
-- 300 ms pre-roll;
+- one second of in-memory pre-roll (field-adjusted to preserve quieter opening
+  words before the level gate fires);
 - ignore the first 150-250 ms after Maxime stops speaking while echo
   cancellation settles;
 - begin speech after a calibrated energy/VAD threshold;
-- end a short answer after roughly 500-700 ms of speech-free audio;
+- end an answer after 1.25 seconds of speech-free audio (field-adjusted after
+  the shorter provisional gap clipped natural pauses between words);
 - cap closed answers at four seconds;
 - cap the open question at ten seconds; and
 - never save the raw capture unless operator diagnostic mode was deliberately
@@ -60,7 +83,7 @@ reSpeaker DSP rather than copied from desktop defaults.
 ## Closed-answer transcription
 
 For the four questionnaire screens, record one short utterance and submit it to
-`gpt-4o-transcribe` with English selected and a small context hint containing
+`gpt-transcribe` with English selected and a small context hint containing
 only the visible choices. Normalize the result and map common variants to the
 four choices.
 
@@ -156,6 +179,17 @@ loaded from a root- or service-readable environment file or systemd credentials
 on the Pi. The files are excluded from Git, never displayed in the operator UI,
 and never written to the event journal. Repository configuration contains only
 environment-variable names and safe defaults.
+
+Provision the OpenAI project key directly on the Pi without placing it in a
+shell argument, chat, log, or repository:
+
+```bash
+cd ~/madame-maxime
+./scripts/configure_openai_key.sh
+```
+
+The helper uses hidden terminal input and atomically writes only
+`~/.config/madame-maxime/secrets.env` with mode `0600`.
 
 ## Bring-up and acceptance tests
 

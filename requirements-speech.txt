@@ -1,0 +1,2 @@
+requests==2.32.3
+webrtcvad-wheels==2.0.14.post1
